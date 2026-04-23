@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>開戶申請已送出｜口袋證券</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --header-h: 80px;
+        --page-max: 1440px;
+        --bg-page: #f5f5f5;
+        --header-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        --title-coral: #e95465;
+        --link-blue: #0056c7;
+        --text: #3e3a39;
+        --muted: rgba(62, 58, 57, 0.65);
+        --border: #e8e4e3;
+        --footer-start: #c01846;
+        --footer-end: #e65967;
+        --btn-salmon: #e95465;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        background: var(--bg-page);
+        color: var(--text);
+      }
+
+      body > .site-header {
+        width: 100%;
+        flex-shrink: 0;
+      }
+
+      .shell {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: var(--page-max);
+        margin: 0 auto;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        width: 100%;
+        height: var(--header-h);
+        background: #fff;
+        box-shadow: var(--header-shadow);
+      }
+
+      .site-header__inner {
+        display: grid;
+        grid-template-columns: auto 2px minmax(0, 1fr);
+        column-gap: 12px;
+        align-items: center;
+        box-sizing: border-box;
+        max-width: var(--page-max);
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        padding: 0 max(24px, env(safe-area-inset-left)) 0 max(24px, env(safe-area-inset-right));
+      }
+
+      .brand-logo {
+        grid-column: 1;
+        display: block;
+        line-height: 0;
+      }
+
+      .brand-logo__img {
+        height: 46px;
+        width: auto;
+        max-width: min(240px, 42vw);
+        object-fit: contain;
+        display: block;
+      }
+
+      .brand-divider {
+        grid-column: 2;
+        width: 2px;
+        height: 35px;
+        background: var(--title-coral);
+        justify-self: center;
+      }
+
+      .header-text-cluster {
+        grid-column: 3;
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px 20px;
+      }
+
+      .page-title {
+        margin: 0;
+        color: var(--title-coral);
+        font-size: 32px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .license-link {
+        color: var(--link-blue);
+        font-size: 20px;
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .license-link:hover {
+        opacity: 0.85;
+      }
+
+      .site-main {
+        flex: 1;
+        width: 100%;
+        background: var(--bg-page);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 24px 56px;
+      }
+
+      .success-card {
+        width: 100%;
+        max-width: 520px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 40px 32px 44px;
+        text-align: center;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border);
+      }
+
+      .success-card__title {
+        margin: 0 0 20px;
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--title-coral);
+        line-height: 1.35;
+      }
+
+      .success-card__body {
+        margin: 0 0 28px;
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--text);
+        text-align: center;
+      }
+
+      .success-card__qr {
+        margin: 0 auto 24px;
+        width: 200px;
+        height: 200px;
+      }
+
+      .success-card__qr img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .success-card__qr-fallback {
+        display: none;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 16px 16px;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.4;
+        padding: 12px;
+      }
+
+      .success-card__qr-fallback.is-visible {
+        display: flex;
+      }
+
+      .success-card__qr-fallback__hint {
+        font-weight: 400;
+        font-size: 11px;
+      }
+
+      .success-card__qr-note {
+        margin: -12px 0 20px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .success-card__line {
+        margin: 0 0 28px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text);
+      }
+
+      .success-card__line strong {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .btn-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 40px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        background: var(--btn-salmon);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+
+      .btn-home:hover {
+        opacity: 0.92;
+      }
+
+      .site-footer {
+        width: 100%;
+        background: linear-gradient(78deg, var(--footer-start) 0%, var(--footer-end) 100%);
+        padding: 40px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .site-footer__text {
+        max-width: 900px;
+        text-align: center;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.65;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      }
+
+      @media (max-width: 900px) {
+        :root {
+          --app-header-bar-h: 64px;
+          --app-header-stack: 76px;
+        }
+
+        .shell {
+          max-width: 100%;
+        }
+
+        .site-header {
+          width: 100%;
+          max-width: none;
+          height: auto;
+          min-height: 0;
+          box-shadow: 0 4px 10px rgba(110, 110, 110, 0.1);
+        }
+
+        .site-header__inner {
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: stretch;
+          gap: 14px;
+          min-height: var(--app-header-bar-h);
+          height: auto;
+          max-width: none;
+          width: 100%;
+          margin: 0;
+          padding: 2px max(16px, env(safe-area-inset-left)) 2px max(16px, env(safe-area-inset-right));
+          background: #fff;
+        }
+
+        .brand-logo {
+          display: flex;
+          flex: 0 0 auto;
+          align-items: center;
+          justify-content: flex-start;
+          align-self: stretch;
+          min-width: 0;
+          min-height: 0;
+          line-height: 0;
+        }
+
+        .brand-logo__img {
+          display: block;
+          width: auto;
+          height: 100%;
+          max-height: 100%;
+          max-width: min(240px, 52vw);
+          object-fit: contain;
+          object-position: left center;
+        }
+
+        .brand-divider {
+          flex-shrink: 0;
+          width: 3px;
+          border-radius: 2px;
+          align-self: stretch;
+          min-height: 52px;
+          margin: 1px 0;
+          background: rgba(233, 84, 101, 0.55);
+        }
+
+        .header-text-cluster {
+          display: flex;
+          flex: 1 1 auto;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          align-self: stretch;
+          gap: 3px;
+          min-width: 0;
+          width: auto;
+        }
+
+        .header-text-cluster .license-link {
+          display: inline-block;
+          max-width: 100%;
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: clamp(11px, 3.2vw, 15px);
+          line-height: 22px;
+        }
+
+        .page-title {
+          margin: 0;
+          color: #f95868;
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 28px;
+          letter-spacing: 0.01em;
+          white-space: normal;
+        }
+
+        .license-link {
+          color: #0056c7;
+          font-weight: 400;
+        }
+
+        .site-main {
+          width: 100%;
+          max-width: none;
+          margin: 0;
+          padding: 24px max(16px, env(safe-area-inset-left)) 40px max(16px, env(safe-area-inset-right));
+          box-sizing: border-box;
+        }
+
+        .success-card {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" role="banner">
+      <div class="site-header__inner">
+        <a href="index.html" class="brand-logo" aria-label="口袋證券首頁">
+          <img
+            class="brand-logo__img"
+            src="images.png"
+            width="220"
+            height="46"
+            alt="口袋證券"
+          />
+        </a>
+        <span class="brand-divider" aria-hidden="true"></span>
+        <div class="header-text-cluster">
+          <p class="page-title">線上開戶</p>
+          <a class="license-link" href="#">金管會證總字第0047號</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell">
+      <main class="site-main" role="main">
+        <div class="success-card">
+          <h1 class="success-card__title">您已成功送件申請！</h1>
+          <p class="success-card__body">
+            口袋證券已收到您的開戶申請文件，審查人員正在檢核中，還請您稍作等待。預計兩小時開戶完成後，將以簡訊及
+            Email 通知。
+          </p>
+          <div class="success-card__qr">
+            <img
+              id="successQrImg"
+              width="200"
+              height="200"
+              alt="加入官方 Line 之 QR Code（每次載入隨機產生示意）"
+            />
+            <div id="successQrFallback" class="success-card__qr-fallback" aria-hidden="true">
+              QR<br />示意<br /><span class="success-card__qr-fallback__hint">（外部服務無法載入）</span>
+            </div>
+          </div>
+          <p class="success-card__qr-note" id="successQrNote"></p>
+          <p class="success-card__line">
+            立即加入 Line 官方帳號：<strong>@popo6620</strong><br />
+            讓您快速掌握最新活動與資訊，感謝您選擇口袋證券！
+          </p>
+          <a class="btn-home" href="index.html">返回首頁</a>
+        </div>
+      </main>
+
+      <footer class="site-footer" role="contentinfo">
+        <div class="site-footer__text">
+          口袋證券股份有限公司｜新北市板橋區三民路一段216號9樓｜客服專線0809-089-001
+          08:00~17:00（週一至週五，非交易日除外）<br />
+          建議瀏覽器：Edge、Chrome、Safari、Firefox 以上最新版本<br />
+          © 口袋證券 版權所有 1.4.1.12
+        </div>
+      </footer>
+    </div>
+    <script>
+      (function () {
+        var img = document.getElementById("successQrImg");
+        var fb = document.getElementById("successQrFallback");
+        var note = document.getElementById("successQrNote");
+        if (!img) return;
+
+        if (note) note.textContent = "正在產生動態 QR…";
+
+        var rand =
+          Date.now().toString(36) +
+          "-" +
+          Math.random().toString(36).slice(2, 10) +
+          "-" +
+          Math.random().toString(36).slice(2, 8);
+        var payload =
+          "https://line.me/R/ti/p/@popo6620?utm_source=success_demo&ref=" + rand;
+        var url =
+          "https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&ecc=M&data=" +
+          encodeURIComponent(payload);
+
+        img.addEventListener("load", function () {
+          if (fb) {
+            fb.classList.remove("is-visible");
+            fb.setAttribute("aria-hidden", "true");
+          }
+          if (note)
+            note.textContent =
+              "以下 QR 為示意：每次重新整理會產生不同圖樣（內容仍為官方 Line 連結格式）。";
+        });
+        img.addEventListener("error", function () {
+          img.style.display = "none";
+          if (fb) {
+            fb.classList.add("is-visible");
+            fb.setAttribute("aria-hidden", "false");
+          }
+          if (note) note.textContent = "無法產生動態 QR，改以版面示意顯示。";
+        });
+
+        img.src = url;
+      })();
+    </script>
+  </body>
+</html>
