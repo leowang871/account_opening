@@ -1449,7 +1449,14 @@
               </button>
             </nav>
 
-            <form class="onboard-sections" id="onboardForm" novalidate>
+            <form
+              class="onboard-sections"
+              id="onboardForm"
+              novalidate
+              action="#"
+              method="get"
+              onsubmit="event.preventDefault();"
+            >
               <!-- A 證件影像 -->
               <section class="onboard-section" id="sec-id-images" aria-labelledby="h-id-img">
                 <div class="onboard-section__head" style="border-bottom: none; padding-bottom: 0">
@@ -1722,7 +1729,7 @@
                       </div>
                     </div>
                     <div class="btn-row" style="margin-top: 24px">
-                      <button type="submit" class="btn btn--primary" id="btnSubmit">確認送出開戶申請</button>
+                      <button type="button" class="btn btn--primary" id="btnSubmit">確認送出開戶申請</button>
                     </div>
                   </div>
                 </section>
@@ -1893,7 +1900,7 @@
           if (!overlay) return;
           overlay.hidden = false;
           bankFailModalOpen = true;
-          modalStatus.textContent = "";
+          if (modalStatus) modalStatus.textContent = "";
           if (modalSelfie) modalSelfie.value = "";
           var dm = $("bankFailModal");
           if (dm && dm.focus) dm.focus();
@@ -1906,6 +1913,7 @@
         }
 
         function validateModalFile() {
+          if (!modalStatus) return false;
           if (!modalSelfie || !modalSelfie.files || !modalSelfie.files[0]) {
             modalStatus.textContent = "請先選擇 JPG 或 PNG 圖檔。";
             return false;
@@ -1918,36 +1926,39 @@
           return true;
         }
 
-        $("btnBankVerify").addEventListener("click", function () {
-          if ($("btnBankVerify").disabled) return;
-          var bn = $("bankNameInput");
-          var ba = $("bankAccountInput");
-          if (bn && !bn.checkValidity()) {
-            bn.reportValidity();
-            return;
-          }
-          if (ba && !ba.checkValidity()) {
-            ba.reportValidity();
-            return;
-          }
-          handheldOk = false;
-          var ok = sampleBankVerifySuccess();
-          if (!ok) {
-            $("bankOk").classList.remove("is-visible");
-            var inline = $("bankFailInline");
-            if (inline) inline.style.display = "block";
-            openBankFailModal();
-            bankModuleOk = false;
-          } else {
-            closeBankFailModal();
-            $("bankOk").classList.add("is-visible");
-            var inline2 = $("bankFailInline");
-            if (inline2) inline2.style.display = "none";
-            bankModuleOk = true;
-            $("btnBankVerify").disabled = true;
-          }
-          refreshBankGate();
-        });
+        var btnBankVerify = $("btnBankVerify");
+        if (btnBankVerify) {
+          btnBankVerify.addEventListener("click", function () {
+            if (btnBankVerify.disabled) return;
+            var bn = $("bankNameInput");
+            var ba = $("bankAccountInput");
+            if (bn && !bn.checkValidity()) {
+              bn.reportValidity();
+              return;
+            }
+            if (ba && !ba.checkValidity()) {
+              ba.reportValidity();
+              return;
+            }
+            handheldOk = false;
+            var ok = sampleBankVerifySuccess();
+            if (!ok) {
+              $("bankOk").classList.remove("is-visible");
+              var inline = $("bankFailInline");
+              if (inline) inline.style.display = "block";
+              openBankFailModal();
+              bankModuleOk = false;
+            } else {
+              closeBankFailModal();
+              $("bankOk").classList.add("is-visible");
+              var inline2 = $("bankFailInline");
+              if (inline2) inline2.style.display = "none";
+              bankModuleOk = true;
+              btnBankVerify.disabled = true;
+            }
+            refreshBankGate();
+          });
+        }
 
         function wireModalClose(btn) {
           if (!btn) return;
@@ -1968,7 +1979,7 @@
             var inline3 = $("bankFailInline");
             if (inline3) inline3.style.display = "none";
             bankModuleOk = true;
-            modalStatus.textContent = "";
+            if (modalStatus) modalStatus.textContent = "";
             var bv = $("btnBankVerify");
             if (bv) bv.disabled = true;
             refreshBankGate();
@@ -1989,6 +2000,7 @@
         var host = $("modalUploadHost");
         if (modalSelfie) {
           modalSelfie.addEventListener("change", function () {
+            if (!modalStatus) return;
             if (modalSelfie.files && modalSelfie.files[0]) {
               modalStatus.textContent = "已選擇：" + modalSelfie.files[0].name;
             }
@@ -2010,7 +2022,7 @@
                 modalSelfie.files = e.dataTransfer.files;
                 modalSelfie.dispatchEvent(new Event("change", { bubbles: true }));
               } catch (err) {
-                modalStatus.textContent = "請改以點擊區域選擇檔案（此瀏覽器不支援拖放寫入）。";
+                if (modalStatus) modalStatus.textContent = "請改以點擊區域選擇檔案（此瀏覽器不支援拖放寫入）。";
               }
             }
           });
@@ -2236,17 +2248,20 @@
 
         /* —— 簽名畫布 —— */
         var canvas = $("sigCanvas");
-        var ctx = canvas.getContext("2d");
+        var ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
         var drawing = false;
 
         function syncCtxStyle() {
+          if (!ctx) return;
           var dpr = Math.min(window.devicePixelRatio || 1, 2);
           ctx.lineWidth = 2.2 * dpr;
           ctx.lineCap = "round";
           ctx.strokeStyle = "#3e3a39";
         }
-        syncCtxStyle();
-        window.addEventListener("resize", syncCtxStyle);
+        if (ctx) {
+          syncCtxStyle();
+          window.addEventListener("resize", syncCtxStyle);
+        }
 
         function rect() {
           return canvas.getBoundingClientRect();
@@ -2268,6 +2283,7 @@
         }
 
         function start(e) {
+          if (!ctx) return;
           drawing = true;
           var p = pos(e);
           ctx.beginPath();
@@ -2275,7 +2291,7 @@
           e.preventDefault();
         }
         function move(e) {
-          if (!drawing) return;
+          if (!drawing || !ctx) return;
           var p = pos(e);
           ctx.lineTo(p.x, p.y);
           ctx.stroke();
@@ -2285,18 +2301,24 @@
           drawing = false;
         }
 
-        canvas.addEventListener("mousedown", start);
-        canvas.addEventListener("mousemove", move);
-        window.addEventListener("mouseup", end);
-        canvas.addEventListener("touchstart", start, { passive: false });
-        canvas.addEventListener("touchmove", move, { passive: false });
-        canvas.addEventListener("touchend", end);
+        if (canvas && ctx) {
+          canvas.addEventListener("mousedown", start);
+          canvas.addEventListener("mousemove", move);
+          window.addEventListener("mouseup", end);
+          canvas.addEventListener("touchstart", start, { passive: false });
+          canvas.addEventListener("touchmove", move, { passive: false });
+          canvas.addEventListener("touchend", end);
+        }
 
-        $("btnClearSig").addEventListener("click", function () {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        });
+        var btnClearSig = $("btnClearSig");
+        if (btnClearSig && canvas && ctx) {
+          btnClearSig.addEventListener("click", function () {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          });
+        }
 
         function isCanvasBlank() {
+          if (!canvas || !ctx) return true;
           var idata = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
           for (var i = 0; i < idata.length; i += 32) {
             if (idata[i + 3] !== 0) return false;
@@ -2419,44 +2441,54 @@
 
         form.addEventListener("submit", function (e) {
           e.preventDefault();
-          if (!bankModuleOk) {
-            alert("請先完成銀行核身（含必要時之補件）。");
-            $("sec-bank").scrollIntoView({ behavior: "smooth" });
-            return;
-          }
-          var legals = ["agreeSec", "agreeUsStock", "agreeW8", "agreeCrs"];
-          var miss = legals.filter(function (id) {
-            var el = $(id);
-            return !el || !el.checked;
-          });
-          if (miss.length) {
-            alert("請勾選並同意所有文件項目。");
-            $("sec-sign").scrollIntoView({ behavior: "smooth" });
-            return;
-          }
-          if (isCanvasBlank()) {
-            alert("請完成手寫簽名。");
-            $("sec-sign").scrollIntoView({ behavior: "smooth" });
-            return;
-          }
-          if (!form.reportValidity()) return;
-          saveDraft();
-          closeBankFailModal();
-          var onboard = $("onboardPanel");
-          var successPanel = $("successPanel");
-          if (onboard) onboard.hidden = true;
-          if (successPanel) {
-            successPanel.hidden = false;
-            successPanel.setAttribute("aria-hidden", "false");
-          }
-          var pt = $("pageTitleText");
-          if (pt) pt.textContent = "線上開戶成功";
-          document.title = "開戶申請已送出｜口袋證券";
-          initSuccessQr();
-          window.scrollTo(0, 0);
-          var sh = $("successHeading");
-          if (sh && sh.focus) sh.focus();
         });
+
+        var btnSubmit = $("btnSubmit");
+        if (btnSubmit) {
+          btnSubmit.addEventListener("click", function () {
+            if (!bankModuleOk) {
+              alert("請先完成銀行核身（含必要時之補件）。");
+              $("sec-bank").scrollIntoView({ behavior: "smooth" });
+              return;
+            }
+            var legals = ["agreeSec", "agreeUsStock", "agreeW8", "agreeCrs"];
+            var miss = legals.filter(function (id) {
+              var el = $(id);
+              return !el || !el.checked;
+            });
+            if (miss.length) {
+              alert("請勾選並同意所有文件項目。");
+              $("sec-sign").scrollIntoView({ behavior: "smooth" });
+              return;
+            }
+            if (!canvas || !ctx) {
+              alert("簽名區無法載入，請重新整理頁面後再試。");
+              return;
+            }
+            if (isCanvasBlank()) {
+              alert("請完成手寫簽名。");
+              $("sec-sign").scrollIntoView({ behavior: "smooth" });
+              return;
+            }
+            if (!form.reportValidity()) return;
+            saveDraft();
+            closeBankFailModal();
+            var onboard = $("onboardPanel");
+            var successPanel = $("successPanel");
+            if (onboard) onboard.hidden = true;
+            if (successPanel) {
+              successPanel.hidden = false;
+              successPanel.setAttribute("aria-hidden", "false");
+            }
+            var pt = $("pageTitleText");
+            if (pt) pt.textContent = "線上開戶成功";
+            document.title = "開戶申請已送出｜口袋證券";
+            initSuccessQr();
+            window.scrollTo(0, 0);
+            var sh = $("successHeading");
+            if (sh && sh.focus) sh.focus();
+          });
+        }
       })();
     </script>
 
