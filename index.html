@@ -31,6 +31,7 @@
         --warn-text: #6d4c41;
         --radius: 12px;
         --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+        --btn-salmon: #e95465;
       }
 
       *,
@@ -160,6 +161,130 @@
         max-width: var(--page-max);
         margin: 0 auto;
         padding: 28px 24px 56px;
+      }
+
+      #onboardPanel[hidden],
+      #successPanel[hidden] {
+        display: none !important;
+      }
+
+      .success-stage {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        padding: 40px 24px 56px;
+        box-sizing: border-box;
+      }
+
+      .success-card {
+        width: 100%;
+        max-width: 520px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 40px 32px 44px;
+        text-align: center;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border);
+      }
+
+      .success-card__title {
+        margin: 0 0 20px;
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--title-coral);
+        line-height: 1.35;
+      }
+
+      .success-card__body {
+        margin: 0 0 28px;
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--text);
+        text-align: center;
+      }
+
+      .success-card__qr {
+        margin: 0 auto 24px;
+        width: 200px;
+        height: 200px;
+      }
+
+      .success-card__qr img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .success-card__qr-fallback {
+        display: none;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        background: repeating-conic-gradient(#f0f0f0 0% 25%, #fff 0% 50%) 50% / 16px 16px;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-align: center;
+        line-height: 1.4;
+        padding: 12px;
+      }
+
+      .success-card__qr-fallback.is-visible {
+        display: flex;
+      }
+
+      .success-card__qr-fallback__hint {
+        font-weight: 400;
+        font-size: 11px;
+      }
+
+      .success-card__qr-note {
+        margin: -12px 0 20px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .success-card__line {
+        margin: 0 0 28px;
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text);
+      }
+
+      .success-card__line strong {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .btn-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 40px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        background: var(--btn-salmon);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+
+      .btn-home:hover {
+        opacity: 0.92;
+      }
+
+      .btn-home:focus-visible {
+        outline: 2px solid var(--link-blue);
+        outline-offset: 3px;
       }
 
       .onboard-layout {
@@ -1252,6 +1377,18 @@
           color: #0056c7;
           font-weight: 400;
         }
+
+        .success-stage {
+          width: 100%;
+          max-width: none;
+          margin: 0;
+          padding: 24px max(16px, env(safe-area-inset-left)) 40px max(16px, env(safe-area-inset-right));
+          box-sizing: border-box;
+        }
+
+        .success-card {
+          max-width: none;
+        }
       }
     </style>
   </head>
@@ -1269,7 +1406,7 @@
         </a>
         <span class="brand-divider" aria-hidden="true"></span>
         <div class="header-text-cluster">
-          <h1 class="page-title">線上開戶</h1>
+          <h1 class="page-title" id="pageTitleText">線上開戶</h1>
           <a class="license-link" href="#">金管會證總字第0047號</a>
         </div>
       </div>
@@ -1277,6 +1414,7 @@
 
     <div class="shell">
       <main class="site-main" id="main" role="main">
+        <div id="onboardPanel">
         <div class="site-main__slot">
           <div class="onboard-layout">
             <nav class="stepper" id="stepper" aria-label="開戶步驟">
@@ -1665,6 +1803,34 @@
             <p class="main-modal__foot">
               您的上傳資料將用於身份驗證，並遵循相關隱私政策。
             </p>
+          </div>
+        </div>
+        </div>
+
+        <div id="successPanel" class="success-stage" hidden aria-hidden="true">
+          <div class="success-card">
+            <h2 class="success-card__title" id="successHeading" tabindex="-1">您已成功送件申請！</h2>
+            <p class="success-card__body">
+              口袋證券已收到您的開戶申請文件，審查人員正在檢核中，還請您稍作等待。預計兩小時開戶完成後，將以簡訊及
+              Email 通知。
+            </p>
+            <div class="success-card__qr">
+              <img
+                id="successQrImg"
+                width="200"
+                height="200"
+                alt="加入官方 Line 之 QR Code（每次載入隨機產生示意）"
+              />
+              <div id="successQrFallback" class="success-card__qr-fallback" aria-hidden="true">
+                QR<br />示意<br /><span class="success-card__qr-fallback__hint">（外部服務無法載入）</span>
+              </div>
+            </div>
+            <p class="success-card__qr-note" id="successQrNote"></p>
+            <p class="success-card__line">
+              立即加入 Line 官方帳號：<strong>@popo6620</strong><br />
+              讓您快速掌握最新活動與資訊，感謝您選擇口袋證券！
+            </p>
+            <a class="btn-home" href="#" id="btnSuccessHome">返回首頁</a>
           </div>
         </div>
       </main>
@@ -2202,6 +2368,55 @@
         loadDraft();
         refreshBankGate();
 
+        var successQrInited = false;
+
+        function initSuccessQr() {
+          if (successQrInited) return;
+          successQrInited = true;
+          var img = $("successQrImg");
+          var fb = $("successQrFallback");
+          var note = $("successQrNote");
+          if (!img) return;
+          if (note) note.textContent = "正在產生動態 QR…";
+          var rand =
+            Date.now().toString(36) +
+            "-" +
+            Math.random().toString(36).slice(2, 10) +
+            "-" +
+            Math.random().toString(36).slice(2, 8);
+          var payload =
+            "https://line.me/R/ti/p/@popo6620?utm_source=success_demo&ref=" + rand;
+          var url =
+            "https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=10&ecc=M&data=" +
+            encodeURIComponent(payload);
+          img.addEventListener("load", function () {
+            if (fb) {
+              fb.classList.remove("is-visible");
+              fb.setAttribute("aria-hidden", "true");
+            }
+            if (note)
+              note.textContent =
+                "以下 QR 為示意：每次重新整理會產生不同圖樣（內容仍為官方 Line 連結格式）。";
+          });
+          img.addEventListener("error", function () {
+            img.style.display = "none";
+            if (fb) {
+              fb.classList.add("is-visible");
+              fb.setAttribute("aria-hidden", "false");
+            }
+            if (note) note.textContent = "無法產生動態 QR，改以版面示意顯示。";
+          });
+          img.src = url;
+        }
+
+        var btnSuccessHome = $("btnSuccessHome");
+        if (btnSuccessHome) {
+          btnSuccessHome.addEventListener("click", function (e) {
+            e.preventDefault();
+            location.reload();
+          });
+        }
+
         form.addEventListener("submit", function (e) {
           e.preventDefault();
           if (!bankModuleOk) {
@@ -2226,10 +2441,21 @@
           }
           if (!form.reportValidity()) return;
           saveDraft();
-          var w = window.open("success.html", "_blank", "noopener,noreferrer");
-          if (!w) {
-            window.location.href = "success.html";
+          closeBankFailModal();
+          var onboard = $("onboardPanel");
+          var successPanel = $("successPanel");
+          if (onboard) onboard.hidden = true;
+          if (successPanel) {
+            successPanel.hidden = false;
+            successPanel.setAttribute("aria-hidden", "false");
           }
+          var pt = $("pageTitleText");
+          if (pt) pt.textContent = "線上開戶成功";
+          document.title = "開戶申請已送出｜口袋證券";
+          initSuccessQr();
+          window.scrollTo(0, 0);
+          var sh = $("successHeading");
+          if (sh && sh.focus) sh.focus();
         });
       })();
     </script>
