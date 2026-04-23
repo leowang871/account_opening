@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>線上開戶｜口袋證券</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --header-h: 80px;
+        --page-max: 1440px;
+        --bg-page: #f5f5f5;
+        --header-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        --brand-red: #e60039;
+        --title-coral: #e95465;
+        --link-blue: #0056c7;
+        --footer-start: #c01846;
+        --footer-end: #e65967;
+        --text: #3e3a39;
+        --text-muted: rgba(62, 58, 57, 0.65);
+        --border: #e8e4e3;
+        --card: #fff;
+        --success-bg: #e8f5e9;
+        --success-text: #1b5e20;
+        --warn-bg: #fff8e1;
+        --warn-text: #6d4c41;
+        --radius: 12px;
+        --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        background: var(--bg-page);
+        color: var(--text);
+        line-height: 1.5;
+      }
+
+      body > .site-header {
+        width: 100%;
+        flex-shrink: 0;
+      }
+
+      .shell {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: var(--page-max);
+        margin: 0 auto;
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        width: 100%;
+        height: var(--header-h);
+        background: #fff;
+        box-shadow: var(--header-shadow);
+      }
+
+      .site-header__inner {
+        display: grid;
+        grid-template-columns: auto 2px minmax(0, 1fr);
+        column-gap: 12px;
+        align-items: center;
+        box-sizing: border-box;
+        max-width: var(--page-max);
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        padding: 0 max(24px, env(safe-area-inset-left)) 0 max(24px, env(safe-area-inset-right));
+      }
+
+      .brand-logo {
+        grid-column: 1;
+        display: block;
+        line-height: 0;
+      }
+
+      .brand-logo__img {
+        height: 46px;
+        width: auto;
+        max-width: min(240px, 42vw);
+        object-fit: contain;
+        display: block;
+      }
+
+      .brand-divider {
+        grid-column: 2;
+        width: 2px;
+        height: 35px;
+        background: var(--title-coral);
+        justify-self: center;
+      }
+
+      .header-text-cluster {
+        grid-column: 3;
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px 20px;
+      }
+
+      .page-title {
+        margin: 0;
+        color: var(--title-coral);
+        font-size: 32px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .license-link {
+        color: var(--link-blue);
+        font-size: 20px;
+        font-weight: 500;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .license-link:hover {
+        opacity: 0.85;
+      }
+
+      .license-link:focus-visible {
+        outline: 2px solid var(--link-blue);
+        outline-offset: 2px;
+      }
+
+      .site-main {
+        position: relative;
+        flex: 1;
+        width: 100%;
+        background: var(--bg-page);
+        min-height: calc(100vh - var(--header-h) - 1px);
+      }
+
+      .site-main__slot {
+        max-width: var(--page-max);
+        margin: 0 auto;
+        padding: 28px 24px 56px;
+      }
+
+      .onboard-layout {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 28px 36px;
+        width: 100%;
+        max-width: min(100%, 1040px);
+        margin: 0 auto;
+        align-items: start;
+      }
+
+      .stepper {
+        position: sticky;
+        top: calc(var(--header-h) + 20px);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .stepper__item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px 0;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        color: var(--text-muted);
+        border-radius: 8px;
+        margin: 0 -8px;
+        padding-left: 8px;
+        padding-right: 8px;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .stepper__item:hover {
+        background: rgba(233, 84, 101, 0.08);
+        color: var(--text);
+      }
+
+      .stepper__item.is-active {
+        color: var(--title-coral);
+        font-weight: 600;
+        background: rgba(233, 84, 101, 0.1);
+      }
+
+      .stepper__num {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        border: 2px solid currentColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        aspect-ratio: 1;
+      }
+
+      .stepper__item.is-active .stepper__num {
+        background: var(--title-coral);
+        border-color: var(--title-coral);
+        color: #fff;
+      }
+
+      .stepper__item.is-done {
+        color: rgba(62, 58, 57, 0.55);
+      }
+
+      .stepper__item.is-done .stepper__num {
+        background: #e8f5e9;
+        border-color: #81c784;
+        color: #2e7d32;
+        font-size: 13px;
+      }
+
+      .stepper__item.is-done .stepper__label {
+        font-weight: 500;
+      }
+
+      .stepper__label {
+        font-size: 14px;
+        line-height: 28px;
+      }
+
+      .stepper__connector {
+        width: 2px;
+        height: 10px;
+        background: var(--border);
+        margin: -4px 0 -4px 21px;
+      }
+
+      .onboard-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+      }
+
+      .onboard-section {
+        scroll-margin-top: calc(var(--header-h) + 16px);
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+
+      .onboard-section__head {
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .onboard-section__title {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .onboard-section__body {
+        padding: 20px 22px 24px;
+      }
+
+      .callout {
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+
+      .callout--info {
+        background: rgba(0, 86, 199, 0.06);
+        color: #0d47a1;
+        border: 1px solid rgba(0, 86, 199, 0.15);
+      }
+
+      .callout--warn {
+        background: var(--warn-bg);
+        color: var(--warn-text);
+        border: 1px solid rgba(109, 76, 65, 0.2);
+      }
+
+      .callout--success {
+        background: var(--success-bg);
+        color: var(--success-text);
+        border: 1px solid rgba(27, 94, 32, 0.2);
+      }
+
+      .field-hint {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 730px;
+      }
+
+      .field-grid > legend {
+        grid-column: 1 / -1;
+      }
+
+      .field-grid-legend {
+        margin: 0 0 8px;
+        padding: 0;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+      }
+
+      /* Style guide：每列 730×44 基準（標籤欄 190px + 輸入最大 540px = 730） */
+      .field {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 540px);
+        column-gap: 0;
+        align-items: center;
+        width: 100%;
+        max-width: 730px;
+        min-height: 44px;
+      }
+
+      .field:has(textarea) {
+        align-items: start;
+      }
+
+      .field:has(textarea) label,
+      .field:has(textarea) .label {
+        padding-top: 10px;
+      }
+
+      .field label,
+      .field .label {
+        grid-column: 1;
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 4px 6px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+        line-height: 1.25;
+      }
+
+      .req {
+        color: var(--brand-red);
+        font-weight: 600;
+      }
+
+      .lock-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+
+      .field input[type="text"],
+      .field input[type="tel"],
+      .field input[type="email"],
+      .field input[type="number"],
+      .field select {
+        grid-column: 2;
+        width: 100%;
+        max-width: 540px;
+        height: 44px;
+        padding: 11px 16px;
+        border: none;
+        border-radius: 100px;
+        background: #fff;
+        outline: 1px solid #9e9e9f;
+        outline-offset: -1px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        color: #000;
+        box-sizing: border-box;
+        transition: outline-color 0.15s, box-shadow 0.15s;
+      }
+
+      .field select {
+        appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6l5-4.5' stroke='%239E9E9F' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        padding-right: 40px;
+      }
+
+      .field textarea {
+        grid-column: 2;
+        width: 100%;
+        max-width: 540px;
+        min-height: 48px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 22px;
+        background: #fff;
+        outline: 1px solid #9e9e9f;
+        outline-offset: -1px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        color: #000;
+        resize: none;
+        box-sizing: border-box;
+        line-height: 1.5;
+        transition: outline-color 0.15s, box-shadow 0.15s;
+        field-sizing: content;
+      }
+
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: #9e9e9f;
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border: none;
+        outline: 2px solid var(--title-coral);
+        outline-offset: -1px;
+        box-shadow: none;
+      }
+
+      .field input:disabled,
+      .field select:disabled {
+        background: #fff;
+        color: #000;
+        -webkit-text-fill-color: #000;
+        cursor: not-allowed;
+        opacity: 1;
+      }
+
+      .field--locked input:disabled,
+      .field--locked input[disabled] {
+        background: #eeeeef;
+      }
+
+      @media (max-width: 768px) {
+        .field {
+          grid-template-columns: 1fr;
+          row-gap: 8px;
+          min-height: 0;
+          align-items: stretch;
+        }
+
+        .field:has(textarea) label,
+        .field:has(textarea) .label {
+          padding-top: 0;
+        }
+
+        .field label,
+        .field .label {
+          grid-column: 1;
+        }
+
+        .field input[type="text"],
+        .field input[type="tel"],
+        .field input[type="email"],
+        .field input[type="number"],
+        .field select,
+        .field textarea {
+          grid-column: 1;
+          max-width: none;
+          width: 100%;
+        }
+
+        .sig-canvas {
+          max-width: none;
+        }
+      }
+
+      .fieldset-sub {
+        margin-top: 8px;
+        padding-top: 16px;
+        border-top: 1px dashed var(--border);
+      }
+
+      .fieldset-sub legend {
+        padding: 0 0 12px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+      }
+
+      .upload-zone {
+        position: relative;
+        overflow: hidden;
+        border: 2px dashed var(--border);
+        border-radius: var(--radius);
+        padding: 28px 20px;
+        text-align: center;
+        background: #fafafa;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        min-height: 168px;
+      }
+
+      .upload-zone:hover,
+      .upload-zone:focus-within {
+        border-color: var(--title-coral);
+        background: rgba(233, 84, 101, 0.04);
+      }
+
+      /* 整塊可點：input 鋪滿區域，避免 absolute 無定位父層導致破版 */
+      .upload-zone__input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 2;
+        font-size: 1rem;
+      }
+
+      .upload-zone__body {
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .upload-zone__title {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      .upload-zone__list {
+        margin: 12px 0 0;
+        padding-left: 1.2em;
+        text-align: left;
+        font-size: 13px;
+        color: var(--text-muted);
+        max-width: 420px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s;
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn--primary {
+        background: var(--brand-red);
+        color: #fff;
+      }
+
+      .btn--primary:hover:not(:disabled) {
+        opacity: 0.92;
+      }
+
+      .btn--secondary {
+        background: #fff;
+        color: var(--title-coral);
+        border: 2px solid var(--title-coral);
+      }
+
+      .btn--ghost {
+        background: transparent;
+        color: var(--link-blue);
+        text-decoration: underline;
+        padding: 8px 12px;
+      }
+
+      .bank-result {
+        display: none;
+        margin-top: 16px;
+      }
+
+      .bank-result.is-visible {
+        display: block;
+      }
+
+      .check-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .check-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .check-item input {
+        margin-top: 4px;
+        width: 18px;
+        height: 18px;
+        accent-color: var(--brand-red);
+      }
+
+      .sig-wrap {
+        margin-top: 20px;
+        max-width: 730px;
+      }
+
+      .sig-wrap label {
+        display: block;
+        margin: 0 0 10px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+      }
+
+      .sig-canvas {
+        width: 100%;
+        max-width: min(540px, 100%);
+        height: 160px;
+        border: none;
+        border-radius: 22px;
+        outline: 1px solid #9e9e9f;
+        outline-offset: -1px;
+        background: #fff;
+        touch-action: none;
+        cursor: crosshair;
+      }
+
+      .sig-canvas:focus {
+        outline: 2px solid var(--title-coral);
+        outline-offset: -1px;
+      }
+
+      /* —— A 證件摺疊 —— */
+      .collapsible-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        color: inherit;
+      }
+
+      .collapsible-btn h3 {
+        margin: 0;
+        flex: 1;
+      }
+
+      .collapsible-btn .chevron {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        transition: transform 0.2s;
+        color: var(--title-coral);
+      }
+
+      .collapsible-btn[aria-expanded="true"] .chevron {
+        transform: rotate(180deg);
+      }
+
+      .thumb-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      @media (max-width: 640px) {
+        .thumb-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .thumb-card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fafafa;
+      }
+
+      .thumb-card figcaption {
+        padding: 8px 10px;
+        font-size: 13px;
+        font-weight: 500;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .thumb-card .thumb-img {
+        aspect-ratio: 16 / 10;
+        background: #ececec;
+        overflow: hidden;
+      }
+
+      .thumb-card .thumb-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* —— 銀行失敗：僅主內容區 —— */
+      .main-modal-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 40;
+        background: rgba(62, 58, 57, 0.45);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 28px 16px 40px;
+        overflow-y: auto;
+      }
+
+      .main-modal-overlay[hidden] {
+        display: none !important;
+      }
+
+      .main-modal {
+        width: 100%;
+        max-width: 520px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.14);
+        padding: 22px 22px 18px;
+        margin-top: 0;
+      }
+
+      .main-modal__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .main-modal__title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .main-modal__close {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 8px;
+        background: #f5f5f5;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        color: var(--text-muted);
+      }
+
+      .main-modal__close:hover {
+        background: #eceae9;
+        color: var(--text);
+      }
+
+      .warn-banner {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 14px;
+        border-radius: 10px;
+        background: #fff5eb;
+        border: 1px solid #ffd8b8;
+        margin-bottom: 14px;
+      }
+
+      .warn-banner__icon {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #ff9800;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+
+      .warn-banner__t {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+
+      .warn-banner__s {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .req-box {
+        border-radius: 10px;
+        padding: 14px 14px;
+        background: rgba(0, 86, 199, 0.06);
+        border: 1px solid rgba(0, 86, 199, 0.15);
+        margin-bottom: 18px;
+      }
+
+      .req-box__title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #0d47a1;
+        margin-bottom: 8px;
+      }
+
+      .req-box ul {
+        margin: 0;
+        padding-left: 1.2em;
+        font-size: 14px;
+        color: #1565c0;
+        line-height: 1.55;
+      }
+
+      .modal-upload {
+        margin-bottom: 18px;
+      }
+
+      .modal-upload .upload-zone {
+        min-height: 200px;
+        padding: 36px 20px;
+      }
+
+      .modal-upload__icon {
+        margin-bottom: 10px;
+        color: var(--text-muted);
+      }
+
+      .modal-upload__sub {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+
+      .main-modal__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .btn--outline {
+        background: #fff;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .btn--outline:hover:not(:disabled) {
+        background: #fafafa;
+      }
+
+      .btn--coral {
+        background: var(--title-coral);
+        color: #fff;
+      }
+
+      .btn--coral:hover:not(:disabled) {
+        opacity: 0.92;
+      }
+
+      .main-modal__foot {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .chip-group {
+        margin-bottom: 22px;
+      }
+
+      .chip-group__label {
+        margin-bottom: 10px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #fff;
+        font: inherit;
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--text);
+        transition: border-color 0.15s, background 0.15s, color 0.15s;
+      }
+
+      .chip:hover {
+        border-color: var(--title-coral);
+      }
+
+      .chip.is-selected {
+        border-color: var(--title-coral);
+        background: rgba(233, 84, 101, 0.12);
+        color: #c2183d;
+        font-weight: 600;
+      }
+
+      .post-bank-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: opacity 0.2s;
+      }
+
+      .post-bank-wrap.post-bank--locked {
+        opacity: 0.45;
+        pointer-events: none;
+        user-select: none;
+        filter: grayscale(0.06);
+      }
+
+      .post-bank-banner {
+        margin: 0;
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: rgba(0, 86, 199, 0.08);
+        border: 1px solid rgba(0, 86, 199, 0.2);
+        font-size: 14px;
+        color: #0d47a1;
+        text-align: center;
+      }
+
+      .post-bank-wrap:not(.post-bank--locked) .post-bank-banner {
+        display: none;
+      }
+
+      .legal-card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+
+      .legal-card {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 16px 18px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .legal-card input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-top: 3px;
+        flex-shrink: 0;
+        accent-color: var(--brand-red);
+        cursor: pointer;
+      }
+
+      .legal-card .legal-card__text {
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .site-footer {
+        width: 100%;
+        background: linear-gradient(78deg, var(--footer-start) 0%, var(--footer-end) 100%);
+        padding: 40px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .site-footer__text {
+        max-width: 900px;
+        text-align: center;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.65;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      }
+
+      @media (max-width: 900px) {
+        :root {
+          --app-header-bar-h: 64px;
+          --app-header-stack: 76px;
+        }
+
+        .shell {
+          max-width: 100%;
+        }
+
+        .onboard-layout {
+          grid-template-columns: 1fr;
+          max-width: none;
+          width: 100%;
+          margin: 0;
+        }
+
+        .site-main__slot {
+          max-width: none;
+          width: 100%;
+          margin: 0;
+          padding: 20px max(16px, env(safe-area-inset-left)) 40px max(16px, env(safe-area-inset-right));
+          box-sizing: border-box;
+        }
+
+        .stepper {
+          position: -webkit-sticky;
+          position: sticky;
+          top: calc(var(--app-header-stack) + env(safe-area-inset-top, 0px));
+          z-index: 25;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 0;
+          padding: 8px 0 12px;
+          margin: 0 0 12px;
+          border-bottom: 1px solid var(--border);
+          background: var(--bg-page);
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+
+        .stepper::-webkit-scrollbar {
+          display: none;
+        }
+
+        .stepper__connector {
+          display: none;
+        }
+
+        .stepper__item {
+          flex: 1 0 0;
+          min-width: 0;
+          max-width: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 6px;
+          padding: 6px 2px 8px;
+          margin: 0;
+          text-align: center;
+        }
+
+        .stepper__num {
+          align-self: center;
+        }
+
+        .stepper__label {
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 1.2;
+          max-width: 100%;
+          white-space: normal;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .site-header {
+          width: 100%;
+          max-width: none;
+          height: auto;
+          min-height: 0;
+          box-shadow: 0 4px 10px rgba(110, 110, 110, 0.1);
+        }
+
+        .site-header__inner {
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: stretch;
+          gap: 14px;
+          min-height: var(--app-header-bar-h);
+          height: auto;
+          max-width: none;
+          width: 100%;
+          margin: 0;
+          padding: 2px max(16px, env(safe-area-inset-left)) 2px max(16px, env(safe-area-inset-right));
+          background: #fff;
+        }
+
+        .brand-logo {
+          display: flex;
+          flex: 0 0 auto;
+          align-items: center;
+          justify-content: flex-start;
+          align-self: stretch;
+          min-width: 0;
+          min-height: 0;
+          line-height: 0;
+        }
+
+        .brand-logo__img {
+          display: block;
+          width: auto;
+          height: 100%;
+          max-height: 100%;
+          max-width: min(240px, 52vw);
+          object-fit: contain;
+          object-position: left center;
+        }
+
+        .brand-divider {
+          flex-shrink: 0;
+          width: 3px;
+          border-radius: 2px;
+          align-self: stretch;
+          min-height: 52px;
+          margin: 1px 0;
+          background: rgba(233, 84, 101, 0.55);
+        }
+
+        .header-text-cluster {
+          display: flex;
+          flex: 1 1 auto;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          align-self: stretch;
+          gap: 3px;
+          min-width: 0;
+          width: auto;
+        }
+
+        .header-text-cluster .license-link {
+          display: inline-block;
+          max-width: 100%;
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: clamp(11px, 3.2vw, 15px);
+          line-height: 22px;
+        }
+
+        .page-title {
+          margin: 0;
+          color: #f95868;
+          font-size: 20px;
+          font-weight: 500;
+          line-height: 28px;
+          letter-spacing: 0.01em;
+          white-space: normal;
+        }
+
+        .license-link {
+          color: #0056c7;
+          font-weight: 400;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" role="banner">
+      <div class="site-header__inner">
+        <a href="#" class="brand-logo" aria-label="口袋證券首頁">
+          <img
+            class="brand-logo__img"
+            src="assets/logo-pocket.png"
+            width="220"
+            height="46"
+            alt="口袋證券"
+          />
+        </a>
+        <span class="brand-divider" aria-hidden="true"></span>
+        <div class="header-text-cluster">
+          <h1 class="page-title">線上開戶</h1>
+          <a class="license-link" href="#">金管會證總字第0047號</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="shell">
+      <main class="site-main" id="main" role="main">
+        <div class="site-main__slot">
+          <div class="onboard-layout">
+            <nav class="stepper" id="stepper" aria-label="開戶步驟">
+              <button type="button" class="stepper__item is-active" data-target="sec-id-images">
+                <span class="stepper__num" aria-hidden="true">A</span>
+                <span class="stepper__label">證件影像</span>
+              </button>
+              <span class="stepper__connector" aria-hidden="true"></span>
+              <button type="button" class="stepper__item" data-target="sec-bank">
+                <span class="stepper__num" aria-hidden="true">B</span>
+                <span class="stepper__label">銀行核身</span>
+              </button>
+              <span class="stepper__connector" aria-hidden="true"></span>
+              <button type="button" class="stepper__item" data-target="sec-identity">
+                <span class="stepper__num" aria-hidden="true">C</span>
+                <span class="stepper__label">身分核對</span>
+              </button>
+              <span class="stepper__connector" aria-hidden="true"></span>
+              <button type="button" class="stepper__item" data-target="sec-work">
+                <span class="stepper__num" aria-hidden="true">D</span>
+                <span class="stepper__label">工作／緊急聯絡</span>
+              </button>
+              <span class="stepper__connector" aria-hidden="true"></span>
+              <button type="button" class="stepper__item" data-target="sec-kyc">
+                <span class="stepper__num" aria-hidden="true">E</span>
+                <span class="stepper__label">填寫徵信</span>
+              </button>
+              <span class="stepper__connector" aria-hidden="true"></span>
+              <button type="button" class="stepper__item" data-target="sec-sign">
+                <span class="stepper__num" aria-hidden="true">F</span>
+                <span class="stepper__label">簽署與送出</span>
+              </button>
+            </nav>
+
+            <form class="onboard-sections" id="onboardForm" novalidate>
+              <!-- A 證件影像 -->
+              <section class="onboard-section" id="sec-id-images" aria-labelledby="h-id-img">
+                <div class="onboard-section__head" style="border-bottom: none; padding-bottom: 0">
+                  <button
+                    type="button"
+                    class="collapsible-btn"
+                    id="btnIdPreviewToggle"
+                    aria-expanded="true"
+                    aria-controls="idPreviewPanel"
+                  >
+                    <h3 class="onboard-section__title" id="h-id-img" style="font-size: 17px">
+                      證件影像預覽
+                    </h3>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M7 10l5 5 5-5H7z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="onboard-section__body" id="idPreviewPanel">
+                  <div class="thumb-grid">
+                    <figure class="thumb-card">
+                      <div class="thumb-img">
+                        <img src="assets/id-front.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                      </div>
+                      <figcaption>身分證正面</figcaption>
+                    </figure>
+                    <figure class="thumb-card">
+                      <div class="thumb-img">
+                        <img src="assets/id-back.jpg" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
+                      </div>
+                      <figcaption>身分證反面</figcaption>
+                    </figure>
+                    <figure class="thumb-card">
+                      <div class="thumb-img">
+                        <img src="assets/id-second.jpg" alt="第二證件預覽" width="400" height="252" loading="lazy" />
+                      </div>
+                      <figcaption>第二證件</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </section>
+
+              <!-- B 銀行核身 -->
+              <section class="onboard-section" id="sec-bank" aria-labelledby="h-bank">
+                <div class="onboard-section__head">
+                  <h3 class="onboard-section__title" id="h-bank">銀行核身</h3>
+                </div>
+                <div class="onboard-section__body">
+                  <div class="field-grid">
+                    <div class="field">
+                      <label for="bankNameInput">銀行名稱 <span class="req">*</span></label>
+                      <select id="bankNameInput" name="bankNameInput" required>
+                        <option value="">請選擇</option>
+                        <option value="013" selected>國泰世華銀行（013）</option>
+                        <option value="004">台灣銀行（004）</option>
+                        <option value="822">中國信託（822）</option>
+                        <option value="808">玉山銀行（808）</option>
+                        <option value="012">台北富邦（012）</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="bankAccountInput">帳號 <span class="req">*</span></label>
+                      <input
+                        id="bankAccountInput"
+                        name="bankAccountInput"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        required
+                        placeholder="請確認或修正帳號"
+                        value="013001998842"
+                      />
+                    </div>
+                  </div>
+                  <div class="btn-row">
+                    <button type="button" class="btn btn--primary" id="btnBankVerify">立即驗證</button>
+                  </div>
+                  <div class="bank-result callout callout--success" id="bankOk" role="status">
+                    銀行帳戶已通過驗證，可繼續填寫後續資料。
+                  </div>
+                  <div class="bank-result callout callout--warn" id="bankFailInline" role="status" style="display: none">
+                    銀行驗證未通過，請依彈窗完成手持身分證自拍補件。
+                  </div>
+                </div>
+              </section>
+
+              <div id="postBankWrap" class="post-bank-wrap post-bank--locked">
+                <p class="post-bank-banner" id="postBankBanner">請先完成銀行核身。</p>
+
+                <!-- C 身分核對 -->
+                <section class="onboard-section" id="sec-identity" aria-labelledby="h-identity">
+                  <div class="onboard-section__head">
+                    <h3 class="onboard-section__title" id="h-identity">身分核對</h3>
+                  </div>
+                  <div class="onboard-section__body">
+                    <div class="field-grid">
+                      <div class="field field--locked">
+                        <label class="label" for="idName">姓名</label>
+                        <input type="text" id="idName" name="idName" value="陳怡君" disabled aria-readonly="true" />
+                      </div>
+                      <div class="field field--locked">
+                        <label class="label" for="idNumber">身分證字號</label>
+                        <input
+                          type="text"
+                          id="idNumber"
+                          name="idNumber"
+                          value="A223344556"
+                          placeholder="請輸入身分證字號"
+                          disabled
+                          aria-readonly="true"
+                          data-status="default"
+                          data-type="text"
+                        />
+                      </div>
+                      <div class="field field--locked">
+                        <label class="label" for="idBirth">出生年月日</label>
+                        <input type="text" id="idBirth" name="idBirth" value="1985-06-15" disabled aria-readonly="true" />
+                      </div>
+                      <div class="field">
+                        <label for="regAddress">戶籍地址 <span class="req">*</span></label>
+                        <textarea id="regAddress" name="regAddress" rows="1" required>臺北市大安區敦化南路二段216號10樓</textarea>
+                      </div>
+                      <div class="field">
+                        <label for="mailAddress">通訊地址 <span class="req">*</span></label>
+                        <textarea id="mailAddress" name="mailAddress" rows="1" required>臺北市大安區敦化南路二段216號10樓</textarea>
+                      </div>
+                      <div class="field">
+                        <label for="mobile">行動電話 <span class="req">*</span></label>
+                        <input id="mobile" name="mobile" type="tel" required value="0928123456" />
+                      </div>
+                      <div class="field">
+                        <label for="eduLevel">學歷 <span class="req">*</span></label>
+                        <input id="eduLevel" name="eduLevel" type="text" required value="大學" />
+                      </div>
+                      <div class="field">
+                        <label for="email">電子郵件 <span class="req">*</span></label>
+                        <input id="email" name="email" type="email" required value="yichun.chen@example.com.tw" />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- D 工作及緊急聯絡人 -->
+                <section class="onboard-section" id="sec-work" aria-labelledby="h-work">
+                  <div class="onboard-section__head">
+                    <h3 class="onboard-section__title" id="h-work">工作及緊急聯絡人</h3>
+                  </div>
+                  <div class="onboard-section__body">
+                    <fieldset class="field-grid" style="border: none; margin: 0; padding: 0">
+                      <legend class="field-grid-legend">工作資訊</legend>
+                      <div class="field">
+                        <label for="employment">就業狀態 <span class="req">*</span></label>
+                        <select id="employment" name="employment" required>
+                          <option value="">請選擇</option>
+                          <option value="employed" selected>受僱中</option>
+                          <option value="self">自僱</option>
+                          <option value="student">學生</option>
+                          <option value="retire">退休</option>
+                          <option value="other">其他</option>
+                        </select>
+                      </div>
+                      <div class="field">
+                        <label for="industry">行業別 <span class="req">*</span></label>
+                        <select id="industry" name="industry" required>
+                          <option value="">請選擇</option>
+                          <option value="fin">金融服務</option>
+                          <option value="tech" selected>科技</option>
+                          <option value="edu">教育</option>
+                          <option value="med">醫療</option>
+                          <option value="other">其他</option>
+                        </select>
+                      </div>
+                      <div class="field">
+                        <label for="jobTitle">職稱 <span class="req">*</span></label>
+                        <input id="jobTitle" name="jobTitle" type="text" required placeholder="請輸入職稱" value="主任工程師" />
+                      </div>
+                      <div class="field">
+                        <label for="companyName">服務機構名稱 <span class="req">*</span></label>
+                        <input
+                          id="companyName"
+                          name="companyName"
+                          type="text"
+                          required
+                          placeholder="請輸入服務機構名稱"
+                          autocomplete="off"
+                          list="companySuggestList"
+                          value="台灣積體電路製造股份有限公司"
+                        />
+                        <datalist id="companySuggestList"></datalist>
+                      </div>
+                      <div class="field">
+                        <label for="companyPhone">公司電話 <span class="req">*</span></label>
+                        <input id="companyPhone" name="companyPhone" type="tel" required placeholder="請輸入公司電話" value="03-5636688" />
+                      </div>
+                    </fieldset>
+                    <fieldset class="fieldset-sub field-grid" style="border: none; margin: 0; padding: 0">
+                      <legend>緊急聯絡人</legend>
+                      <div class="field">
+                        <label for="emName">姓名 <span class="req">*</span></label>
+                        <input id="emName" name="emName" type="text" required placeholder="請輸入姓名" value="陳建宏" />
+                      </div>
+                      <div class="field">
+                        <label for="emRelation">關係 <span class="req">*</span></label>
+                        <select id="emRelation" name="emRelation" required>
+                          <option value="">請選擇</option>
+                          <option value="spouse" selected>配偶</option>
+                          <option value="parent">父母</option>
+                          <option value="sibling">兄弟姐妹</option>
+                          <option value="child">子女</option>
+                          <option value="friend">朋友</option>
+                        </select>
+                      </div>
+                      <div class="field">
+                        <label for="emPhone">手機 <span class="req">*</span></label>
+                        <input id="emPhone" name="emPhone" type="tel" required placeholder="請輸入手機" value="0928765432" />
+                      </div>
+                    </fieldset>
+                  </div>
+                </section>
+
+                <!-- E 徵信 Chips -->
+                <section class="onboard-section" id="sec-kyc" aria-labelledby="h-kyc">
+                  <div class="onboard-section__head">
+                    <h3 class="onboard-section__title" id="h-kyc">填寫徵信</h3>
+                  </div>
+                  <div class="onboard-section__body">
+                    <div id="chipGroupsRoot"></div>
+                  </div>
+                </section>
+
+                <!-- F 簽署 -->
+                <section class="onboard-section" id="sec-sign" aria-labelledby="h-sign">
+                  <div class="onboard-section__head">
+                    <h3 class="onboard-section__title" id="h-sign">簽署與送出</h3>
+                  </div>
+                  <div class="onboard-section__body">
+                    <div class="legal-card-list" id="legalCardList">
+                      <label class="legal-card" for="agreeSec">
+                        <input type="checkbox" id="agreeSec" name="agreeSec" required />
+                        <span class="legal-card__text">本人已詳閱證券開戶文件並同意其規定。</span>
+                      </label>
+                      <label class="legal-card" for="agreeUsStock">
+                        <input type="checkbox" id="agreeUsStock" name="agreeUsStock" required />
+                        <span class="legal-card__text">本人已詳閱美股複委託開戶文件並同意其規定。</span>
+                      </label>
+                      <label class="legal-card" for="agreeW8">
+                        <input type="checkbox" id="agreeW8" name="agreeW8" required />
+                        <span class="legal-card__text">本人已詳閱W-8BEN契約書並同意其規定(非美國稅務身份)。</span>
+                      </label>
+                      <label class="legal-card" for="agreeCrs">
+                        <input type="checkbox" id="agreeCrs" name="agreeCrs" required />
+                        <span class="legal-card__text">本人已確認並同意簽署稅務身份自我證明表(CRS)(無中華民國以外稅務身份)。</span>
+                      </label>
+                    </div>
+                    <div class="sig-wrap">
+                      <label for="sigCanvas">手寫簽名</label>
+                      <span class="field-hint" id="sigHint">請於下方簽名。</span>
+                      <canvas
+                        class="sig-canvas"
+                        id="sigCanvas"
+                        width="720"
+                        height="200"
+                        aria-describedby="sigHint"
+                      ></canvas>
+                      <div class="btn-row">
+                        <button type="button" class="btn btn--secondary" id="btnClearSig">清除簽名</button>
+                      </div>
+                    </div>
+                    <div class="btn-row" style="margin-top: 24px">
+                      <button type="submit" class="btn btn--primary" id="btnSubmit">確認送出開戶申請</button>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div
+          id="bankFailOverlay"
+          class="main-modal-overlay"
+          hidden
+          role="presentation"
+        >
+          <div
+            class="main-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bankFailModalTitle"
+            id="bankFailModal"
+            tabindex="-1"
+          >
+            <div class="main-modal__top">
+              <h2 class="main-modal__title" id="bankFailModalTitle">銀行驗證失敗</h2>
+              <button type="button" class="main-modal__close" id="btnBankModalClose" aria-label="關閉">
+                ×
+              </button>
+            </div>
+            <div class="warn-banner">
+              <span class="warn-banner__icon" aria-hidden="true">!</span>
+              <div>
+                <div class="warn-banner__t">銀行帳戶驗證失敗</div>
+                <div class="warn-banner__s">
+                  為了確保您的帳戶安全，請上傳手持證件自拍照進行人工審核。
+                </div>
+              </div>
+            </div>
+            <div class="req-box">
+              <div class="req-box__title">上傳要求：</div>
+              <ul>
+                <li>清晰展示身分證與手持人臉</li>
+                <li>光線充足，無反光或陰影</li>
+                <li>支援 JPG、PNG 格式</li>
+                <li>檔案大小不超過 5MB</li>
+              </ul>
+            </div>
+            <div class="modal-upload">
+              <div class="upload-zone" id="modalUploadHost">
+                <input
+                  type="file"
+                  id="modalSelfieInput"
+                  class="upload-zone__input"
+                  accept="image/jpeg,image/png,.jpg,.jpeg,.png"
+                  aria-label="點擊上傳手持身分證自拍照"
+                />
+                <div class="upload-zone__body">
+                  <div class="modal-upload__icon" aria-hidden="true">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M8 16l4-4 4 4M12 12v9M20 16.58V19a2 2 0 01-2 2H6a2 2 0 01-2-2v-2.42M4 12l4.17-4.17a2 2 0 012.83 0L16 12"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div class="upload-zone__title">點擊上傳自拍照</div>
+                  <div class="modal-upload__sub">或將檔案拖放到此區域</div>
+                </div>
+              </div>
+              <p class="field-hint" id="modalSelfieStatus" aria-live="polite"></p>
+            </div>
+            <div class="main-modal__actions">
+              <button type="button" class="btn btn--outline" id="btnBankModalCancel">取消</button>
+              <button type="button" class="btn btn--coral" id="btnBankModalConfirm">確認上傳</button>
+            </div>
+            <p class="main-modal__foot">
+              您的上傳資料將用於身份驗證，並遵循相關隱私政策。
+            </p>
+          </div>
+        </div>
+      </main>
+
+
+      <footer class="site-footer" role="contentinfo">
+        <div class="site-footer__text">
+          口袋證券股份有限公司｜新北市板橋區三民路一段216號9樓｜客服專線0809-089-001
+          08:00~17:00（週一至週五，非交易日除外）<br />
+          建議瀏覽器：Edge、Chrome、Safari、Firefox 以上最新版本<br />
+          © 口袋證券 版權所有 1.4.1.12
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var STORAGE_KEY = "pocket_onboard_draft_v2";
+
+        function $(id) {
+          return document.getElementById(id);
+        }
+
+        var bankModuleOk = false;
+        var bankFailModalOpen = false;
+        var handheldOk = false;
+
+        function sampleBankVerifySuccess() {
+          return Math.random() * 5 < 3;
+        }
+
+        function setPostBankLocked(locked) {
+          var w = $("postBankWrap");
+          if (!w) return;
+          w.classList.toggle("post-bank--locked", locked);
+        }
+
+        function refreshBankGate() {
+          var ok = bankModuleOk;
+          setPostBankLocked(!ok);
+        }
+
+        /* —— A 摺疊 —— */
+        var idToggle = $("btnIdPreviewToggle");
+        var idPanel = $("idPreviewPanel");
+        if (idToggle && idPanel) {
+          idToggle.addEventListener("click", function () {
+            var open = idToggle.getAttribute("aria-expanded") === "true";
+            idToggle.setAttribute("aria-expanded", open ? "false" : "true");
+            idPanel.hidden = open;
+          });
+        }
+
+        /* —— B 銀行驗證與彈窗 —— */
+        var overlay = $("bankFailOverlay");
+        var modalSelfie = $("modalSelfieInput");
+        var modalStatus = $("modalSelfieStatus");
+
+        function openBankFailModal() {
+          if (!overlay) return;
+          overlay.hidden = false;
+          bankFailModalOpen = true;
+          modalStatus.textContent = "";
+          if (modalSelfie) modalSelfie.value = "";
+          var dm = $("bankFailModal");
+          if (dm && dm.focus) dm.focus();
+        }
+
+        function closeBankFailModal() {
+          if (!overlay) return;
+          overlay.hidden = true;
+          bankFailModalOpen = false;
+        }
+
+        function validateModalFile() {
+          if (!modalSelfie || !modalSelfie.files || !modalSelfie.files[0]) {
+            modalStatus.textContent = "請先選擇 JPG 或 PNG 圖檔。";
+            return false;
+          }
+          var f = modalSelfie.files[0];
+          if (f.size > 5 * 1024 * 1024) {
+            modalStatus.textContent = "檔案大小不能超過 5MB。";
+            return false;
+          }
+          return true;
+        }
+
+        $("btnBankVerify").addEventListener("click", function () {
+          if ($("btnBankVerify").disabled) return;
+          var bn = $("bankNameInput");
+          var ba = $("bankAccountInput");
+          if (bn && !bn.checkValidity()) {
+            bn.reportValidity();
+            return;
+          }
+          if (ba && !ba.checkValidity()) {
+            ba.reportValidity();
+            return;
+          }
+          handheldOk = false;
+          var ok = sampleBankVerifySuccess();
+          if (!ok) {
+            $("bankOk").classList.remove("is-visible");
+            var inline = $("bankFailInline");
+            if (inline) inline.style.display = "block";
+            openBankFailModal();
+            bankModuleOk = false;
+          } else {
+            closeBankFailModal();
+            $("bankOk").classList.add("is-visible");
+            var inline2 = $("bankFailInline");
+            if (inline2) inline2.style.display = "none";
+            bankModuleOk = true;
+            $("btnBankVerify").disabled = true;
+          }
+          refreshBankGate();
+        });
+
+        function wireModalClose(btn) {
+          if (!btn) return;
+          btn.addEventListener("click", function () {
+            closeBankFailModal();
+          });
+        }
+        wireModalClose($("btnBankModalClose"));
+        wireModalClose($("btnBankModalCancel"));
+
+        var btnModalOk = $("btnBankModalConfirm");
+        if (btnModalOk) {
+          btnModalOk.addEventListener("click", function () {
+            if (!validateModalFile()) return;
+            handheldOk = true;
+            closeBankFailModal();
+            $("bankOk").classList.add("is-visible");
+            var inline3 = $("bankFailInline");
+            if (inline3) inline3.style.display = "none";
+            bankModuleOk = true;
+            modalStatus.textContent = "";
+            var bv = $("btnBankVerify");
+            if (bv) bv.disabled = true;
+            refreshBankGate();
+          });
+        }
+
+        if (overlay) {
+          overlay.addEventListener("click", function (e) {
+            if (e.target === overlay) closeBankFailModal();
+          });
+        }
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && overlay && !overlay.hidden) closeBankFailModal();
+        });
+
+        /* 彈窗拖放 */
+        var host = $("modalUploadHost");
+        if (modalSelfie) {
+          modalSelfie.addEventListener("change", function () {
+            if (modalSelfie.files && modalSelfie.files[0]) {
+              modalStatus.textContent = "已選擇：" + modalSelfie.files[0].name;
+            }
+          });
+        }
+
+        if (host && modalSelfie) {
+          ["dragenter", "dragover"].forEach(function (ev) {
+            host.addEventListener(ev, function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            });
+          });
+          host.addEventListener("drop", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+              try {
+                modalSelfie.files = e.dataTransfer.files;
+                modalSelfie.dispatchEvent(new Event("change", { bubbles: true }));
+              } catch (err) {
+                modalStatus.textContent = "請改以點擊區域選擇檔案（此瀏覽器不支援拖放寫入）。";
+              }
+            }
+          });
+        }
+
+        var chipDefs = [
+          {
+            name: "kycPurpose",
+            label: "開戶及投資目的",
+            options: [
+              { v: "long", t: "長期理財" },
+              { v: "retire", t: "退休規劃" },
+              { v: "short", t: "短期交易" },
+            ],
+            default: "long",
+          },
+          {
+            name: "kycIncome",
+            label: "個人年收入",
+            options: [
+              { v: "50", t: "50 萬以下" },
+              { v: "100", t: "50–100 萬" },
+              { v: "200", t: "100–200 萬" },
+              { v: "more", t: "200 萬以上" },
+            ],
+            default: "100",
+          },
+          {
+            name: "kycAsset",
+            label: "個人(公司)財產總值",
+            options: [
+              { v: "100", t: "100 萬以下" },
+              { v: "300", t: "100–300 萬" },
+              { v: "1000", t: "300–1000 萬" },
+              { v: "more", t: "1000 萬以上" },
+            ],
+            default: "300",
+          },
+          {
+            name: "kycLiquid",
+            label: "可隨時變現資產",
+            options: [
+              { v: "30", t: "30 萬以下" },
+              { v: "100", t: "30–100 萬" },
+              { v: "300", t: "100–300 萬" },
+              { v: "more", t: "300 萬以上" },
+            ],
+            default: "100",
+          },
+          {
+            name: "kycFund",
+            label: "投資資金來源",
+            options: [
+              { v: "salary", t: "薪資所得" },
+              { v: "biz", t: "事業所得" },
+              { v: "inherit", t: "繼承" },
+              { v: "other", t: "其他" },
+            ],
+            default: "salary",
+          },
+          {
+            name: "kycExp",
+            label: "投資經歷",
+            options: [
+              { v: "none", t: "無經驗" },
+              { v: "some", t: "偶有" },
+              { v: "freq", t: "頻繁" },
+              { v: "very", t: "非常頻繁" },
+            ],
+            default: "some",
+          },
+          {
+            name: "kycHorizon",
+            label: "投資期限",
+            options: [
+              { v: "short", t: "短期" },
+              { v: "mid", t: "中期" },
+              { v: "long", t: "長期" },
+            ],
+            default: "mid",
+          },
+          {
+            name: "kycTrade",
+            label: "交易頻率",
+            options: [
+              { v: "rare", t: "很少" },
+              { v: "some", t: "偶爾" },
+              { v: "often", t: "頻繁" },
+            ],
+            default: "some",
+          },
+          {
+            name: "kycLimit",
+            label: "希望買賣額度",
+            options: [
+              { v: "50", t: "每筆 50 萬以下" },
+              { v: "200", t: "每筆 50–200 萬" },
+              { v: "more", t: "每筆 200 萬以上" },
+            ],
+            default: "200",
+          },
+        ];
+
+        var root = $("chipGroupsRoot");
+        if (root) {
+          chipDefs.forEach(function (def) {
+            var wrap = document.createElement("div");
+            wrap.className = "chip-group";
+            var lab = document.createElement("div");
+            lab.className = "chip-group__label";
+            lab.textContent = def.label;
+            var row = document.createElement("div");
+            row.className = "chip-row";
+            row.setAttribute("role", "radiogroup");
+            row.setAttribute("aria-label", def.label);
+            var hid = document.createElement("input");
+            hid.type = "hidden";
+            hid.name = def.name;
+            hid.id = "hid_" + def.name;
+            hid.value = def.default;
+            def.options.forEach(function (opt) {
+              var b = document.createElement("button");
+              b.type = "button";
+              b.className = "chip" + (opt.v === def.default ? " is-selected" : "");
+              b.textContent = opt.t;
+              b.setAttribute("data-value", opt.v);
+              b.addEventListener("click", function () {
+                row.querySelectorAll(".chip").forEach(function (c) {
+                  c.classList.remove("is-selected");
+                });
+                b.classList.add("is-selected");
+                hid.value = opt.v;
+                saveDraft();
+              });
+              row.appendChild(b);
+            });
+            wrap.appendChild(lab);
+            wrap.appendChild(row);
+            wrap.appendChild(hid);
+            root.appendChild(wrap);
+          });
+        }
+
+        var fakeCompanies = [
+          "台灣積體電路製造股份有限公司",
+          "台灣積體電路製造股份有限公司新竹廠",
+          "中華電信股份有限公司",
+          "國泰金融控股股份有限公司",
+          "富邦金融控股股份有限公司",
+          "台灣大哥大股份有限公司",
+          "聯發科技股份有限公司",
+          "台達電子工業股份有限公司",
+          "鴻海精密工業股份有限公司",
+          "統一企業股份有限公司",
+        ];
+        var dl = $("companySuggestList");
+        if (dl) {
+          fakeCompanies.forEach(function (name) {
+            var o = document.createElement("option");
+            o.value = name;
+            dl.appendChild(o);
+          });
+        }
+
+        /* —— 步驟導覽（與捲動位置同步：當前步驟＋已完成） —— */
+        var stepBtns = document.querySelectorAll(".stepper__item");
+        var sectionOrder = [
+          "sec-id-images",
+          "sec-bank",
+          "sec-identity",
+          "sec-work",
+          "sec-kyc",
+          "sec-sign",
+        ];
+        var stepHeaderOffset = 96;
+
+        stepBtns.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var id = btn.getAttribute("data-target");
+            var el = id ? document.getElementById(id) : null;
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        });
+
+        function syncStepperToScroll() {
+          var best = 0;
+          var bestVis = -1e9;
+          sectionOrder.forEach(function (id, i) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var r = el.getBoundingClientRect();
+            var bottom = Math.min(r.bottom, window.innerHeight - 16);
+            var top = Math.max(r.top, stepHeaderOffset);
+            var vis = bottom - top;
+            if (vis > bestVis) {
+              bestVis = vis;
+              best = i;
+            }
+          });
+          if (bestVis < 24) {
+            var y = window.scrollY + stepHeaderOffset + 40;
+            best = 0;
+            sectionOrder.forEach(function (id, i) {
+              var el = document.getElementById(id);
+              if (el && el.offsetTop <= y) best = i;
+            });
+          }
+          stepBtns.forEach(function (b, i) {
+            b.classList.toggle("is-active", i === best);
+            b.classList.toggle("is-done", i < best);
+          });
+        }
+
+        var stepScrollTimer;
+        function onStepScroll() {
+          clearTimeout(stepScrollTimer);
+          stepScrollTimer = setTimeout(syncStepperToScroll, 40);
+        }
+
+        window.addEventListener("scroll", onStepScroll, { passive: true });
+        window.addEventListener("resize", syncStepperToScroll);
+        syncStepperToScroll();
+
+        /* —— 簽名畫布 —— */
+        var canvas = $("sigCanvas");
+        var ctx = canvas.getContext("2d");
+        var drawing = false;
+
+        function syncCtxStyle() {
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          ctx.lineWidth = 2.2 * dpr;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "#3e3a39";
+        }
+        syncCtxStyle();
+        window.addEventListener("resize", syncCtxStyle);
+
+        function rect() {
+          return canvas.getBoundingClientRect();
+        }
+
+        function pos(e) {
+          var r = rect();
+          var x, y;
+          if (e.touches && e.touches[0]) {
+            x = e.touches[0].clientX - r.left;
+            y = e.touches[0].clientY - r.top;
+          } else {
+            x = e.clientX - r.left;
+            y = e.clientY - r.top;
+          }
+          var scaleX = canvas.width / r.width;
+          var scaleY = canvas.height / r.height;
+          return { x: x * scaleX, y: y * scaleY };
+        }
+
+        function start(e) {
+          drawing = true;
+          var p = pos(e);
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          e.preventDefault();
+        }
+        function move(e) {
+          if (!drawing) return;
+          var p = pos(e);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+          e.preventDefault();
+        }
+        function end() {
+          drawing = false;
+        }
+
+        canvas.addEventListener("mousedown", start);
+        canvas.addEventListener("mousemove", move);
+        window.addEventListener("mouseup", end);
+        canvas.addEventListener("touchstart", start, { passive: false });
+        canvas.addEventListener("touchmove", move, { passive: false });
+        canvas.addEventListener("touchend", end);
+
+        $("btnClearSig").addEventListener("click", function () {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        function isCanvasBlank() {
+          var idata = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          for (var i = 0; i < idata.length; i += 32) {
+            if (idata[i + 3] !== 0) return false;
+          }
+          return true;
+        }
+
+        /* —— 草稿 —— */
+        var form = $("onboardForm");
+
+        function saveDraft() {
+          try {
+            var data = new FormData(form);
+            var obj = {};
+            data.forEach(function (val, key) {
+              if (obj[key]) obj[key] = [].concat(obj[key], val);
+              else obj[key] = val;
+            });
+            var checks = form.querySelectorAll('input[type="checkbox"]');
+            checks.forEach(function (c) {
+              obj[c.name] = c.checked;
+            });
+            obj.bankModuleOk = bankModuleOk;
+            obj.handheldOk = handheldOk;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+          } catch (e) {}
+        }
+
+        function loadDraft() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            var obj = JSON.parse(raw);
+            if (obj.bankModuleOk) {
+              bankModuleOk = true;
+              handheldOk = !!obj.handheldOk;
+              $("bankOk").classList.add("is-visible");
+              var inline4 = $("bankFailInline");
+              if (inline4) inline4.style.display = "none";
+              var bv0 = $("btnBankVerify");
+              if (bv0) bv0.disabled = true;
+            }
+            Object.keys(obj).forEach(function (key) {
+              if (key === "bankModuleOk" || key === "handheldOk") return;
+              var el = form.elements.namedItem(key);
+              if (!el) return;
+              if (el.type === "checkbox") {
+                el.checked = !!obj[key];
+              } else if ("value" in el && el.type !== "file") {
+                el.value = obj[key];
+              }
+            });
+            chipDefs.forEach(function (def) {
+              var hid = $("hid_" + def.name);
+              if (!hid || !obj[def.name]) return;
+              hid.value = obj[def.name];
+              var g = hid.previousElementSibling;
+              if (!g) return;
+              g.querySelectorAll(".chip").forEach(function (c) {
+                c.classList.toggle("is-selected", c.getAttribute("data-value") === hid.value);
+              });
+            });
+            refreshBankGate();
+          } catch (e) {}
+        }
+
+        form.addEventListener("input", saveDraft);
+        form.addEventListener("change", saveDraft);
+        loadDraft();
+        refreshBankGate();
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (!bankModuleOk) {
+            alert("請先完成銀行核身（含必要時之補件）。");
+            $("sec-bank").scrollIntoView({ behavior: "smooth" });
+            return;
+          }
+          var legals = ["agreeSec", "agreeUsStock", "agreeW8", "agreeCrs"];
+          var miss = legals.filter(function (id) {
+            var el = $(id);
+            return !el || !el.checked;
+          });
+          if (miss.length) {
+            alert("請勾選並同意所有文件項目。");
+            $("sec-sign").scrollIntoView({ behavior: "smooth" });
+            return;
+          }
+          if (isCanvasBlank()) {
+            alert("請完成手寫簽名。");
+            $("sec-sign").scrollIntoView({ behavior: "smooth" });
+            return;
+          }
+          if (!form.reportValidity()) return;
+          saveDraft();
+          var w = window.open("success.html", "_blank", "noopener,noreferrer");
+          if (!w) {
+            window.location.href = "success.html";
+          }
+        });
+      })();
+    </script>
+
+  </body>
+</html>
