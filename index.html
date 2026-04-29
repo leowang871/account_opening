@@ -321,7 +321,7 @@
         margin: 0 -8px;
         padding-left: 8px;
         padding-right: 8px;
-        transition: background 0.15s, color 0.15s;
+        transition: background 0.22s ease, color 0.22s ease;
       }
 
       .stepper__item:hover {
@@ -350,6 +350,7 @@
         font-size: 13px;
         font-weight: 600;
         aspect-ratio: 1;
+        transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
       }
 
       .stepper__item.is-active .stepper__num {
@@ -358,19 +359,39 @@
         color: #fff;
       }
 
+      /* 未完成：空心淡框，與「已完成實心」區隔 */
+      .stepper__item:not(.is-active):not(.is-done) .stepper__num {
+        background: #fff;
+        border-color: #d2d2d7;
+        color: #9e9e9f;
+      }
+
       .stepper__item.is-done {
-        color: rgba(62, 58, 57, 0.55);
+        color: rgba(62, 58, 57, 0.58);
       }
 
       .stepper__item.is-done .stepper__num {
-        background: #e8f5e9;
-        border-color: #81c784;
-        color: #2e7d32;
+        position: relative;
+        background: #ececf0;
+        border: 2px solid #d8d8df;
+        color: transparent;
+        font-size: 0;
+        line-height: 0;
+        overflow: hidden;
+      }
+
+      .stepper__item.is-done .stepper__num::after {
+        content: "✓";
         font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
+        color: #6d6d72;
+        transition: color 0.22s ease;
       }
 
       .stepper__item.is-done .stepper__label {
         font-weight: 500;
+        color: rgba(62, 58, 57, 0.65);
       }
 
       .stepper__label {
@@ -1149,38 +1170,81 @@
         display: none;
       }
 
-      .legal-card-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+      .legal-sign-panel {
+        position: relative;
         margin-bottom: 8px;
       }
 
-      .legal-card {
+      .legal-master-row {
         display: flex;
-        gap: 14px;
         align-items: flex-start;
-        padding: 16px 18px;
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        gap: 12px;
+        padding: 4px 0 14px;
+        margin: 0;
+        cursor: pointer;
       }
 
-      .legal-card input[type="checkbox"] {
+      .legal-master-row input[type="checkbox"] {
         width: 20px;
         height: 20px;
-        margin-top: 3px;
+        min-width: 20px;
+        min-height: 20px;
+        margin-top: 2px;
         flex-shrink: 0;
         accent-color: var(--brand-red);
         cursor: pointer;
+        border-radius: 4px;
       }
 
-      .legal-card .legal-card__text {
+      .legal-master-row__text {
+        font-size: 15px;
+        line-height: 1.55;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .legal-doc-list {
+        list-style: none;
+        margin: 0;
+        padding: 0 0 0 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .legal-doc-list__item {
         font-size: 15px;
         line-height: 1.55;
         color: var(--text);
-        cursor: pointer;
+      }
+
+      .legal-doc-link {
+        color: var(--title-coral);
+        font-weight: 500;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(233, 84, 101, 0.45);
+      }
+
+      .legal-doc-link:hover {
+        color: var(--brand-red);
+      }
+
+      .legal-doc-link:focus-visible {
+        outline: 2px solid var(--link-blue);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+
+      .legal-hidden-inputs {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
       .site-footer {
@@ -1219,29 +1283,37 @@
           margin: 0;
         }
 
+        .onboard-sections {
+          padding-top: 16px;
+        }
+
         .site-main__slot {
           max-width: none;
           width: 100%;
           margin: 0;
-          padding: 20px max(16px, env(safe-area-inset-left)) 40px max(16px, env(safe-area-inset-right));
+          padding: 0 max(16px, env(safe-area-inset-left)) 40px max(16px, env(safe-area-inset-right));
           box-sizing: border-box;
         }
 
         .stepper {
           position: -webkit-sticky;
           position: sticky;
-          top: calc(var(--app-header-stack) + env(safe-area-inset-top, 0px));
+          top: calc(var(--app-header-stack, 76px) - 1px);
           z-index: 25;
-          width: 100%;
+          width: auto;
           display: flex;
           flex-direction: row;
           flex-wrap: nowrap;
           align-items: flex-start;
           justify-content: space-between;
           gap: 0;
-          padding: 8px 0 12px;
-          margin: 0 0 12px;
+          padding: 8px max(16px, env(safe-area-inset-left)) 12px max(16px, env(safe-area-inset-right));
+          margin-top: 0;
+          margin-bottom: 12px;
+          margin-left: calc(-1 * max(16px, env(safe-area-inset-left)));
+          margin-right: calc(-1 * max(16px, env(safe-area-inset-right)));
           border-bottom: 1px solid var(--border);
+          border-radius: 0 0 12px 12px;
           background: var(--bg-page);
           overflow-x: auto;
           overflow-y: hidden;
@@ -1289,6 +1361,8 @@
           max-width: none;
           height: auto;
           min-height: 0;
+          padding-top: env(safe-area-inset-top, 0px);
+          border-bottom: 1px solid var(--bg-page);
           box-shadow: 0 4px 10px rgba(110, 110, 110, 0.1);
         }
 
@@ -1389,6 +1463,10 @@
         .success-card {
           max-width: none;
         }
+
+        .legal-doc-list {
+          padding-left: 28px;
+        }
       }
     </style>
   </head>
@@ -1398,7 +1476,7 @@
         <a href="#" class="brand-logo" aria-label="口袋證券首頁">
           <img
             class="brand-logo__img"
-            src="images.png"
+            src="assets/logo-pocket.png"
             width="220"
             height="46"
             alt="口袋證券"
@@ -1419,33 +1497,33 @@
           <div class="onboard-layout">
             <nav class="stepper" id="stepper" aria-label="開戶步驟">
               <button type="button" class="stepper__item is-active" data-target="sec-id-images">
-                <span class="stepper__num" aria-hidden="true">A</span>
+                <span class="stepper__num" aria-hidden="true">1</span>
                 <span class="stepper__label">證件影像</span>
               </button>
               <span class="stepper__connector" aria-hidden="true"></span>
               <button type="button" class="stepper__item" data-target="sec-bank">
-                <span class="stepper__num" aria-hidden="true">B</span>
+                <span class="stepper__num" aria-hidden="true">2</span>
                 <span class="stepper__label">銀行核身</span>
               </button>
               <span class="stepper__connector" aria-hidden="true"></span>
               <button type="button" class="stepper__item" data-target="sec-identity">
-                <span class="stepper__num" aria-hidden="true">C</span>
+                <span class="stepper__num" aria-hidden="true">3</span>
                 <span class="stepper__label">身分核對</span>
               </button>
               <span class="stepper__connector" aria-hidden="true"></span>
               <button type="button" class="stepper__item" data-target="sec-work">
-                <span class="stepper__num" aria-hidden="true">D</span>
+                <span class="stepper__num" aria-hidden="true">4</span>
                 <span class="stepper__label">工作／緊急聯絡</span>
               </button>
               <span class="stepper__connector" aria-hidden="true"></span>
               <button type="button" class="stepper__item" data-target="sec-kyc">
-                <span class="stepper__num" aria-hidden="true">E</span>
+                <span class="stepper__num" aria-hidden="true">5</span>
                 <span class="stepper__label">填寫徵信</span>
               </button>
               <span class="stepper__connector" aria-hidden="true"></span>
               <button type="button" class="stepper__item" data-target="sec-sign">
-                <span class="stepper__num" aria-hidden="true">F</span>
-                <span class="stepper__label">簽署與送出</span>
+                <span class="stepper__num" aria-hidden="true">6</span>
+                <span class="stepper__label">文件簽署</span>
               </button>
             </nav>
 
@@ -1457,7 +1535,7 @@
               method="get"
               onsubmit="event.preventDefault();"
             >
-              <!-- A 證件影像 -->
+              <!-- 1 證件影像 -->
               <section class="onboard-section" id="sec-id-images" aria-labelledby="h-id-img">
                 <div class="onboard-section__head" style="border-bottom: none; padding-bottom: 0">
                   <button
@@ -1482,19 +1560,19 @@
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-front.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證正面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-back.jpg" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證反面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="第二證件預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-second.jpg" alt="第二證件預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>第二證件</figcaption>
                     </figure>
@@ -1502,7 +1580,7 @@
                 </div>
               </section>
 
-              <!-- B 銀行核身 -->
+              <!-- 2 銀行核身 -->
               <section class="onboard-section" id="sec-bank" aria-labelledby="h-bank">
                 <div class="onboard-section__head">
                   <h3 class="onboard-section__title" id="h-bank">銀行核身</h3>
@@ -1549,7 +1627,7 @@
               <div id="postBankWrap" class="post-bank-wrap post-bank--locked">
                 <p class="post-bank-banner" id="postBankBanner">請先完成銀行核身。</p>
 
-                <!-- C 身分核對 -->
+                <!-- 3 身分核對 -->
                 <section class="onboard-section" id="sec-identity" aria-labelledby="h-identity">
                   <div class="onboard-section__head">
                     <h3 class="onboard-section__title" id="h-identity">身分核對</h3>
@@ -1602,7 +1680,7 @@
                   </div>
                 </section>
 
-                <!-- D 工作及緊急聯絡人 -->
+                <!-- 4 工作及緊急聯絡人 -->
                 <section class="onboard-section" id="sec-work" aria-labelledby="h-work">
                   <div class="onboard-section__head">
                     <h3 class="onboard-section__title" id="h-work">工作及緊急聯絡人</h3>
@@ -1680,7 +1758,7 @@
                   </div>
                 </section>
 
-                <!-- E 徵信 Chips -->
+                <!-- 5 徵信 Chips -->
                 <section class="onboard-section" id="sec-kyc" aria-labelledby="h-kyc">
                   <div class="onboard-section__head">
                     <h3 class="onboard-section__title" id="h-kyc">填寫徵信</h3>
@@ -1690,29 +1768,41 @@
                   </div>
                 </section>
 
-                <!-- F 簽署 -->
+                <!-- 6 文件簽署 -->
                 <section class="onboard-section" id="sec-sign" aria-labelledby="h-sign">
                   <div class="onboard-section__head">
-                    <h3 class="onboard-section__title" id="h-sign">簽署與送出</h3>
+                    <h3 class="onboard-section__title" id="h-sign">文件簽署</h3>
                   </div>
                   <div class="onboard-section__body">
-                    <div class="legal-card-list" id="legalCardList">
-                      <label class="legal-card" for="agreeSec">
-                        <input type="checkbox" id="agreeSec" name="agreeSec" required />
-                        <span class="legal-card__text">本人已詳閱證券開戶文件並同意其規定。</span>
+                    <div class="legal-sign-panel" id="legalCardList">
+                      <label class="legal-master-row" for="agreeAllLegals">
+                        <input
+                          type="checkbox"
+                          id="agreeAllLegals"
+                          name="agreeAllLegals"
+                          required
+                          aria-describedby="legalDocList"
+                        />
+                        <span class="legal-master-row__text">我已全部知曉並詳讀以下條款，且全部同意</span>
                       </label>
-                      <label class="legal-card" for="agreeUsStock">
-                        <input type="checkbox" id="agreeUsStock" name="agreeUsStock" required />
-                        <span class="legal-card__text">本人已詳閱美股複委託開戶文件並同意其規定。</span>
-                      </label>
-                      <label class="legal-card" for="agreeW8">
-                        <input type="checkbox" id="agreeW8" name="agreeW8" required />
-                        <span class="legal-card__text">本人已詳閱W-8BEN契約書並同意其規定(非美國稅務身份)。</span>
-                      </label>
-                      <label class="legal-card" for="agreeCrs">
-                        <input type="checkbox" id="agreeCrs" name="agreeCrs" required />
-                        <span class="legal-card__text">本人已確認並同意簽署稅務身份自我證明表(CRS)(無中華民國以外稅務身份)。</span>
-                      </label>
+                      <ul class="legal-doc-list" id="legalDocList" aria-label="條款與文件連結">
+                        <li class="legal-doc-list__item">
+                          本人已詳閱<a href="#" class="legal-doc-link">證券開戶文件</a>並同意其規定。
+                        </li>
+                        <li class="legal-doc-list__item">
+                          本人已詳閱<a href="#" class="legal-doc-link">美股複委託開戶文件</a>並同意其規定。
+                        </li>
+                        <li class="legal-doc-list__item">
+                          本人已詳閱<a href="#" class="legal-doc-link">W-8BEN契約書</a>並同意其規定（非美國稅務身份）。
+                        </li>
+                        <li class="legal-doc-list__item">
+                          本人已確認並同意簽署<a href="#" class="legal-doc-link">稅務身份自我證明表（CRS）</a>（無中華民國以外稅務身份）。
+                        </li>
+                      </ul>
+                      <input type="checkbox" id="agreeSec" name="agreeSec" class="legal-hidden-inputs" tabindex="-1" />
+                      <input type="checkbox" id="agreeUsStock" name="agreeUsStock" class="legal-hidden-inputs" tabindex="-1" />
+                      <input type="checkbox" id="agreeW8" name="agreeW8" class="legal-hidden-inputs" tabindex="-1" />
+                      <input type="checkbox" id="agreeCrs" name="agreeCrs" class="legal-hidden-inputs" tabindex="-1" />
                     </div>
                     <div class="sig-wrap">
                       <label for="sigCanvas">手寫簽名</label>
@@ -2207,7 +2297,7 @@
           });
         });
 
-        function syncStepperToScroll() {
+        function computeStepTargetFromScroll() {
           var best = 0;
           var bestVis = -1e9;
           sectionOrder.forEach(function (id, i) {
@@ -2230,21 +2320,29 @@
               if (el && el.offsetTop <= y) best = i;
             });
           }
+          return best;
+        }
+
+        function syncStepperFromViewport() {
+          var target = computeStepTargetFromScroll();
           stepBtns.forEach(function (b, i) {
-            b.classList.toggle("is-active", i === best);
-            b.classList.toggle("is-done", i < best);
+            b.classList.toggle("is-active", i === target);
+            b.classList.toggle("is-done", i < target);
           });
         }
 
-        var stepScrollTimer;
+        var stepScrollRaf = 0;
         function onStepScroll() {
-          clearTimeout(stepScrollTimer);
-          stepScrollTimer = setTimeout(syncStepperToScroll, 40);
+          if (stepScrollRaf) return;
+          stepScrollRaf = requestAnimationFrame(function () {
+            stepScrollRaf = 0;
+            syncStepperFromViewport();
+          });
         }
 
         window.addEventListener("scroll", onStepScroll, { passive: true });
-        window.addEventListener("resize", syncStepperToScroll);
-        syncStepperToScroll();
+        window.addEventListener("resize", syncStepperFromViewport);
+        syncStepperFromViewport();
 
         /* —— 簽名畫布 —— */
         var canvas = $("sigCanvas");
@@ -2390,6 +2488,44 @@
         loadDraft();
         refreshBankGate();
 
+        /* —— 簽署：一鍵全選同意書 —— */
+        var LEGAL_CHECK_IDS = ["agreeSec", "agreeUsStock", "agreeW8", "agreeCrs"];
+        var agreeAllLegals = $("agreeAllLegals");
+
+        function syncAgreeAllFromLegals() {
+          if (!agreeAllLegals) return;
+          var n = LEGAL_CHECK_IDS.length;
+          var checked = 0;
+          LEGAL_CHECK_IDS.forEach(function (id) {
+            var el = $(id);
+            if (el && el.checked) checked += 1;
+          });
+          agreeAllLegals.checked = checked === n;
+          agreeAllLegals.indeterminate = checked > 0 && checked < n;
+        }
+
+        if (agreeAllLegals) {
+          agreeAllLegals.addEventListener("change", function () {
+            var on = agreeAllLegals.checked;
+            agreeAllLegals.indeterminate = false;
+            LEGAL_CHECK_IDS.forEach(function (id) {
+              var el = $(id);
+              if (el) el.checked = on;
+            });
+            saveDraft();
+          });
+        }
+        syncAgreeAllFromLegals();
+
+        var legalDocList = $("legalDocList");
+        if (legalDocList) {
+          legalDocList.querySelectorAll(".legal-doc-link").forEach(function (a) {
+            a.addEventListener("click", function (e) {
+              e.preventDefault();
+            });
+          });
+        }
+
         var successQrInited = false;
 
         function initSuccessQr() {
@@ -2451,16 +2587,17 @@
               $("sec-bank").scrollIntoView({ behavior: "smooth" });
               return;
             }
-            var legals = ["agreeSec", "agreeUsStock", "agreeW8", "agreeCrs"];
-            var miss = legals.filter(function (id) {
-              var el = $(id);
-              return !el || !el.checked;
-            });
-            if (miss.length) {
+            var agreeAllEl = $("agreeAllLegals");
+            if (!agreeAllEl || !agreeAllEl.checked) {
               alert("請勾選並同意所有文件項目。");
               $("sec-sign").scrollIntoView({ behavior: "smooth" });
+              if (agreeAllEl && agreeAllEl.focus) agreeAllEl.focus();
               return;
             }
+            LEGAL_CHECK_IDS.forEach(function (id) {
+              var el = $(id);
+              if (el) el.checked = true;
+            });
             if (!canvas || !ctx) {
               alert("簽名區無法載入，請重新整理頁面後再試。");
               return;
@@ -2488,6 +2625,72 @@
             var sh = $("successHeading");
             if (sh && sh.focus) sh.focus();
           });
+        }
+      })();
+    </script>
+
+    <script>
+      (function () {
+        var mq = window.matchMedia("(max-width: 900px)");
+        var hdr = document.querySelector(".site-header");
+
+        function syncAppHeaderStack() {
+          if (!hdr) return;
+          if (!mq.matches) {
+            document.documentElement.style.removeProperty("--app-header-stack");
+            return;
+          }
+          var rect = hdr.getBoundingClientRect();
+          var h = Math.ceil(rect.height);
+          if (h < 48) h = 76;
+          document.documentElement.style.setProperty("--app-header-stack", h + "px");
+        }
+
+        var debTimer;
+        function debouncedSync() {
+          clearTimeout(debTimer);
+          debTimer = setTimeout(syncAppHeaderStack, 40);
+        }
+
+        window.addEventListener("resize", debouncedSync);
+        window.addEventListener("orientationchange", function () {
+          setTimeout(syncAppHeaderStack, 120);
+        });
+        if (typeof mq.addEventListener === "function") {
+          mq.addEventListener("change", debouncedSync);
+        } else if (mq.addListener) {
+          mq.addListener(debouncedSync);
+        }
+
+        if (hdr && typeof ResizeObserver !== "undefined") {
+          new ResizeObserver(syncAppHeaderStack).observe(hdr);
+        }
+
+        function boot() {
+          syncAppHeaderStack();
+          requestAnimationFrame(function () {
+            syncAppHeaderStack();
+            requestAnimationFrame(function () {
+              syncAppHeaderStack();
+            });
+          });
+          setTimeout(syncAppHeaderStack, 0);
+          setTimeout(syncAppHeaderStack, 120);
+          setTimeout(syncAppHeaderStack, 320);
+        }
+        boot();
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function () {
+            requestAnimationFrame(function () {
+              syncAppHeaderStack();
+              requestAnimationFrame(syncAppHeaderStack);
+            });
+          });
+        }
+        var logo = hdr && hdr.querySelector(".brand-logo__img");
+        if (logo) {
+          if (logo.complete) syncAppHeaderStack();
+          else logo.addEventListener("load", syncAppHeaderStack);
         }
       })();
     </script>
