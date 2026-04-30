@@ -1481,7 +1481,7 @@
         <a href="#" class="brand-logo" aria-label="口袋證券首頁">
           <img
             class="brand-logo__img"
-            src="images.png"
+            src="assets/logo-pocket.png"
             width="220"
             height="46"
             alt="口袋證券"
@@ -1565,19 +1565,19 @@
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-front.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證正面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-back.jpg" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證反面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="第二證件預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-second.jpg" alt="第二證件預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>第二證件</figcaption>
                     </figure>
@@ -2024,7 +2024,21 @@
         var btnBankVerify = $("btnBankVerify");
         if (btnBankVerify) {
           btnBankVerify.addEventListener("click", function () {
-            if (btnBankVerify.disabled) return;
+            if (bankModuleOk) {
+              if (
+                !confirm(
+                  "您已完成銀行核身。確定要重新驗證？確認後將清除已通過狀態，並須再次驗證成功才能填寫後續資料。"
+                )
+              )
+                return;
+              bankModuleOk = false;
+              handheldOk = false;
+              $("bankOk").classList.remove("is-visible");
+              var inlineReset = $("bankFailInline");
+              if (inlineReset) inlineReset.style.display = "none";
+              refreshBankGate();
+              saveDraft();
+            }
             var bn = $("bankNameInput");
             var ba = $("bankAccountInput");
             if (bn && !bn.checkValidity()) {
@@ -2049,9 +2063,9 @@
               var inline2 = $("bankFailInline");
               if (inline2) inline2.style.display = "none";
               bankModuleOk = true;
-              btnBankVerify.disabled = true;
             }
             refreshBankGate();
+            saveDraft();
           });
         }
 
@@ -2075,9 +2089,8 @@
             if (inline3) inline3.style.display = "none";
             bankModuleOk = true;
             if (modalStatus) modalStatus.textContent = "";
-            var bv = $("btnBankVerify");
-            if (bv) bv.disabled = true;
             refreshBankGate();
+            saveDraft();
           });
         }
 
@@ -2444,10 +2457,19 @@
             checks.forEach(function (c) {
               obj[c.name] = c.checked;
             });
-            obj.bankModuleOk = bankModuleOk;
-            obj.handheldOk = handheldOk;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
           } catch (e) {}
+        }
+
+        function resetBankVerificationAfterPageLoad() {
+          bankModuleOk = false;
+          handheldOk = false;
+          var okEl = $("bankOk");
+          if (okEl) okEl.classList.remove("is-visible");
+          var failInline = $("bankFailInline");
+          if (failInline) failInline.style.display = "none";
+          closeBankFailModal();
+          refreshBankGate();
         }
 
         function loadDraft() {
@@ -2455,15 +2477,6 @@
             var raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return;
             var obj = JSON.parse(raw);
-            if (obj.bankModuleOk) {
-              bankModuleOk = true;
-              handheldOk = !!obj.handheldOk;
-              $("bankOk").classList.add("is-visible");
-              var inline4 = $("bankFailInline");
-              if (inline4) inline4.style.display = "none";
-              var bv0 = $("btnBankVerify");
-              if (bv0) bv0.disabled = true;
-            }
             Object.keys(obj).forEach(function (key) {
               if (key === "bankModuleOk" || key === "handheldOk") return;
               var el = form.elements.namedItem(key);
@@ -2484,7 +2497,8 @@
                 c.classList.toggle("is-selected", c.getAttribute("data-value") === hid.value);
               });
             });
-            refreshBankGate();
+            resetBankVerificationAfterPageLoad();
+            saveDraft();
           } catch (e) {}
         }
 
