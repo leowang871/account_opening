@@ -362,9 +362,13 @@
         align-items: start;
       }
 
-      /* 1024 級寬度（仍為雙欄）：白底主卡區最大寬 918.67px */
+      /* 1024 級寬度（仍為雙欄）：白底主卡區最大寬 918.67px；成功頁白卡與主欄同寬 */
       @media (max-width: 1024px) and (min-width: 901px) {
         .onboard-layout {
+          max-width: min(100%, var(--onboard-layout-max-1024));
+        }
+
+        .success-card {
           max-width: min(100%, var(--onboard-layout-max-1024));
         }
       }
@@ -575,6 +579,15 @@
         width: 100%;
         max-width: 730px;
         min-height: 44px;
+      }
+
+      /* 僅「自雇(創業)」時顯示；避免僅靠 [hidden] 時與 .field { display:grid } 併用仍被看見／可操作 */
+      .field.field--self-employed-extra:not(.field--self-employed-extra--visible) {
+        display: none !important;
+      }
+
+      .field.field--self-employed-extra.field--self-employed-extra--visible {
+        display: grid !important;
       }
 
       .field:has(textarea) {
@@ -1753,12 +1766,17 @@
       }
 
       .main-modal__actions--pair .btn,
-      .main-modal__actions--pair .btn-pill-primary {
+      .main-modal__actions--pair .btn-pill-primary,
+      .main-modal__actions--pair .btn-pill-outline {
         flex: 1 1 0;
         min-width: 0;
         min-height: 44px;
         box-sizing: border-box;
         align-self: stretch;
+      }
+
+      .main-modal__actions--pair .btn-pill-outline {
+        padding: var(--btn-pill-py, 10px) 24px;
       }
 
       .btn--outline {
@@ -2470,7 +2488,7 @@
                         <select id="employment" name="employment" required>
                           <option value="">請選擇</option>
                           <option value="employed" selected>受僱中</option>
-                          <option value="self">自僱</option>
+                          <option value="self_startup">自雇(創業)</option>
                           <option value="student">學生</option>
                           <option value="retire">退休</option>
                           <option value="other">其他</option>
@@ -2480,11 +2498,47 @@
                         <label for="industry">行業別 <span class="req">*</span></label>
                         <select id="industry" name="industry" required>
                           <option value="">請選擇</option>
-                          <option value="fin">金融服務</option>
-                          <option value="tech" selected>科技</option>
-                          <option value="edu">教育</option>
-                          <option value="med">醫療</option>
-                          <option value="other">其他</option>
+                          <option value="農漁牧">農漁牧</option>
+                          <option
+                            value="其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)"
+                          >
+                            其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)
+                          </option>
+                          <option value="政府機關">政府機關</option>
+                          <option value="軍警消防">軍警消防</option>
+                          <option value="教育業">教育業</option>
+                          <option value="醫療院所">醫療院所</option>
+                          <option value="金融保險">金融保險</option>
+                          <option value="製造業">製造業</option>
+                          <option value="資訊業">資訊業</option>
+                          <option value="貿易業">貿易業</option>
+                          <option value="服務業">服務業</option>
+                          <option value="傳銷業">傳銷業</option>
+                          <option value="通訊業">通訊業</option>
+                          <option value="大眾傳播業">大眾傳播業</option>
+                          <option value="公務人員">公務人員</option>
+                          <option value="電子業" selected>電子業</option>
+                          <option value="律師">律師</option>
+                          <option value="會計師/記帳士">會計師/記帳士</option>
+                          <option value="房屋土地仲介">房屋土地仲介</option>
+                          <option value="運輸及倉儲業">運輸及倉儲業</option>
+                          <option value="建築營造業">建築營造業</option>
+                          <option value="宗教團體">宗教團體</option>
+                          <option value="財團法人組織/基金會">財團法人組織/基金會</option>
+                          <option value="零售批發業">零售批發業</option>
+                          <option value="租賃業">租賃業</option>
+                        </select>
+                      </div>
+                      <div class="field field--self-employed-extra" id="fieldSelfProductService">
+                        <label for="selfProductService">提供的產品及服務 <span class="req">*</span></label>
+                        <select id="selfProductService" name="selfProductService" tabindex="-1" disabled>
+                          <option value="">請選擇</option>
+                        </select>
+                      </div>
+                      <div class="field field--self-employed-extra" id="fieldSelfIncomeSource">
+                        <label for="selfIncomeSource">主要的收入來源 <span class="req">*</span></label>
+                        <select id="selfIncomeSource" name="selfIncomeSource" tabindex="-1" disabled>
+                          <option value="">請選擇</option>
                         </select>
                       </div>
                       <div class="field">
@@ -2714,7 +2768,7 @@
               <p class="field-hint" id="modalSelfieStatus" aria-live="polite"></p>
             </div>
             <div class="main-modal__actions main-modal__actions--pair">
-              <button type="button" class="btn btn--outline" id="btnBankModalCancel">取消</button>
+              <button type="button" class="btn-pill-outline" id="btnBankModalCancel">取消</button>
               <button type="button" class="btn-pill-primary" id="btnModalSelfieSubmit" hidden>
                 確認送出
               </button>
@@ -2818,6 +2872,7 @@
       </footer>
     </div>
 
+    <script src="assets/ib-02-product-map.js"></script>
     <script>
       (function () {
         var STORAGE_KEY = "pocket_onboard_draft_v2";
@@ -2825,6 +2880,44 @@
         function $(id) {
           return document.getElementById(id);
         }
+
+        /**
+         * 02_產品與服務：assets/ib-02-product-service.csv → assets/ib-02-product-map.js
+         * 「行業別」select value 等同 CSV 第一欄鍵值，對照下拉「提供的產品及服務」。
+         * 草稿曾存舊 code（fin／tech／…）者於 loadDraft 轉換。
+         */
+        var LEGACY_INDUSTRY_TO_IB02_CATEGORY = {
+          fin: "金融保險",
+          tech: "電子業",
+          edu: "教育業",
+          med: "醫療院所",
+          other:
+            "其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)",
+        };
+
+        /** 03_收入來源：試算表 B 欄（英文）；與試算一致，目前為不分行業之共用選項 */
+        var SELF_EMPLOYED_INCOME_SOURCE_OPTS = [
+          {
+            zh: "商品銷售收入",
+            en: "Revenue mainly comes from the distribution and sale of physical products.",
+          },
+          {
+            zh: "專業勞務與諮詢費",
+            en: "Income is mainly derived from providing professional and technical services.",
+          },
+          {
+            zh: "專案與工程收益",
+            en: "Its revenue is primarily generated from project-based contracts and engineering works.",
+          },
+          {
+            zh: "仲介、佣金與授權",
+            en: "The primary source of revenue is commissions, brokerage, and licensing fees.",
+          },
+          {
+            zh: "資產租賃與投資",
+            en: "Earnings are predominantly sourced from rental income and investment returns.",
+          },
+        ];
 
         var bankModuleOk = false;
         var bankFailModalOpen = false;
@@ -4045,6 +4138,83 @@
         /* —— 草稿 —— */
         var form = $("onboardForm");
 
+        function fillSelectFromZhEn(selectEl, opts) {
+          if (!selectEl || selectEl.dataset.optFilled === "1") return;
+          opts.forEach(function (row) {
+            var opt = document.createElement("option");
+            opt.value = row.en;
+            opt.textContent = row.zh;
+            selectEl.appendChild(opt);
+          });
+          selectEl.dataset.optFilled = "1";
+        }
+
+        function rebuildSelfProductServiceSelect(preserveValue) {
+          var sp = $("selfProductService");
+          var ind = $("industry");
+          if (!sp || !ind) return;
+          var map = window.__IB02_PRODUCT_SERVICE_BY_INDUSTRY || {};
+          var key = (ind.value || "").trim();
+          var list = key && map[key] ? map[key] : [];
+          while (sp.options.length > 1) {
+            sp.remove(1);
+          }
+          list.forEach(function (label) {
+            var o = document.createElement("option");
+            o.value = label;
+            o.textContent = label;
+            sp.appendChild(o);
+          });
+          if (
+            typeof preserveValue === "string" &&
+            preserveValue.length > 0 &&
+            list.indexOf(preserveValue) >= 0
+          ) {
+            sp.value = preserveValue;
+          } else {
+            sp.selectedIndex = 0;
+          }
+        }
+
+        function syncSelfEmployedExtraFields(draftSelfProduct) {
+          var emp = $("employment");
+          var fp = $("fieldSelfProductService");
+          var fi = $("fieldSelfIncomeSource");
+          var sp = $("selfProductService");
+          var si = $("selfIncomeSource");
+          if (!emp || !fp || !fi || !sp || !si) return;
+          fillSelectFromZhEn(si, SELF_EMPLOYED_INCOME_SOURCE_OPTS);
+          var show = emp.value === "self_startup";
+          if (show) {
+            fp.classList.add("field--self-employed-extra--visible");
+            fi.classList.add("field--self-employed-extra--visible");
+            fp.removeAttribute("aria-hidden");
+            fi.removeAttribute("aria-hidden");
+            sp.disabled = false;
+            si.disabled = false;
+            sp.removeAttribute("tabindex");
+            si.removeAttribute("tabindex");
+            sp.setAttribute("required", "required");
+            si.setAttribute("required", "required");
+            rebuildSelfProductServiceSelect(
+              typeof draftSelfProduct === "string" ? draftSelfProduct : undefined
+            );
+          } else {
+            fp.classList.remove("field--self-employed-extra--visible");
+            fi.classList.remove("field--self-employed-extra--visible");
+            fp.setAttribute("aria-hidden", "true");
+            fi.setAttribute("aria-hidden", "true");
+            sp.disabled = true;
+            si.disabled = true;
+            sp.setAttribute("tabindex", "-1");
+            si.setAttribute("tabindex", "-1");
+            sp.removeAttribute("required");
+            si.removeAttribute("required");
+            sp.selectedIndex = 0;
+            si.selectedIndex = 0;
+          }
+        }
+
         function saveDraft() {
           try {
             var data = new FormData(form);
@@ -4079,6 +4249,10 @@
             var raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return;
             var obj = JSON.parse(raw);
+            var draftSelfProduct = obj.selfProductService;
+            if (obj.industry && LEGACY_INDUSTRY_TO_IB02_CATEGORY[obj.industry]) {
+              obj.industry = LEGACY_INDUSTRY_TO_IB02_CATEGORY[obj.industry];
+            }
             Object.keys(obj).forEach(function (key) {
               if (key === "bankModuleOk" || key === "handheldOk") return;
               /* 文件簽署：條款同意不從草稿還原，每次載入預設為未勾選 */
@@ -4128,12 +4302,24 @@
             });
             resetBankVerificationAfterPageLoad();
             saveDraft();
+            syncSelfEmployedExtraFields(draftSelfProduct);
           } catch (e) {}
         }
 
         form.addEventListener("input", saveDraft);
         form.addEventListener("change", saveDraft);
         loadDraft();
+        syncSelfEmployedExtraFields();
+        var employmentSel = $("employment");
+        if (employmentSel)
+          employmentSel.addEventListener("change", function () {
+            syncSelfEmployedExtraFields();
+          });
+        var industrySel = $("industry");
+        if (industrySel)
+          industrySel.addEventListener("change", function () {
+            syncSelfEmployedExtraFields();
+          });
         refreshBankGate();
 
         /* —— 簽署：一鍵全選同意書 —— */
