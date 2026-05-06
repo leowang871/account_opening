@@ -2285,7 +2285,7 @@
         <a href="#" class="site-header__logo-link" aria-label="口袋證券首頁">
           <img
             class="logo"
-            src="images.png"
+            src="assets/logo-pocket.png"
             width="224"
             height="50"
             alt="口袋證券"
@@ -2355,19 +2355,19 @@
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-front.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證正面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-back.jpg" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證反面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="第二證件預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-second.jpg" alt="第二證件預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>第二證件</figcaption>
                     </figure>
@@ -2539,6 +2539,13 @@
                         <label for="selfIncomeSource">主要的收入來源 <span class="req">*</span></label>
                         <select id="selfIncomeSource" name="selfIncomeSource" tabindex="-1" disabled>
                           <option value="">請選擇</option>
+                          <option value="Revenue mainly comes from the distribution and sale of physical products.">商品銷售收入</option>
+                          <option value="Income is mainly derived from providing professional and technical services.">專業勞務與諮詢費</option>
+                          <option
+                            value="Its revenue is primarily generated from project-based contracts and engineering works."
+                          >專案與工程收益</option>
+                          <option value="The primary source of revenue is commissions, brokerage, and licensing fees.">仲介、佣金與授權</option>
+                          <option value="Earnings are predominantly sourced from rental income and investment returns.">資產租賃與投資</option>
                         </select>
                       </div>
                       <div class="field">
@@ -2871,19 +2878,22 @@
         </div>
       </footer>
     </div>
-
-    <script src="assets/ib-02-product-map.js"></script>
     <script>
       (function () {
         var STORAGE_KEY = "pocket_onboard_draft_v2";
+        /**
+         * 02_產品與服務（與 ib-02-product-service.csv 同內容；內嵌於此前端）。
+         */
+        window.__IB02_PRODUCT_SERVICE_BY_INDUSTRY={"農漁牧":["糧食穀物耕種與銷售","溫室蔬菜水果培植","畜牧肉類養殖與加工","水產養殖與貿易","林木培育與原木銷售","農業機械租賃與維修","獸醫服務與諮詢","農用資產與土地開發","觀光農場營運管理","農業技術支援與顧問"],"其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)":["第三方支付平台營運","數位錢包與轉帳服務","虛擬貨幣交易與托管","區塊鏈軟體技術開發","二手汽車收購與買賣","線上遊戲設計與發行"],"政府機關":["公共行政管理服務","政策規劃與執行協調（承攬或顧問）","對外招標採購與標案管理"],"軍警消防":["公共安全及災害防救業務支援","軍警後勤／資訊化作業協力與外包","保全、巡邏及社區安全服務（承攬／顧問）","消防安全檢修、教育訓練與法規諮詢","緊急救護協勤／急難救災資源調度支援"],"教育業":["學術補習與考照教學","外語語言訓練","專業職業技能培訓","數位教育平台開發","學前幼兒教育管理","教科書與教材出版","教學輔助軟體研發","出國留學顧問諮詢","課後才藝培訓","學術研究與諮詢"],"醫療院所":["一般門診醫療服務","外科手術與住院照護","生物醫藥產品研發","牙科診所營運","中醫與針灸調理","物理治療與復健諮詢","醫療精密設備經銷","長期照護與居家服務","醫學臨床檢驗分析","心理諮商與治療"],"金融保險":["證券投資與經紀服務","資產管理與控股","風險管理顧問","保險經紀與公證","企業財務顧問","創投基金管理","個人理財規劃服務","資產信託管理","融資租賃服務","數位金融科技研發"],"製造業":["金屬零件精密加工","紡織品與布料製造","塑膠與橡膠製品生產","工業機械設備研發","食品加工與包裝生產","特用化學產品研發","汽車零組件組裝","醫療器材生產製造","五金配件設計與生產"],"資訊業":["企業級軟體研發維護","資訊系統整合方案","雲端架構設計與管理","網路資安防護服務","大數據分析與處理","入口網站與電商架構","移動端 App 開發","資料庫建置與管理","技術外包支援","資訊科技戰略顧問","軟體即服務 (SaaS) 提供"],"貿易業":["進出口貿易媒合與代理","供應鏈採購管理","大宗原物料貿易","跨境電商平台營運","海外市場開發諮詢","報關與物流協調服務","產品展示與行銷規劃","技術貿易轉移服務","國際分銷渠道管理","貿易融資顧問服務","戰術裝備與軍警器材貿易採購"],"服務業":["企業管理顧問諮詢","品牌行銷與公關企劃","大型活動統籌與執行","人力資源招聘與管理","專業清潔與家政服務","國際旅遊行程規劃","餐飲服務與連鎖經營","健身與美容美體服務","攝影與影音剪輯服務","專業技術支援","公共行政管理與服務","公部門管理諮詢","產業扶持與輔導","企業安全顧問與風險管理","私人保全與社區巡邏服務","私人偵查與法律證據蒐集","消防安全教育與急救培訓","專業安全防護與戰術訓練","緊急救護支援與私人救護服務"],"傳銷業":["多層次傳銷推廣","組織行銷渠道開發","營養保健食品經銷","美容保養產品經銷","居家生活用品推廣","市場渠道拓展","會員獎金制度管理","產品知識培訓服務","營銷團隊發展","個人形象品牌推廣"],"通訊業":["網絡通訊設備銷售","通訊線路建置維護","5G 技術應用研發","衛星通訊系統服務","智慧家居系統整合","電信加值服務開發","通訊數據傳輸分析","物聯網 (IoT) 裝置連接","VoIP 語音解決方案","通訊硬體維修支援"],"大眾傳播業":["數位媒體平台營運","平面雜誌出版發行","影視節目製作與代理","廣告代理與精準投放","社群媒體經營管理","企業公共關係諮詢","專業攝影與後期工程","活動影像錄製","內容行銷策略規劃","視覺識別系統設計","地方文化推廣"],"公務人員":["公共行政管理服務"],"電子業":["半導體晶圓代工生產","電子電路組件設計","IC 電路封裝與測試","光電顯示設備研發","電源供應系統製造","印刷電路板 (PCB) 生產","顯示面板與模組開發","測試量測設備生產","電子材料代理批發","通訊零組件設計","數據存儲裝置研發","特種安防設備維修與技術支援"],"律師":["法律訴訟代表服務","企業法律合規審閱","稅務法務規劃","審計與簽證","工商登記代理服務","遺產繼承與信託規劃","智慧財產權管理","勞資爭議處理","企業併購法務","法律諮詢顧問"],"會計師/記帳士":["財務報表審計與簽證服務","企業稅務申報與代理記帳","財務顧問與經營診斷諮詢","個人與家族財稅規劃服務","企業清算、重組與破產顧問","會計系統建置與資訊諮詢"],"房屋土地仲介":["住宅房屋買賣代理","商務辦公空間租賃","土地開發與媒合","不動產價值評估","商場店面招租","物業資產代管服務","法拍屋諮詢與代標","高端豪宅行銷規劃","海外不動產投資諮詢","危老建築重建諮詢"],"運輸及倉儲業":["低溫冷鏈物流配送","國際貨運代理服務","電子化倉儲空間管理","汽機車快遞服務","報關報驗代辦服務","精緻搬家服務","船舶或航空貨運代理","配送系統管理軟體","危險品運輸管理","電商物流整合方案"],"建築營造業":["住宅興建工程","商用大樓建設開發","室內空間裝修與設計","土木工程承包","防水防漏修繕工程","景觀園藝設計施工","工程監造與技術諮詢","鋼骨結構施工","機電水電配置","舊屋翻修與補強","都市發展與空間規劃","公共建設規劃與監督","消防工程設計與災害防治施工","智慧保安系統規劃與建置"],"宗教團體":["社會公益計畫執行","弱勢族群福利贊助","心理諮詢與輔導服務","教育獎學金管理","急難救助支援","文化藝術推廣贊助","環境保護教育","志工資源管理平台","國際人道援助","社區關懷據點營運"],"財團法人組織/基金會":["社會公益計畫執行","弱勢族群福利贊助","心理諮詢與輔導服務","教育獎學金管理","急難救助支援","文化藝術推廣贊助","環境保護教育","志工資源管理平台","國際人道援助","社區關懷據點營運"],"零售批發業":["連鎖超市、超商與量販通路營運","流行服飾、鞋類與紡織織品批發零售","生鮮農產品、食品與冷凍食材供應鏈貿易","3C 電子產品、家用電器與通訊設備專賣","日常生活百貨、雜貨與各類民生物資進出口","化妝品、香水、美容保養與個人護理產品","家具、家飾、廚衛設備與居家裝修用品貿易","體育器材、戶外用品與健身設備連鎖零售","五金工具、建築材料、油漆塗料與機械零件批發","電商平台分銷"],"租賃業":["汽機車租賃服務","重型工業機械出租","辦公自動化設備租賃","會場設備與耗材租賃","家用電器訂閱服務","奢侈品與飾品出租","長期租賃合約管理","租賃資產維修維護","數位硬體訂閱","租賃後勤管理服務"]};
+
 
         function $(id) {
           return document.getElementById(id);
         }
 
         /**
-         * 02_產品與服務：assets/ib-02-product-service.csv → assets/ib-02-product-map.js
-         * 「行業別」select value 等同 CSV 第一欄鍵值，對照下拉「提供的產品及服務」。
+         * 02_產品與服務：`window.__IB02_PRODUCT_SERVICE_BY_INDUSTRY`（見上方內嵌；來源同 ib-02-product-service.csv）。
+         * 「行業別」選項 value 等同 CSV 第一欄鍵值，對照「提供的產品及服務」。
          * 草稿曾存舊 code（fin／tech／…）者於 loadDraft 轉換。
          */
         var LEGACY_INDUSTRY_TO_IB02_CATEGORY = {
@@ -2895,29 +2905,7 @@
             "其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)",
         };
 
-        /** 03_收入來源：試算表 B 欄（英文）；與試算一致，目前為不分行業之共用選項 */
-        var SELF_EMPLOYED_INCOME_SOURCE_OPTS = [
-          {
-            zh: "商品銷售收入",
-            en: "Revenue mainly comes from the distribution and sale of physical products.",
-          },
-          {
-            zh: "專業勞務與諮詢費",
-            en: "Income is mainly derived from providing professional and technical services.",
-          },
-          {
-            zh: "專案與工程收益",
-            en: "Its revenue is primarily generated from project-based contracts and engineering works.",
-          },
-          {
-            zh: "仲介、佣金與授權",
-            en: "The primary source of revenue is commissions, brokerage, and licensing fees.",
-          },
-          {
-            zh: "資產租賃與投資",
-            en: "Earnings are predominantly sourced from rental income and investment returns.",
-          },
-        ];
+        /* 03_收入來源：選項見 HTML #selfIncomeSource（value 為試算表英文句） */
 
         var bankModuleOk = false;
         var bankFailModalOpen = false;
@@ -4138,17 +4126,6 @@
         /* —— 草稿 —— */
         var form = $("onboardForm");
 
-        function fillSelectFromZhEn(selectEl, opts) {
-          if (!selectEl || selectEl.dataset.optFilled === "1") return;
-          opts.forEach(function (row) {
-            var opt = document.createElement("option");
-            opt.value = row.en;
-            opt.textContent = row.zh;
-            selectEl.appendChild(opt);
-          });
-          selectEl.dataset.optFilled = "1";
-        }
-
         function rebuildSelfProductServiceSelect(preserveValue) {
           var sp = $("selfProductService");
           var ind = $("industry");
@@ -4183,7 +4160,6 @@
           var sp = $("selfProductService");
           var si = $("selfIncomeSource");
           if (!emp || !fp || !fi || !sp || !si) return;
-          fillSelectFromZhEn(si, SELF_EMPLOYED_INCOME_SOURCE_OPTS);
           var show = emp.value === "self_startup";
           if (show) {
             fp.classList.add("field--self-employed-extra--visible");
