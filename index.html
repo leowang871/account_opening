@@ -1347,7 +1347,7 @@
         margin-bottom: 18px;
       }
 
-      /* 銀行補件：方法一 QR 上傳（手機掃描 → 同步 PC 示範） */
+      /* 銀行補件：方法一 QR 上傳 */
       .bank-qr-method {
         margin-bottom: 20px;
       }
@@ -2672,11 +2672,6 @@
                       <li>拍攝或選擇要上傳的證件照片</li>
                       <li>確認上傳完成</li>
                     </ol>
-                    <div class="bank-qr-demo-row">
-                      <button type="button" class="bank-qr-demo-sync" id="btnBankQrDemoSync">
-                        示範：模擬手機已同步至電腦
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -3459,47 +3454,6 @@
           bankQrCountdownTimer = setInterval(tickBankQrExpiry, 1000);
         }
 
-        function demoBankQrSyncToPc() {
-          var c = document.createElement("canvas");
-          c.width = 640;
-          c.height = 360;
-          var x = c.getContext("2d");
-          if (!x) return;
-          x.fillStyle = "#f2f0f1";
-          x.fillRect(0, 0, 640, 360);
-          x.fillStyle = "#5c5656";
-          x.font = '600 20px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
-          x.fillText("示範：模擬手機端已上傳之手持證件自拍", 52, 188);
-          c.toBlob(
-            function (blob) {
-              if (!blob) return;
-              clearModalSelfiePreview();
-              if (modalSelfie) modalSelfie.value = "";
-              if (modalStatus) modalStatus.textContent = "（示範）已從手機同步，請完成裁切與送出。";
-              modalSelfiePreviewUrl = URL.createObjectURL(blob);
-              var prevImg = $("modalSelfiePreview");
-              var prevWrap = $("modalSelfiePreviewWrap");
-              var cap = $("modalSelfiePreviewCaption");
-              var hostEl = $("modalUploadHost");
-              if (prevImg) {
-                prevImg.src = modalSelfiePreviewUrl;
-                prevImg.alt = "手持證件自拍預覽（示範）";
-              }
-              if (cap) cap.textContent = "mobile-handheld-sync.jpg";
-              if (prevWrap) {
-                prevWrap.hidden = false;
-                prevWrap.setAttribute("aria-hidden", "false");
-              }
-              if (hostEl) hostEl.classList.add("upload-zone--has-preview");
-              modalProcessedBlob = null;
-              modalProcessedName = "mobile-handheld-sync.jpg";
-              openCropSheet();
-            },
-            "image/jpeg",
-            0.88
-          );
-        }
-
         function openBankFailModal() {
           if (!overlay) return;
           overlay.hidden = false;
@@ -3586,13 +3540,6 @@
         }
         wireModalClose($("btnBankModalClose"));
         wireModalClose($("btnBankModalCancel"));
-
-        var btnBankQrDemoSync = $("btnBankQrDemoSync");
-        if (btnBankQrDemoSync) {
-          btnBankQrDemoSync.addEventListener("click", function () {
-            demoBankQrSyncToPc();
-          });
-        }
 
         var btnModalSelfieSubmit = $("btnModalSelfieSubmit");
         if (btnModalSelfieSubmit) {
