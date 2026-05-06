@@ -12,7 +12,7 @@
     />
     <style>
       :root {
-        --header-h: 80px;
+        --header-h: 72px;
         --page-max: 1440px;
         --bg-page: #f5f5f5;
         --header-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -32,6 +32,19 @@
         --radius: 12px;
         --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
         --btn-salmon: #e95465;
+        --btn-pill-bg: #f95868;
+        --btn-pill-text: #ffffff;
+        --btn-pill-radius: 100px;
+        --btn-pill-fs: 16px;
+        --btn-pill-lh: 24px;
+        --btn-pill-py: 10px;
+        --btn-pill-gap: 10px;
+        --btn-pill-outline-border: #f95868;
+        --btn-pill-fixed-w: 343px;
+        --btn-pill-style2-bg: #f83347;
+        --btn-pill-style2-py: 9px;
+        /* 約 1024 寬度版：整卡白底區（步驟列＋表單欄）設計寬 */
+        --onboard-layout-max-1024: 918.67px;
       }
 
       *,
@@ -73,78 +86,89 @@
         width: 100%;
         height: var(--header-h);
         background: #fff;
-        box-shadow: var(--header-shadow);
+        border-bottom: 1px solid #ececec;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       }
 
       .site-header__inner {
-        display: grid;
-        grid-template-columns: auto 2px minmax(0, 1fr);
-        column-gap: 12px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
         align-items: center;
         box-sizing: border-box;
         max-width: var(--page-max);
         margin: 0 auto;
         width: 100%;
         height: 100%;
-        padding: 0 max(24px, env(safe-area-inset-left)) 0 max(24px, env(safe-area-inset-right));
+        padding: 0 clamp(28px, 6.5vw, 120px);
+        padding-left: max(clamp(28px, 6.5vw, 120px), env(safe-area-inset-left));
+        padding-right: max(clamp(28px, 6.5vw, 120px), env(safe-area-inset-right));
+        gap: 0;
       }
 
-      .brand-logo {
-        grid-column: 1;
+      /* 標題區：與官網相同層級 — logo 連結、分隔線、copy（標題＋證號） */
+      .site-header__logo-link {
         display: block;
+        flex-shrink: 0;
         line-height: 0;
+        margin-right: 10px;
       }
 
-      .brand-logo__img {
-        height: 46px;
-        width: auto;
-        max-width: min(240px, 42vw);
+      .site-header__logo-link .logo {
+        width: 224px;
+        height: 50px;
+        max-width: min(224px, 100%);
         object-fit: contain;
         display: block;
       }
 
-      .brand-divider {
-        grid-column: 2;
+      .site-header__divider {
+        flex-shrink: 0;
         width: 2px;
-        height: 35px;
-        background: var(--title-coral);
-        justify-self: center;
+        height: 32px;
+        background: #c01846;
+        margin-right: 24px;
       }
 
-      .header-text-cluster {
-        grid-column: 3;
-        width: 100%;
-        min-width: 0;
+      .site-header__copy {
+        flex: 1 1 auto;
         display: flex;
         flex-direction: row;
+        flex-wrap: nowrap;
         align-items: center;
         justify-content: space-between;
-        gap: 12px 20px;
+        gap: 16px;
+        min-width: 0;
       }
 
-      .page-title {
+      .site-header__title {
         margin: 0;
-        color: var(--title-coral);
-        font-size: 32px;
-        font-weight: 500;
-        line-height: 1.2;
-        letter-spacing: 0.02em;
+        flex-shrink: 1;
+        min-width: 0;
+        color: var(--btn-pill-bg);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1.35;
+        letter-spacing: 0.01em;
         white-space: nowrap;
       }
 
-      .license-link {
+      .license-number {
+        flex-shrink: 0;
         color: var(--link-blue);
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 400;
+        line-height: 1.35;
         text-decoration: underline;
-        text-underline-offset: 3px;
+        text-underline-offset: 2px;
       }
 
-      .license-link:hover {
+      .license-number:hover {
         opacity: 0.85;
       }
 
-      .license-link:focus-visible {
+      .license-number:focus-visible {
         outline: 2px solid var(--link-blue);
         outline-offset: 2px;
       }
@@ -189,11 +213,11 @@
       }
 
       .success-card__title {
-        margin: 0 0 16px;
-        font-size: 17px;
-        font-weight: 600;
-        color: var(--text);
-        line-height: 1.4;
+        margin: 0 0 20px;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--title-coral);
+        line-height: 1.45;
       }
 
       .success-card__body {
@@ -202,6 +226,42 @@
         line-height: 1.55;
         color: var(--text);
         text-align: center;
+      }
+
+      .success-card__intro .success-card__body {
+        margin: 0 0 14px;
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .success-card__intro .success-card__body:last-child {
+        margin-bottom: 24px;
+      }
+
+      .success-card__accent {
+        color: var(--title-coral);
+        font-weight: 600;
+      }
+
+      .success-card__line-link {
+        color: var(--text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .success-card__line-link:hover {
+        color: var(--title-coral);
+      }
+
+      .success-card__line--join {
+        margin: 0 0 8px;
+      }
+
+      .success-card__line--sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.55;
+        margin: 0 0 24px;
       }
 
       .success-card__qr {
@@ -300,6 +360,13 @@
         max-width: min(100%, 1040px);
         margin: 0 auto;
         align-items: start;
+      }
+
+      /* 1024 級寬度（仍為雙欄）：白底主卡區最大寬 918.67px */
+      @media (max-width: 1024px) and (min-width: 901px) {
+        .onboard-layout {
+          max-width: min(100%, var(--onboard-layout-max-1024));
+        }
       }
 
       .stepper {
@@ -662,6 +729,12 @@
           width: 100%;
         }
 
+        .field-input-suffix {
+          grid-column: 1;
+          max-width: none;
+          width: 100%;
+        }
+
         .sig-canvas {
           max-width: none;
         }
@@ -743,6 +816,7 @@
         gap: 12px;
         margin-top: 18px;
         align-items: center;
+        justify-content: center;
       }
 
       .btn {
@@ -769,13 +843,191 @@
         cursor: not-allowed;
       }
 
-      .btn--primary {
-        background: var(--brand-red);
-        color: #fff;
+      .btn-pill-primary {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--btn-pill-gap, 10px);
+        min-height: 44px;
+        padding: var(--btn-pill-py, 10px) 24px;
+        background: var(--btn-pill-bg, #f95868);
+        color: var(--btn-pill-text, #fff);
+        border: none;
+        border-radius: var(--btn-pill-radius, 100px);
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        font-size: var(--btn-pill-fs, 16px);
+        font-weight: 400;
+        line-height: var(--btn-pill-lh, 24px);
+        text-align: center;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s;
       }
 
-      .btn--primary:hover:not(:disabled) {
+      .btn-pill-primary:hover:not(:disabled) {
         opacity: 0.92;
+      }
+
+      .btn-pill-primary:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-pill-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* STYLE：設計稿 343×44 主按鈕（立即驗證等） */
+      .btn-pill-primary--w343 {
+        width: var(--btn-pill-fixed-w);
+        max-width: 100%;
+        height: 44px;
+        min-height: 44px;
+        padding: var(--btn-pill-py, 10px) 0;
+        box-sizing: border-box;
+      }
+
+      .btn-pill-outline {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--btn-pill-gap, 10px);
+        min-height: 44px;
+        padding: 10px 20px;
+        background: #fff;
+        color: var(--btn-pill-outline-border, #f95868);
+        border: 1.5px solid var(--btn-pill-outline-border, #f95868);
+        border-radius: var(--btn-pill-radius, 100px);
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        font-size: var(--btn-pill-fs, 16px);
+        font-weight: 400;
+        line-height: var(--btn-pill-lh, 24px);
+        text-align: center;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s, background 0.15s;
+      }
+
+      .btn-pill-outline:hover:not(:disabled) {
+        background: rgba(249, 88, 104, 0.06);
+      }
+
+      .btn-pill-outline:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-pill-outline:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* STYLE + style2：簽名區 343×44 線框按鈕（重新簽名） */
+      .btn-pill-outline--w343 {
+        width: var(--btn-pill-fixed-w);
+        max-width: 100%;
+        height: 44px;
+        min-height: 44px;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* style2：實心 #F83347 343×44（儲存送出） typography 對齊 STYLE */
+      .btn-pill-style2 {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--btn-pill-gap, 10px);
+        width: var(--btn-pill-fixed-w);
+        max-width: 100%;
+        height: 44px;
+        min-height: 44px;
+        padding: var(--btn-pill-style2-py, 9px) 0;
+        background: var(--btn-pill-style2-bg, #f83347);
+        color: #fff;
+        border: none;
+        border-radius: var(--btn-pill-radius, 100px);
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        font-size: var(--btn-pill-fs, 16px);
+        font-weight: 400;
+        line-height: var(--btn-pill-lh, 24px);
+        text-align: center;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s;
+      }
+
+      .btn-pill-style2:hover:not(:disabled) {
+        opacity: 0.92;
+      }
+
+      .btn-pill-style2:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-pill-style2:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* STYLE3：白底、outline 細框 #F95868／紅字（彈窗：向左／右旋轉、重新上傳） */
+      .btn-pill-style3 {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--btn-pill-gap, 10px);
+        min-height: 44px;
+        height: 44px;
+        padding: var(--btn-pill-py, 10px) 18px;
+        background: #fff;
+        color: #f95868;
+        border: none;
+        border-radius: var(--btn-pill-radius, 100px);
+        outline: 1px solid #f95868;
+        outline-offset: -1px;
+        font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+        font-size: var(--btn-pill-fs, 16px);
+        font-weight: 400;
+        line-height: var(--btn-pill-lh, 24px);
+        text-align: center;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s, background 0.15s;
+      }
+
+      .btn-pill-style3:hover:not(:disabled) {
+        background: rgba(249, 88, 104, 0.06);
+      }
+
+      .btn-pill-style3:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-pill-style3:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .btn-pill-style3:focus-visible {
+        outline: 2px solid #f95868;
+        outline-offset: 2px;
+      }
+
+      .sig-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+        max-width: calc(var(--btn-pill-fixed-w) * 2 + 12px);
+        margin-top: 16px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .sig-actions .btn-pill-outline,
+      .sig-actions .btn-pill-style2 {
+        flex: 0 0 auto;
       }
 
       .btn--secondary {
@@ -823,26 +1075,63 @@
 
       .sig-wrap {
         margin-top: 20px;
-        max-width: 730px;
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
       }
 
-      .sig-wrap label {
-        display: block;
-        margin: 0 0 10px;
+      .sig-wrap__label-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        margin: 0 0 14px;
+        width: 100%;
+      }
+
+      .sig-wrap__label-row label {
+        margin: 0;
         font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
         font-size: 17px;
-        font-weight: 500;
+        font-weight: 600;
         color: #000;
       }
 
-      .sig-canvas {
+      .sig-wrap__note {
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(62, 58, 57, 0.72);
+        max-width: 42em;
+      }
+
+      /* 簽名欄：寬幅橫向區塊（參考約 5:1 視覺比例，高度隨視窗適度放大） */
+      .sig-canvas-shell {
+        position: relative;
         width: 100%;
-        max-width: min(540px, 100%);
-        height: 160px;
+        margin: 0 auto;
+        height: clamp(176px, 26vw, 244px);
+        max-height: min(244px, 40vh);
+        border-radius: 14px;
+        border: 1px solid #9e9e9f;
+        background: #fff;
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+
+      .sig-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
         border: none;
-        border-radius: 22px;
-        outline: 1px solid #9e9e9f;
-        outline-offset: -1px;
+        border-radius: 0;
+        outline: none;
         background: #fff;
         touch-action: none;
         cursor: crosshair;
@@ -850,7 +1139,11 @@
 
       .sig-canvas:focus {
         outline: 2px solid var(--title-coral);
-        outline-offset: -1px;
+        outline-offset: -2px;
+      }
+
+      .sig-canvas-shell:focus-within {
+        box-shadow: 0 0 0 2px rgba(249, 88, 104, 0.25);
       }
 
       /* —— A 證件摺疊 —— */
@@ -1054,6 +1347,135 @@
         margin-bottom: 18px;
       }
 
+      /* 銀行補件：方法一 QR 上傳（手機掃描 → 同步 PC 示範） */
+      .bank-qr-method {
+        margin-bottom: 20px;
+      }
+
+      .bank-qr-method__heading {
+        margin: 0 0 10px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: left;
+        line-height: 1.45;
+      }
+
+      .bank-qr-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 18px 16px 20px;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .bank-qr-card__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px 24px;
+      }
+
+      .bank-qr-card__qr {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .bank-qr-card__qr img {
+        width: 148px;
+        height: 148px;
+        object-fit: contain;
+        display: block;
+        border-radius: 8px;
+        background: #fafafa;
+        border: 1px solid #eee;
+      }
+
+      .bank-qr-expiry {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #7a1f32;
+        background: #ffd6dc;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .bank-qr-card.is-expired .bank-qr-expiry {
+        background: #ececec;
+        color: var(--text-muted);
+      }
+
+      .bank-qr-card.is-expired .bank-qr-card__qr img {
+        opacity: 0.55;
+      }
+
+      .bank-qr-card__steps {
+        flex: 1 1 200px;
+        min-width: 0;
+        text-align: left;
+      }
+
+      .bank-qr-steps-title {
+        margin: 0 0 10px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .bank-qr-steps-list {
+        margin: 0;
+        padding-left: 1.35em;
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--text);
+      }
+
+      .bank-qr-steps-list li {
+        margin-bottom: 8px;
+      }
+
+      .bank-qr-steps-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      .bank-qr-demo-row {
+        margin-top: 12px;
+        text-align: center;
+      }
+
+      .bank-qr-demo-sync {
+        border: none;
+        background: none;
+        padding: 0;
+        font: inherit;
+        font-size: 13px;
+        color: var(--link-blue);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        cursor: pointer;
+      }
+
+      .bank-qr-demo-sync:hover {
+        opacity: 0.88;
+      }
+
+      .modal-upload-method__heading {
+        margin: 8px 0 10px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: left;
+      }
+
       .modal-upload .upload-zone {
         min-height: 200px;
         padding: 36px 20px;
@@ -1070,13 +1492,294 @@
         margin-top: 6px;
       }
 
+      .modal-upload-zone__preview {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        padding: 10px;
+        box-sizing: border-box;
+        pointer-events: none;
+      }
+
+      .modal-upload-zone__preview[hidden] {
+        display: none !important;
+      }
+
+      .modal-upload-zone__preview img {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+        background: #2a2a2a;
+      }
+
+      .modal-upload-zone__caption {
+        flex: 0 0 auto;
+        margin-top: 8px;
+        padding: 6px 8px;
+        font-size: 12px;
+        color: var(--text-muted);
+        text-align: center;
+        word-break: break-all;
+        line-height: 1.35;
+        background: rgba(255, 255, 255, 0.94);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .upload-zone.upload-zone--has-preview .upload-zone__body {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .modal-upload__toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .modal-upload__toolbar[hidden] {
+        display: none !important;
+      }
+
+      .modal-upload__toolbar .btn-pill-style3 {
+        flex: 1 1 calc(50% - 8px);
+        width: auto;
+        min-width: min(148px, 100%);
+        max-width: 100%;
+        height: auto;
+        min-height: 44px;
+        padding: var(--btn-pill-py, 10px) 12px;
+      }
+
+      .modal-upload__toolbar .btn-pill-primary {
+        flex: 1 1 calc(50% - 8px);
+        width: auto;
+        min-width: min(148px, 100%);
+        max-width: 100%;
+        min-height: 44px;
+        padding: var(--btn-pill-py, 10px) 12px;
+      }
+
+      .crop-sheet-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(62, 58, 57, 0.5);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 24px 16px;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
+
+      .crop-sheet-overlay[hidden] {
+        display: none !important;
+      }
+
+      .crop-sheet {
+        width: 100%;
+        max-width: 460px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 14px 48px rgba(0, 0, 0, 0.18);
+        padding: 18px 18px 20px;
+        margin-top: 8px;
+      }
+
+      .crop-sheet__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .crop-sheet__title {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .crop-sheet__stage {
+        position: relative;
+        width: 100%;
+        height: min(340px, 48vh);
+        min-height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #e8e8ea;
+      }
+
+      .crop-sheet__img-wrap {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .crop-sheet__img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        user-select: none;
+        vertical-align: top;
+      }
+
+      .crop-sheet__layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .crop-sheet__box {
+        position: absolute;
+        box-sizing: border-box;
+        pointer-events: auto;
+        border: 2px dashed #f95868;
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.48);
+        touch-action: none;
+        cursor: move;
+      }
+
+      .crop-sheet__box.is-resizing {
+        cursor: inherit;
+      }
+
+      .crop-sheet__handle {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        background: #fff;
+        border: 2px solid #f95868;
+        box-sizing: border-box;
+        pointer-events: auto;
+        touch-action: none;
+        border-radius: 2px;
+        z-index: 2;
+      }
+
+      .crop-sheet__handle[data-h="nw"] {
+        left: 0;
+        top: 0;
+        transform: translate(-50%, -50%);
+        cursor: nwse-resize;
+      }
+
+      .crop-sheet__handle[data-h="n"] {
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, -50%);
+        cursor: ns-resize;
+      }
+
+      .crop-sheet__handle[data-h="ne"] {
+        left: 100%;
+        top: 0;
+        transform: translate(-50%, -50%);
+        cursor: nesw-resize;
+      }
+
+      .crop-sheet__handle[data-h="e"] {
+        left: 100%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: ew-resize;
+      }
+
+      .crop-sheet__handle[data-h="se"] {
+        left: 100%;
+        top: 100%;
+        transform: translate(-50%, -50%);
+        cursor: nwse-resize;
+      }
+
+      .crop-sheet__handle[data-h="s"] {
+        left: 50%;
+        top: 100%;
+        transform: translate(-50%, -50%);
+        cursor: ns-resize;
+      }
+
+      .crop-sheet__handle[data-h="sw"] {
+        left: 0;
+        top: 100%;
+        transform: translate(-50%, -50%);
+        cursor: nesw-resize;
+      }
+
+      .crop-sheet__handle[data-h="w"] {
+        left: 0;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: ew-resize;
+      }
+
+      .crop-sheet__hint {
+        margin: 12px 0 0;
+        text-align: center;
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.45;
+      }
+
+      .crop-sheet__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .crop-sheet__actions .btn-pill-style3 {
+        width: 100%;
+        padding: var(--btn-pill-py, 10px) 10px;
+        min-height: 44px;
+      }
+
+      .crop-sheet__actions .btn-pill-primary {
+        width: 100%;
+        padding: var(--btn-pill-py, 10px) 10px;
+        min-height: 44px;
+      }
+
       .main-modal__actions {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
         margin-bottom: 12px;
+      }
+
+      .main-modal__actions--pair {
+        flex-wrap: nowrap;
+        justify-content: stretch;
+        align-items: stretch;
+        max-width: 100%;
+      }
+
+      .main-modal__actions--pair .btn,
+      .main-modal__actions--pair .btn-pill-primary {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 44px;
+        box-sizing: border-box;
+        align-self: stretch;
       }
 
       .btn--outline {
@@ -1107,6 +1810,74 @@
 
       .chip-group {
         margin-bottom: 22px;
+      }
+
+      #chipGroupsRoot > .field {
+        margin-bottom: 22px;
+      }
+
+      /* 徵信：希望買賣額度 — 單一白底膠囊；「萬元」僅為同框內右側文字，不另做區塊底色 */
+      .field-input-suffix {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 540px;
+        height: 44px;
+        box-sizing: border-box;
+        border-radius: 100px;
+        background: #fff;
+        outline: 1px solid #9e9e9f;
+        outline-offset: -1px;
+        overflow: hidden;
+        transition: outline-color 0.15s, box-shadow 0.15s;
+      }
+
+      .field-input-suffix:focus-within {
+        outline: 2px solid var(--title-coral);
+        outline-offset: -1px;
+      }
+
+      /* 蓋過 .field input[type=text] 的整顆膠囊圓角／outline；否則輸入右緣弧度會像在「萬元」左邊多出一段弧線 */
+      .field .field-input-suffix input[type="text"] {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        grid-column: auto;
+        border: none;
+        outline: none;
+        outline-offset: 0;
+        background: transparent;
+        padding: 11px 8px 11px 16px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        color: #000;
+        box-sizing: border-box;
+        border-radius: 0;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      .field-input-suffix input::placeholder {
+        color: #9e9e9f;
+      }
+
+      .field-input-suffix__unit {
+        flex-shrink: 0;
+        align-self: stretch;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 16px 0 6px;
+        box-sizing: border-box;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-muted);
+        white-space: nowrap;
+        background: transparent;
       }
 
       .chip-group__label {
@@ -1376,85 +2147,79 @@
           display: flex;
           flex-direction: row;
           flex-wrap: nowrap;
-          justify-content: flex-start;
-          align-items: stretch;
-          gap: 14px;
+          justify-content: center;
+          align-items: center;
+          gap: 0;
           min-height: var(--app-header-bar-h);
           height: auto;
           max-width: none;
           width: 100%;
           margin: 0;
-          padding: 2px max(16px, env(safe-area-inset-left)) 2px max(16px, env(safe-area-inset-right));
+          padding: 8px max(12px, env(safe-area-inset-left)) 10px max(12px, env(safe-area-inset-right));
           background: #fff;
         }
 
-        .brand-logo {
-          display: flex;
-          flex: 0 0 auto;
-          align-items: center;
-          justify-content: flex-start;
-          align-self: stretch;
+        .site-header__logo-link {
+          display: block;
+          flex: 0 1 auto;
           min-width: 0;
-          min-height: 0;
           line-height: 0;
+          text-decoration: none;
+          color: inherit;
+          margin-right: 6px;
         }
 
-        .brand-logo__img {
+        .site-header__logo-link .logo {
           display: block;
-          width: auto;
-          height: 100%;
-          max-height: 100%;
-          max-width: min(240px, 52vw);
+          width: 224px;
+          height: 50px;
+          max-width: min(224px, 52vw);
           object-fit: contain;
           object-position: left center;
         }
 
-        .brand-divider {
+        .site-header__divider {
           flex-shrink: 0;
-          width: 3px;
-          border-radius: 2px;
-          align-self: stretch;
-          min-height: 52px;
-          margin: 1px 0;
-          background: rgba(233, 84, 101, 0.55);
+          width: 2px;
+          height: 26px;
+          align-self: center;
+          background: #c01846;
+          margin-right: 10px;
         }
 
-        .header-text-cluster {
+        .site-header__copy {
+          flex: 0 1 auto;
           display: flex;
-          flex: 1 1 auto;
           flex-direction: column;
-          justify-content: center;
           align-items: flex-start;
-          align-self: stretch;
-          gap: 3px;
+          justify-content: center;
+          gap: 2px;
           min-width: 0;
-          width: auto;
         }
 
-        .header-text-cluster .license-link {
-          display: inline-block;
-          max-width: 100%;
+        .site-header__title {
+          margin: 0;
+          color: #f95868;
+          font-size: clamp(15px, 4.4vw, 18px);
+          font-weight: 600;
+          line-height: 1.25;
+          letter-spacing: 0.01em;
+          white-space: nowrap;
           text-align: left;
+          max-width: 100%;
+        }
+
+        .license-number {
+          flex-shrink: 0;
+          color: #0056c7;
+          font-weight: 400;
+          font-size: clamp(11px, 3.05vw, 13px);
+          line-height: 1.35;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-size: clamp(11px, 3.2vw, 15px);
-          line-height: 22px;
-        }
-
-        .page-title {
-          margin: 0;
-          color: #f95868;
-          font-size: 20px;
-          font-weight: 500;
-          line-height: 28px;
-          letter-spacing: 0.01em;
-          white-space: normal;
-        }
-
-        .license-link {
-          color: #0056c7;
-          font-weight: 400;
+          max-width: 100%;
+          text-align: left;
         }
 
         .success-stage {
@@ -1473,24 +2238,66 @@
           padding-left: 28px;
         }
       }
+
+      /* 約 357px 寬手機：單列橫排、縮小 logo、標題區雙行 */
+      @media (max-width: 420px) {
+        .site-header__inner {
+          gap: 0;
+          padding: 8px max(10px, env(safe-area-inset-left)) 10px max(10px, env(safe-area-inset-right));
+          align-items: center;
+        }
+
+        .site-header__logo-link {
+          margin-right: 5px;
+        }
+
+        .site-header__divider {
+          margin-right: 6px;
+        }
+
+        .site-header__logo-link .logo {
+          width: auto;
+          max-width: 118px;
+          height: auto;
+          max-height: 34px;
+        }
+
+        .site-header__divider {
+          height: 22px;
+        }
+
+        .site-header__copy {
+          gap: 1px;
+        }
+
+        .site-header__copy .site-header__title {
+          font-size: 14px;
+          letter-spacing: 0;
+        }
+
+        .site-header__copy .license-number {
+          font-size: 11px;
+          letter-spacing: -0.02em;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="site-header" role="banner">
       <div class="site-header__inner">
-        <a href="#" class="brand-logo" aria-label="口袋證券首頁">
+        <a href="#" class="site-header__logo-link" aria-label="口袋證券首頁">
           <img
-            class="brand-logo__img"
-            src="images.png"
-            width="220"
-            height="46"
+            class="logo"
+            src="assets/logo-pocket.png"
+            width="224"
+            height="50"
             alt="口袋證券"
           />
         </a>
-        <span class="brand-divider" aria-hidden="true"></span>
-        <div class="header-text-cluster">
-          <h1 class="page-title" id="pageTitleText">線上開戶</h1>
-          <a class="license-link" href="#">金管會證總字第0047號</a>
+        <div class="site-header__divider" aria-hidden="true"></div>
+        <div class="site-header__copy">
+          <h1 class="site-header__title" id="pageTitleText">線上開戶</h1>
+          <a class="license-number" href="#">115年金管證總字第0001號</a>
         </div>
       </div>
     </header>
@@ -1543,41 +2350,27 @@
               <!-- 1 證件影像 -->
               <section class="onboard-section" id="sec-id-images" aria-labelledby="h-id-img">
                 <div class="onboard-section__head" style="border-bottom: none; padding-bottom: 0">
-                  <button
-                    type="button"
-                    class="collapsible-btn"
-                    id="btnIdPreviewToggle"
-                    aria-expanded="true"
-                    aria-controls="idPreviewPanel"
-                  >
-                    <h3 class="onboard-section__title" id="h-id-img" style="font-size: 17px">
-                      證件影像預覽
-                    </h3>
-                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-                      <path
-                        fill="currentColor"
-                        d="M7 10l5 5 5-5H7z"
-                      />
-                    </svg>
-                  </button>
+                  <h3 class="onboard-section__title" id="h-id-img" style="font-size: 17px">
+                    證件影像預覽
+                  </h3>
                 </div>
                 <div class="onboard-section__body" id="idPreviewPanel">
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-front.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證正面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-back.jpg" alt="身分證反面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證反面</figcaption>
                     </figure>
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="第二證件預覽" width="400" height="252" loading="lazy" />
+                        <img src="assets/id-second.jpg" alt="第二證件預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>第二證件</figcaption>
                     </figure>
@@ -1618,10 +2411,10 @@
                     </div>
                   </div>
                   <div class="btn-row">
-                    <button type="button" class="btn btn--primary" id="btnBankVerify">立即驗證</button>
+                    <button type="button" class="btn-pill-primary btn-pill-primary--w343" id="btnBankVerify">立即驗證</button>
                   </div>
                   <div class="bank-result callout callout--success" id="bankOk" role="status">
-                    銀行帳戶已通過驗證，可繼續填寫後續資料。
+                    銀行驗證已通過驗證，請繼續填寫後續資料
                   </div>
                   <div class="bank-result callout callout--warn" id="bankFailInline" role="status" style="display: none">
                     銀行驗證未通過，請依彈窗完成手持身分證自拍補件。
@@ -1763,7 +2556,7 @@
                   </div>
                 </section>
 
-                <!-- 5 徵信 Chips -->
+                <!-- 5 徵信（開戶目的為 chip，其餘為下拉） -->
                 <section class="onboard-section" id="sec-kyc" aria-labelledby="h-kyc">
                   <div class="onboard-section__head">
                     <h3 class="onboard-section__title" id="h-kyc">填寫徵信</h3>
@@ -1810,21 +2603,27 @@
                       <input type="checkbox" id="agreeCrs" name="agreeCrs" class="legal-hidden-inputs" tabindex="-1" />
                     </div>
                     <div class="sig-wrap">
-                      <label for="sigCanvas">手寫簽名</label>
-                      <span class="field-hint" id="sigHint">請於下方簽名。</span>
-                      <canvas
-                        class="sig-canvas"
-                        id="sigCanvas"
-                        width="720"
-                        height="200"
-                        aria-describedby="sigHint"
-                      ></canvas>
-                      <div class="btn-row">
-                        <button type="button" class="btn btn--secondary" id="btnClearSig">清除簽名</button>
+                      <div class="sig-wrap__label-row">
+                        <label for="sigCanvas">手寫簽名</label>
+                        <span class="sig-wrap__note" id="sigHint">
+                          請在下方框內簽署您的姓名（請簽署中文）
+                        </span>
                       </div>
-                    </div>
-                    <div class="btn-row" style="margin-top: 24px">
-                      <button type="button" class="btn btn--primary" id="btnSubmit">確認送出開戶申請</button>
+                      <div class="sig-canvas-shell">
+                        <canvas
+                          class="sig-canvas"
+                          id="sigCanvas"
+                          width="800"
+                          height="160"
+                          aria-describedby="sigHint"
+                        ></canvas>
+                      </div>
+                      <div class="sig-actions" role="group" aria-label="簽名操作">
+                        <button type="button" class="btn-pill-outline btn-pill-outline--w343" id="btnClearSig">
+                          重新簽名
+                        </button>
+                        <button type="button" class="btn-pill-style2" id="btnSubmit">儲存送出</button>
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -1871,6 +2670,39 @@
                 <li>檔案大小不超過 5MB</li>
               </ul>
             </div>
+            <div class="bank-qr-method" aria-labelledby="bankQrMethodHeading">
+              <h3 class="bank-qr-method__heading" id="bankQrMethodHeading">方法一：手機掃描 QR Code 上傳</h3>
+              <div class="bank-qr-card" id="bankQrCard">
+                <div class="bank-qr-card__inner">
+                  <div class="bank-qr-card__qr">
+                    <img
+                      id="bankFailQrImg"
+                      width="148"
+                      height="148"
+                      alt="手機上傳專用 QR Code"
+                      decoding="async"
+                    />
+                    <span class="bank-qr-expiry" id="bankQrExpiryBadge" role="status" aria-live="polite"
+                      >--:-- 後過期</span>
+                  </div>
+                  <div class="bank-qr-card__steps">
+                    <p class="bank-qr-steps-title">使用步驟：</p>
+                    <ol class="bank-qr-steps-list">
+                      <li>使用手機相機或 QR Code 掃描器掃描 QR Code</li>
+                      <li>在手機上開啟上傳頁面</li>
+                      <li>拍攝或選擇要上傳的證件照片</li>
+                      <li>確認上傳完成</li>
+                    </ol>
+                    <div class="bank-qr-demo-row">
+                      <button type="button" class="bank-qr-demo-sync" id="btnBankQrDemoSync">
+                        示範：模擬手機已同步至電腦
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="modal-upload-method__heading">方法二：本機上傳檔案</p>
             <div class="modal-upload">
               <div class="upload-zone" id="modalUploadHost">
                 <input
@@ -1895,42 +2727,106 @@
                   <div class="upload-zone__title">點擊上傳自拍照</div>
                   <div class="modal-upload__sub">或將檔案拖放到此區域</div>
                 </div>
+                <div
+                  class="modal-upload-zone__preview"
+                  id="modalSelfiePreviewWrap"
+                  hidden
+                  aria-hidden="true"
+                >
+                  <img id="modalSelfiePreview" alt="" />
+                  <div class="modal-upload-zone__caption" id="modalSelfiePreviewCaption"></div>
+                </div>
               </div>
               <p class="field-hint" id="modalSelfieStatus" aria-live="polite"></p>
             </div>
-            <div class="main-modal__actions">
+            <div class="main-modal__actions main-modal__actions--pair">
               <button type="button" class="btn btn--outline" id="btnBankModalCancel">取消</button>
-              <button type="button" class="btn btn--coral" id="btnBankModalConfirm">確認上傳</button>
+              <button type="button" class="btn-pill-primary" id="btnModalSelfieSubmit" hidden>
+                確認送出
+              </button>
             </div>
             <p class="main-modal__foot">
               您的上傳資料將用於身份驗證，並遵循相關隱私政策。
             </p>
           </div>
         </div>
+
+        <div
+          id="cropSheetOverlay"
+          class="crop-sheet-overlay"
+          hidden
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cropSheetTitle"
+        >
+          <div class="crop-sheet">
+            <div class="crop-sheet__top">
+              <h2 class="crop-sheet__title" id="cropSheetTitle">裁切圖片</h2>
+              <button type="button" class="main-modal__close" id="btnCropSheetClose" aria-label="關閉">
+                ×
+              </button>
+            </div>
+            <div class="crop-sheet__stage" id="cropSheetStage">
+              <div class="crop-sheet__img-wrap" id="cropSheetImgWrap">
+                <img id="cropSheetImg" class="crop-sheet__img" alt="" draggable="false" />
+                <div class="crop-sheet__layer">
+                  <div class="crop-sheet__box" id="cropSheetBox">
+                    <span class="crop-sheet__handle" data-h="nw" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="n" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="ne" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="e" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="se" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="s" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="sw" aria-hidden="true"></span>
+                    <span class="crop-sheet__handle" data-h="w" aria-hidden="true"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="crop-sheet__hint">請移動虛線框進行裁切</p>
+            <div class="crop-sheet__actions" role="group" aria-label="裁切視窗操作">
+              <button type="button" class="btn-pill-style3" id="btnCropSheetRotateL">向左旋轉</button>
+              <button type="button" class="btn-pill-style3" id="btnCropSheetRotateR">向右旋轉</button>
+              <button type="button" class="btn-pill-style3" id="btnCropSheetReupload">重新上傳</button>
+              <button type="button" class="btn-pill-primary" id="btnCropSheetConfirm">確認送出</button>
+            </div>
+          </div>
+        </div>
         </div>
 
         <div id="successPanel" class="success-stage" hidden aria-hidden="true">
           <div class="success-card">
-            <h2 class="success-card__title" id="successHeading" tabindex="-1">您已成功送件申請！</h2>
-            <p class="success-card__body">
-              口袋證券已收到您的開戶申請文件，審查人員正在檢核中，還請您稍作等待。預計兩小時開戶完成後，將以簡訊及
-              Email 通知。
-            </p>
+            <h2 class="success-card__title" id="successHeading" tabindex="-1">開戶申請成功！</h2>
+            <div class="success-card__intro">
+              <p class="success-card__body">口袋證券已收到您的資料，我們會以最快速度完成審核。</p>
+              <p class="success-card__body">
+                開戶通過後，將以 Email + 簡訊通知您，引導您第一次下單前相關操作。
+              </p>
+              <p class="success-card__body">感謝您選擇口袋證券，很快就能和您一起開始投資旅程！</p>
+            </div>
             <div class="success-card__qr">
               <img
                 id="successQrImg"
                 width="200"
                 height="200"
-                alt="加入官方 Line 之 QR Code"
+                alt="加入 LINE 官方帳號 @popo6620 之 QR Code"
               />
               <div id="successQrFallback" class="success-card__qr-fallback" aria-hidden="true">
                 QR<br />示意<br /><span class="success-card__qr-fallback__hint">（外部服務無法載入）</span>
               </div>
             </div>
             <p class="success-card__qr-note" id="successQrNote"></p>
-            <p class="success-card__line">
-              立即加入 Line 官方帳號：<strong>@popo6620</strong><br />
-              讓您快速掌握最新活動與資訊，感謝您選擇口袋證券！
+            <p class="success-card__line success-card__line--join">
+              <a
+                class="success-card__line-link"
+                href="https://line.me/R/ti/p/@popo6620"
+                target="_blank"
+                rel="noopener noreferrer"
+                >點此立即加入</a>
+              → <span class="success-card__accent">LINE官方帳號@popo6620</span>
+            </p>
+            <p class="success-card__line success-card__line--sub">
+              查看開戶進度/下載APP/開通交易功能/新手操作教學
             </p>
             <a class="btn-home" href="#" id="btnSuccessHome">返回首頁</a>
           </div>
@@ -1975,21 +2871,655 @@
           setPostBankLocked(!ok);
         }
 
-        /* —— A 摺疊 —— */
-        var idToggle = $("btnIdPreviewToggle");
-        var idPanel = $("idPreviewPanel");
-        if (idToggle && idPanel) {
-          idToggle.addEventListener("click", function () {
-            var open = idToggle.getAttribute("aria-expanded") === "true";
-            idToggle.setAttribute("aria-expanded", open ? "false" : "true");
-            idPanel.hidden = open;
-          });
-        }
-
         /* —— B 銀行驗證與彈窗 —— */
         var overlay = $("bankFailOverlay");
         var modalSelfie = $("modalSelfieInput");
         var modalStatus = $("modalSelfieStatus");
+        var modalSelfiePreviewUrl = "";
+        var modalProcessedBlob = null;
+        var modalProcessedName = "";
+
+        var bankQrCountdownTimer = null;
+        var bankQrExpireAt = 0;
+        var bankQrSessionToken = "";
+
+        function setModalToolbarVisible(visible) {
+          var submitBtn = $("btnModalSelfieSubmit");
+          if (!submitBtn) return;
+          submitBtn.hidden = !visible;
+        }
+
+        function modalJpegFileName(origName) {
+          var base = origName || "photo.jpg";
+          if (/\.png$/i.test(base)) return base.replace(/\.png$/i, ".jpg");
+          if (/\.jpe?g$/i.test(base)) return base;
+          var cut = base.replace(/\.[^.]+$/, "");
+          return (cut || "photo") + ".jpg";
+        }
+
+        function getModalSubmitFile() {
+          if (modalProcessedBlob) {
+            return new File([modalProcessedBlob], modalProcessedName || "photo.jpg", {
+              type: modalProcessedBlob.type || "image/jpeg",
+              lastModified: Date.now(),
+            });
+          }
+          if (modalSelfie && modalSelfie.files && modalSelfie.files[0]) return modalSelfie.files[0];
+          return null;
+        }
+
+        var cropSheetOverlayEl = $("cropSheetOverlay");
+        var cropSheetOpen = false;
+        var cropSheetDrag = null;
+        var cropSheetWorkingUrl = null;
+        var cropSheetResizeTimer = 0;
+        var cropImgRect = {};
+        var cropBox = { l: 0, t: 0, w: 100, h: 100 };
+
+        function measureCropImgRect() {
+          var wrap = $("cropSheetImgWrap");
+          var img = $("cropSheetImg");
+          if (!wrap || !img || !img.naturalWidth) return;
+          var wr = wrap.getBoundingClientRect();
+          var ir = img.getBoundingClientRect();
+          cropImgRect.ox = ir.left - wr.left;
+          cropImgRect.oy = ir.top - wr.top;
+          cropImgRect.dw = ir.width;
+          cropImgRect.dh = ir.height;
+          cropImgRect.nw = img.naturalWidth;
+          cropImgRect.nh = img.naturalHeight;
+          cropImgRect.scale = ir.width / img.naturalWidth;
+        }
+
+        function clampCropBox() {
+          measureCropImgRect();
+          var ox = cropImgRect.ox,
+            oy = cropImgRect.oy,
+            dw = cropImgRect.dw,
+            dh = cropImgRect.dh;
+          if (!(dw && dh)) return;
+          var ix1 = ox + dw,
+            iy1 = oy + dh;
+          var MIN_W = Math.min(Math.max(dw * 0.06, 28), dw * 0.98);
+          var MIN_H = Math.min(Math.max(dh * 0.06, 28), dh * 0.98);
+          cropBox.l = Math.min(Math.max(cropBox.l, ox), ix1 - MIN_W);
+          cropBox.t = Math.min(Math.max(cropBox.t, oy), iy1 - MIN_H);
+          cropBox.w = Math.max(MIN_W, Math.min(cropBox.w, ix1 - cropBox.l));
+          cropBox.h = Math.max(MIN_H, Math.min(cropBox.h, iy1 - cropBox.t));
+        }
+
+        function resetCropBoxDefault() {
+          measureCropImgRect();
+          var ox = cropImgRect.ox,
+            oy = cropImgRect.oy,
+            dw = cropImgRect.dw,
+            dh = cropImgRect.dh;
+          if (!(dw && dh)) return;
+          cropBox.w = Math.max(48, dw * 0.85);
+          cropBox.h = Math.max(48, dh * 0.85);
+          cropBox.l = ox + (dw - cropBox.w) / 2;
+          cropBox.t = oy + (dh - cropBox.h) / 2;
+          clampCropBox();
+        }
+
+        function syncCropBoxToDom() {
+          var boxEl = $("cropSheetBox");
+          if (!boxEl) return;
+          boxEl.style.left = cropBox.l + "px";
+          boxEl.style.top = cropBox.t + "px";
+          boxEl.style.width = cropBox.w + "px";
+          boxEl.style.height = cropBox.h + "px";
+        }
+
+        function resizeCropBoxByHandle(handle, dx, dy, sb) {
+          measureCropImgRect();
+          var ox = cropImgRect.ox,
+            oy = cropImgRect.oy,
+            dw = cropImgRect.dw,
+            dh = cropImgRect.dh;
+          var ix1 = ox + dw,
+            iy1 = oy + dh;
+          var MIN_W = Math.min(Math.max(dw * 0.06, 28), dw * 0.98);
+          var MIN_H = Math.min(Math.max(dh * 0.06, 28), dh * 0.98);
+          var sl = sb.l,
+            st = sb.t,
+            sw = sb.w,
+            sh = sb.h;
+          var fr = sl + sw,
+            fb = st + sh;
+          var l,
+            t,
+            w,
+            h;
+          switch (handle) {
+            case "nw": {
+              var nl = sl + dx;
+              var nt = st + dy;
+              nl = Math.min(Math.max(nl, ox), fr - MIN_W);
+              nt = Math.min(Math.max(nt, oy), fb - MIN_H);
+              l = nl;
+              t = nt;
+              w = fr - nl;
+              h = fb - nt;
+              break;
+            }
+            case "n": {
+              var nt1 = st + dy;
+              nt1 = Math.min(Math.max(nt1, oy), fb - MIN_H);
+              l = sl;
+              t = nt1;
+              w = sw;
+              h = fb - nt1;
+              break;
+            }
+            case "ne": {
+              var nr = Math.min(Math.max(fr + dx, sl + MIN_W), ix1);
+              var nt2 = st + dy;
+              nt2 = Math.min(Math.max(nt2, oy), fb - MIN_H);
+              l = sl;
+              t = nt2;
+              w = nr - sl;
+              h = fb - nt2;
+              break;
+            }
+            case "e": {
+              var nr2 = Math.min(Math.max(fr + dx, sl + MIN_W), ix1);
+              l = sl;
+              t = st;
+              w = nr2 - sl;
+              h = sh;
+              break;
+            }
+            case "se": {
+              var nr3 = Math.min(Math.max(fr + dx, sl + MIN_W), ix1);
+              var nb = Math.min(Math.max(fb + dy, st + MIN_H), iy1);
+              l = sl;
+              t = st;
+              w = nr3 - sl;
+              h = nb - st;
+              break;
+            }
+            case "s": {
+              var nb2 = Math.min(Math.max(fb + dy, st + MIN_H), iy1);
+              l = sl;
+              t = st;
+              w = sw;
+              h = nb2 - st;
+              break;
+            }
+            case "sw": {
+              var nl2 = Math.min(Math.max(sl + dx, ox), fr - MIN_W);
+              var nb3 = Math.min(Math.max(fb + dy, st + MIN_H), iy1);
+              l = nl2;
+              t = st;
+              w = fr - nl2;
+              h = nb3 - st;
+              break;
+            }
+            case "w": {
+              var nl3 = Math.min(Math.max(sl + dx, ox), fr - MIN_W);
+              l = nl3;
+              t = st;
+              w = fr - nl3;
+              h = sh;
+              break;
+            }
+            default:
+              return;
+          }
+          cropBox.l = l;
+          cropBox.t = t;
+          cropBox.w = w;
+          cropBox.h = h;
+          clampCropBox();
+        }
+
+        function layoutCropSheetBox() {
+          if (!cropSheetOpen) return;
+          measureCropImgRect();
+          clampCropBox();
+          syncCropBoxToDom();
+        }
+
+        function endCropSheetDrag() {
+          cropSheetDrag = null;
+          var boxEl = $("cropSheetBox");
+          if (boxEl) boxEl.classList.remove("is-resizing");
+        }
+
+        function closeCropSheet(skipToolbarRestore) {
+          cropSheetOpen = false;
+          cropSheetDrag = null;
+          endCropSheetDrag();
+          var ci = $("cropSheetImg");
+          if (cropSheetOverlayEl) cropSheetOverlayEl.hidden = true;
+          if (ci) {
+            ci.onload = null;
+            ci.removeAttribute("src");
+          }
+          if (cropSheetWorkingUrl) {
+            try {
+              URL.revokeObjectURL(cropSheetWorkingUrl);
+            } catch (e2) {}
+            cropSheetWorkingUrl = null;
+          }
+          if (!skipToolbarRestore) {
+            var pw = $("modalSelfiePreviewWrap");
+            if (pw && !pw.hidden && modalSelfiePreviewUrl) setModalToolbarVisible(true);
+          }
+        }
+
+        function openCropSheet() {
+          var prev = $("modalSelfiePreview");
+          var ci = $("cropSheetImg");
+          if (!prev || !prev.src || !/^blob:/.test(prev.src) || !ci || !cropSheetOverlayEl) return;
+          closeCropSheet(true);
+          cropSheetOpen = true;
+          setModalToolbarVisible(false);
+          cropSheetOverlayEl.hidden = false;
+          function afterLoad() {
+            if (!(ci.naturalWidth && cropSheetOpen)) return;
+            resetCropBoxDefault();
+            syncCropBoxToDom();
+          }
+          ci.onload = afterLoad;
+          ci.src = prev.src;
+          if (ci.complete && ci.naturalWidth) afterLoad();
+        }
+
+        function applyCropSheetConfirm() {
+          var img = $("cropSheetImg");
+          if (!img || !img.naturalWidth || !cropSheetOpen) return;
+          measureCropImgRect();
+          if (!cropImgRect.scale) return;
+          clampCropBox();
+          var ox = cropImgRect.ox,
+            oy = cropImgRect.oy,
+            scale = cropImgRect.scale;
+          var sx = (cropBox.l - ox) / scale;
+          var sy = (cropBox.t - oy) / scale;
+          var sw = cropBox.w / scale;
+          var sh = cropBox.h / scale;
+          var nw = img.naturalWidth,
+            nh = img.naturalHeight;
+          sx = Math.max(0, Math.min(nw - 1e-6, Math.round(sx)));
+          sy = Math.max(0, Math.min(nh - 1e-6, Math.round(sy)));
+          sw = Math.max(1, Math.min(nw - sx, Math.round(sw)));
+          sh = Math.max(1, Math.min(nh - sy, Math.round(sh)));
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var outW = Math.floor(sw * dpr);
+          var outH = Math.floor(sh * dpr);
+          var canvas = document.createElement("canvas");
+          canvas.width = outW;
+          canvas.height = outH;
+          var ctx = canvas.getContext("2d");
+          if (!ctx) return;
+          ctx.scale(dpr, dpr);
+          ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+          canvas.toBlob(
+            function (blob) {
+              if (!blob) return;
+              var base =
+                modalProcessedName ||
+                (modalSelfie.files[0] && modalSelfie.files[0].name) ||
+                "photo.jpg";
+              var jpgName = modalJpegFileName(base);
+              modalProcessedBlob = blob;
+              modalProcessedName = jpgName;
+              if (modalSelfiePreviewUrl) {
+                try {
+                  URL.revokeObjectURL(modalSelfiePreviewUrl);
+                } catch (e3) {}
+              }
+              modalSelfiePreviewUrl = URL.createObjectURL(blob);
+              var prevImg = $("modalSelfiePreview");
+              if (prevImg) {
+                prevImg.src = modalSelfiePreviewUrl;
+                prevImg.alt = "手持證件自拍預覽：" + jpgName;
+              }
+              var cap = $("modalSelfiePreviewCaption");
+              if (cap) cap.textContent = jpgName;
+              if (modalStatus) modalStatus.textContent = "已選擇：" + jpgName;
+              closeCropSheet(true);
+              setModalToolbarVisible(true);
+            },
+            "image/jpeg",
+            0.92
+          );
+        }
+
+        function cropSheetRotateBy(deltaDeg) {
+          var ci = $("cropSheetImg");
+          var src = ci && ci.src;
+          if (!src || !cropSheetOpen) return;
+          var im = new Image();
+          im.onload = function () {
+            var w = im.naturalWidth;
+            var h = im.naturalHeight;
+            if (!w || !h) return;
+            var cw = Math.abs(deltaDeg) === 180 ? w : h;
+            var ch = Math.abs(deltaDeg) === 180 ? h : w;
+            var canvas = document.createElement("canvas");
+            canvas.width = cw;
+            canvas.height = ch;
+            var ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            ctx.translate(cw / 2, ch / 2);
+            ctx.rotate((deltaDeg * Math.PI) / 180);
+            ctx.drawImage(im, -w / 2, -h / 2);
+            canvas.toBlob(
+              function (blob) {
+                if (!blob || !ci || !cropSheetOpen) return;
+                try {
+                  if (cropSheetWorkingUrl) URL.revokeObjectURL(cropSheetWorkingUrl);
+                } catch (e4) {}
+                cropSheetWorkingUrl = URL.createObjectURL(blob);
+                function afterRotateLayout() {
+                  if (!cropSheetOpen) return;
+                  resetCropBoxDefault();
+                  syncCropBoxToDom();
+                }
+                ci.onload = afterRotateLayout;
+                ci.src = cropSheetWorkingUrl;
+                if (ci.complete && ci.naturalWidth) afterRotateLayout();
+              },
+              "image/jpeg",
+              0.92
+            );
+          };
+          im.onerror = function () {};
+          im.src = src;
+        }
+
+        (function setupCropSheetInteractions() {
+          var box = $("cropSheetBox");
+          if (!box) return;
+
+          box.addEventListener("mousedown", function (e) {
+            if (!cropSheetOpen || e.button !== 0) return;
+            var hdl = e.target && e.target.closest ? e.target.closest(".crop-sheet__handle[data-h]") : null;
+            var hKey = hdl && hdl.getAttribute("data-h");
+            if (hKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              measureCropImgRect();
+              cropSheetDrag = {
+                type: "resize",
+                h: hKey,
+                sx: e.clientX,
+                sy: e.clientY,
+                startBox: { l: cropBox.l, t: cropBox.t, w: cropBox.w, h: cropBox.h },
+              };
+              box.classList.add("is-resizing");
+              return;
+            }
+            if (e.target !== box) return;
+            e.preventDefault();
+            cropSheetDrag = {
+              type: "move",
+              sx: e.clientX,
+              sy: e.clientY,
+              bl: cropBox.l,
+              bt: cropBox.t,
+            };
+          });
+
+          box.addEventListener(
+            "touchstart",
+            function (e) {
+              if (!cropSheetOpen || !e.touches[0]) return;
+              var ev = e.touches[0];
+              var tg = e.target;
+              var hdl2 = tg && tg.closest ? tg.closest(".crop-sheet__handle[data-h]") : null;
+              var hKey2 = hdl2 && hdl2.getAttribute("data-h");
+              if (hKey2) {
+                e.preventDefault();
+                measureCropImgRect();
+                cropSheetDrag = {
+                  type: "resize",
+                  h: hKey2,
+                  sx: ev.clientX,
+                  sy: ev.clientY,
+                  startBox: { l: cropBox.l, t: cropBox.t, w: cropBox.w, h: cropBox.h },
+                };
+                box.classList.add("is-resizing");
+                return;
+              }
+              if (tg !== box) return;
+              e.preventDefault();
+              cropSheetDrag = {
+                type: "move",
+                sx: ev.clientX,
+                sy: ev.clientY,
+                bl: cropBox.l,
+                bt: cropBox.t,
+              };
+            },
+            { passive: false }
+          );
+
+          function moveCropPointer(clientX, clientY) {
+            if (!cropSheetDrag || !cropSheetOpen) return;
+            if (cropSheetDrag.type === "move") {
+              cropBox.l = cropSheetDrag.bl + (clientX - cropSheetDrag.sx);
+              cropBox.t = cropSheetDrag.bt + (clientY - cropSheetDrag.sy);
+              clampCropBox();
+            } else if (cropSheetDrag.type === "resize") {
+              var dx = clientX - cropSheetDrag.sx;
+              var dy = clientY - cropSheetDrag.sy;
+              resizeCropBoxByHandle(cropSheetDrag.h, dx, dy, cropSheetDrag.startBox);
+            }
+            syncCropBoxToDom();
+          }
+
+          window.addEventListener("mousemove", function (e) {
+            moveCropPointer(e.clientX, e.clientY);
+          });
+          window.addEventListener("mouseup", endCropSheetDrag);
+          window.addEventListener(
+            "touchmove",
+            function (e) {
+              if (!cropSheetDrag || !cropSheetOpen || !e.touches[0]) return;
+              e.preventDefault();
+              moveCropPointer(e.touches[0].clientX, e.touches[0].clientY);
+            },
+            { passive: false }
+          );
+          window.addEventListener("touchend", endCropSheetDrag);
+          window.addEventListener("touchcancel", endCropSheetDrag);
+
+          window.addEventListener("resize", function () {
+            if (!cropSheetOpen) return;
+            clearTimeout(cropSheetResizeTimer);
+            cropSheetResizeTimer = setTimeout(function () {
+              layoutCropSheetBox();
+            }, 80);
+          });
+        })();
+
+        var btnCropSheetClose = $("btnCropSheetClose");
+        if (btnCropSheetClose) {
+          btnCropSheetClose.addEventListener("click", function () {
+            closeCropSheet(false);
+          });
+        }
+        var btnCropSheetRotateL = $("btnCropSheetRotateL");
+        if (btnCropSheetRotateL) {
+          btnCropSheetRotateL.addEventListener("click", function () {
+            cropSheetRotateBy(-90);
+          });
+        }
+        var btnCropSheetRotateR = $("btnCropSheetRotateR");
+        if (btnCropSheetRotateR) {
+          btnCropSheetRotateR.addEventListener("click", function () {
+            cropSheetRotateBy(90);
+          });
+        }
+        var btnCropSheetReupload = $("btnCropSheetReupload");
+        if (btnCropSheetReupload && modalSelfie) {
+          btnCropSheetReupload.addEventListener("click", function () {
+            closeCropSheet(false);
+            modalSelfie.click();
+          });
+        }
+        var btnCropSheetConfirm = $("btnCropSheetConfirm");
+        if (btnCropSheetConfirm) {
+          btnCropSheetConfirm.addEventListener("click", applyCropSheetConfirm);
+        }
+        if (cropSheetOverlayEl) {
+          cropSheetOverlayEl.addEventListener("click", function (e) {
+            if (e.target === cropSheetOverlayEl) closeCropSheet(false);
+          });
+        }
+
+        function clearModalSelfiePreview() {
+          closeCropSheet(true);
+          if (modalSelfiePreviewUrl) {
+            try {
+              URL.revokeObjectURL(modalSelfiePreviewUrl);
+            } catch (e) {}
+            modalSelfiePreviewUrl = "";
+          }
+          var prevImg = $("modalSelfiePreview");
+          var prevWrap = $("modalSelfiePreviewWrap");
+          var cap = $("modalSelfiePreviewCaption");
+          if (prevImg) {
+            prevImg.removeAttribute("src");
+            prevImg.alt = "";
+          }
+          if (cap) cap.textContent = "";
+          if (prevWrap) {
+            prevWrap.hidden = true;
+            prevWrap.setAttribute("aria-hidden", "true");
+          }
+          var hostEl = $("modalUploadHost");
+          if (hostEl) hostEl.classList.remove("upload-zone--has-preview");
+          modalProcessedBlob = null;
+          modalProcessedName = "";
+          setModalToolbarVisible(false);
+        }
+
+        function updateModalSelfiePreviewFromInput() {
+          clearModalSelfiePreview();
+          if (!modalSelfie || !modalSelfie.files || !modalSelfie.files[0]) {
+            if (modalStatus) modalStatus.textContent = "";
+            return;
+          }
+          var f = modalSelfie.files[0];
+          if (modalStatus) modalStatus.textContent = "已選擇：" + f.name;
+          var mimeOk = /^image\/(jpeg|png|jpg)$/i.test(f.type);
+          var extOk = /\.(jpe?g|png)$/i.test(f.name || "");
+          if (!mimeOk && !extOk && f.type) return;
+          modalSelfiePreviewUrl = URL.createObjectURL(f);
+          var prevImg = $("modalSelfiePreview");
+          var prevWrap = $("modalSelfiePreviewWrap");
+          var cap = $("modalSelfiePreviewCaption");
+          var hostEl = $("modalUploadHost");
+          if (prevImg) {
+            prevImg.src = modalSelfiePreviewUrl;
+            prevImg.alt = "手持證件自拍預覽：" + f.name;
+          }
+          if (cap) cap.textContent = f.name;
+          if (prevWrap) {
+            prevWrap.hidden = false;
+            prevWrap.setAttribute("aria-hidden", "false");
+          }
+          if (hostEl) hostEl.classList.add("upload-zone--has-preview");
+          modalProcessedBlob = null;
+          modalProcessedName = f.name;
+          openCropSheet();
+        }
+
+        function bankQrPad2(n) {
+          return (n < 10 ? "0" : "") + n;
+        }
+
+        function stopBankFailQrSession() {
+          if (bankQrCountdownTimer) {
+            clearInterval(bankQrCountdownTimer);
+            bankQrCountdownTimer = null;
+          }
+        }
+
+        function tickBankQrExpiry() {
+          var badge = $("bankQrExpiryBadge");
+          var card = $("bankQrCard");
+          if (!badge) return;
+          var ms = bankQrExpireAt - Date.now();
+          if (ms <= 0) {
+            badge.textContent = "已過期";
+            if (card) card.classList.add("is-expired");
+            stopBankFailQrSession();
+            return;
+          }
+          if (card) card.classList.remove("is-expired");
+          var totalSec = Math.floor(ms / 1000);
+          var m = Math.floor(totalSec / 60);
+          var s = totalSec % 60;
+          badge.textContent = bankQrPad2(m) + ":" + bankQrPad2(s) + " 後過期";
+        }
+
+        function startBankFailQrSession() {
+          stopBankFailQrSession();
+          bankQrSessionToken =
+            Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 12);
+          var uploadUrl =
+            "https://example.com/pocket-handheld-upload?token=" + encodeURIComponent(bankQrSessionToken);
+          var img = $("bankFailQrImg");
+          var card = $("bankQrCard");
+          if (card) card.classList.remove("is-expired");
+          if (img) {
+            var qrApi =
+              "https://api.qrserver.com/v1/create-qr-code/?size=148x148&margin=4&ecc=M&data=" +
+              encodeURIComponent(uploadUrl);
+            img.src = qrApi;
+            img.alt = "掃描後於手機開啟上傳頁（示範連結）";
+          }
+          bankQrExpireAt = Date.now() + 10 * 60 * 1000;
+          tickBankQrExpiry();
+          bankQrCountdownTimer = setInterval(tickBankQrExpiry, 1000);
+        }
+
+        function demoBankQrSyncToPc() {
+          var c = document.createElement("canvas");
+          c.width = 640;
+          c.height = 360;
+          var x = c.getContext("2d");
+          if (!x) return;
+          x.fillStyle = "#f2f0f1";
+          x.fillRect(0, 0, 640, 360);
+          x.fillStyle = "#5c5656";
+          x.font = '600 20px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+          x.fillText("示範：模擬手機端已上傳之手持證件自拍", 52, 188);
+          c.toBlob(
+            function (blob) {
+              if (!blob) return;
+              clearModalSelfiePreview();
+              if (modalSelfie) modalSelfie.value = "";
+              if (modalStatus) modalStatus.textContent = "（示範）已從手機同步，請完成裁切與送出。";
+              modalSelfiePreviewUrl = URL.createObjectURL(blob);
+              var prevImg = $("modalSelfiePreview");
+              var prevWrap = $("modalSelfiePreviewWrap");
+              var cap = $("modalSelfiePreviewCaption");
+              var hostEl = $("modalUploadHost");
+              if (prevImg) {
+                prevImg.src = modalSelfiePreviewUrl;
+                prevImg.alt = "手持證件自拍預覽（示範）";
+              }
+              if (cap) cap.textContent = "mobile-handheld-sync.jpg";
+              if (prevWrap) {
+                prevWrap.hidden = false;
+                prevWrap.setAttribute("aria-hidden", "false");
+              }
+              if (hostEl) hostEl.classList.add("upload-zone--has-preview");
+              modalProcessedBlob = null;
+              modalProcessedName = "mobile-handheld-sync.jpg";
+              openCropSheet();
+            },
+            "image/jpeg",
+            0.88
+          );
+        }
 
         function openBankFailModal() {
           if (!overlay) return;
@@ -1997,23 +3527,35 @@
           bankFailModalOpen = true;
           if (modalStatus) modalStatus.textContent = "";
           if (modalSelfie) modalSelfie.value = "";
+          clearModalSelfiePreview();
+          startBankFailQrSession();
           var dm = $("bankFailModal");
           if (dm && dm.focus) dm.focus();
         }
 
         function closeBankFailModal() {
           if (!overlay) return;
+          stopBankFailQrSession();
           overlay.hidden = true;
           bankFailModalOpen = false;
+          if (modalSelfie) modalSelfie.value = "";
+          clearModalSelfiePreview();
+          if (modalStatus) modalStatus.textContent = "";
         }
 
         function validateModalFile() {
           if (!modalStatus) return false;
-          if (!modalSelfie || !modalSelfie.files || !modalSelfie.files[0]) {
+          var f = getModalSubmitFile();
+          if (!f) {
             modalStatus.textContent = "請先選擇 JPG 或 PNG 圖檔。";
             return false;
           }
-          var f = modalSelfie.files[0];
+          var mimeOk = /^image\/(jpeg|png|jpe?g)$/i.test(f.type || "");
+          var extOk = /\.(jpe?g|png)$/i.test(f.name || "");
+          if (!(mimeOk || extOk)) {
+            modalStatus.textContent = "請使用 JPG 或 PNG 格式。";
+            return false;
+          }
           if (f.size > 5 * 1024 * 1024) {
             modalStatus.textContent = "檔案大小不能超過 5MB。";
             return false;
@@ -2024,21 +3566,7 @@
         var btnBankVerify = $("btnBankVerify");
         if (btnBankVerify) {
           btnBankVerify.addEventListener("click", function () {
-            if (bankModuleOk) {
-              if (
-                !confirm(
-                  "您已完成銀行核身。確定要重新驗證？確認後將清除已通過狀態，並須再次驗證成功才能填寫後續資料。"
-                )
-              )
-                return;
-              bankModuleOk = false;
-              handheldOk = false;
-              $("bankOk").classList.remove("is-visible");
-              var inlineReset = $("bankFailInline");
-              if (inlineReset) inlineReset.style.display = "none";
-              refreshBankGate();
-              saveDraft();
-            }
+            if (btnBankVerify.disabled) return;
             var bn = $("bankNameInput");
             var ba = $("bankAccountInput");
             if (bn && !bn.checkValidity()) {
@@ -2057,12 +3585,14 @@
               if (inline) inline.style.display = "block";
               openBankFailModal();
               bankModuleOk = false;
+              btnBankVerify.disabled = false;
             } else {
               closeBankFailModal();
               $("bankOk").classList.add("is-visible");
               var inline2 = $("bankFailInline");
               if (inline2) inline2.style.display = "none";
               bankModuleOk = true;
+              btnBankVerify.disabled = true;
             }
             refreshBankGate();
             saveDraft();
@@ -2078,9 +3608,16 @@
         wireModalClose($("btnBankModalClose"));
         wireModalClose($("btnBankModalCancel"));
 
-        var btnModalOk = $("btnBankModalConfirm");
-        if (btnModalOk) {
-          btnModalOk.addEventListener("click", function () {
+        var btnBankQrDemoSync = $("btnBankQrDemoSync");
+        if (btnBankQrDemoSync) {
+          btnBankQrDemoSync.addEventListener("click", function () {
+            demoBankQrSyncToPc();
+          });
+        }
+
+        var btnModalSelfieSubmit = $("btnModalSelfieSubmit");
+        if (btnModalSelfieSubmit) {
+          btnModalSelfieSubmit.addEventListener("click", function () {
             if (!validateModalFile()) return;
             handheldOk = true;
             closeBankFailModal();
@@ -2089,6 +3626,8 @@
             if (inline3) inline3.style.display = "none";
             bankModuleOk = true;
             if (modalStatus) modalStatus.textContent = "";
+            var bvModal = $("btnBankVerify");
+            if (bvModal) bvModal.disabled = true;
             refreshBankGate();
             saveDraft();
           });
@@ -2101,17 +3640,19 @@
         }
 
         document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape" && overlay && !overlay.hidden) closeBankFailModal();
+          if (e.key !== "Escape") return;
+          if (cropSheetOverlayEl && !cropSheetOverlayEl.hidden) {
+            closeCropSheet(false);
+            return;
+          }
+          if (overlay && !overlay.hidden) closeBankFailModal();
         });
 
         /* 彈窗拖放 */
         var host = $("modalUploadHost");
         if (modalSelfie) {
           modalSelfie.addEventListener("change", function () {
-            if (!modalStatus) return;
-            if (modalSelfie.files && modalSelfie.files[0]) {
-              modalStatus.textContent = "已選擇：" + modalSelfie.files[0].name;
-            }
+            updateModalSelfiePreviewFromInput();
           });
         }
 
@@ -2139,138 +3680,244 @@
         var chipDefs = [
           {
             name: "kycPurpose",
+            ui: "chips",
             label: "開戶及投資目的",
             options: [
-              { v: "long", t: "長期理財" },
+              { v: "growth", t: "資產成長" },
+              { v: "education", t: "子女教育基金" },
               { v: "retire", t: "退休規劃" },
-              { v: "short", t: "短期交易" },
+              { v: "tax", t: "節稅規劃" },
+              { v: "transfer", t: "資產移轉" },
+              { v: "hedge", t: "避險" },
             ],
-            default: "long",
+            default: "growth",
           },
           {
             name: "kycIncome",
+            ui: "select",
             label: "個人年收入",
             options: [
-              { v: "50", t: "50 萬以下" },
-              { v: "100", t: "50–100 萬" },
-              { v: "200", t: "100–200 萬" },
-              { v: "more", t: "200 萬以上" },
+              { v: "inc_lt50", t: "50萬以下" },
+              { v: "inc_50_99", t: "50萬至99萬" },
+              { v: "inc_100_199", t: "100萬至199萬" },
+              { v: "inc_200_299", t: "200萬至299萬" },
+              { v: "inc_300_499", t: "300萬至499萬" },
+              { v: "inc_500_599", t: "500萬至599萬" },
+              { v: "inc_600_799", t: "600萬至799萬" },
+              { v: "inc_800_4999", t: "800萬至4999萬" },
+              { v: "inc_ge5000", t: "5000萬以上" },
             ],
-            default: "100",
+            default: "inc_lt50",
           },
           {
             name: "kycAsset",
+            ui: "select",
             label: "個人(公司)財產總值",
             options: [
-              { v: "100", t: "100 萬以下" },
-              { v: "300", t: "100–300 萬" },
-              { v: "1000", t: "300–1000 萬" },
-              { v: "more", t: "1000 萬以上" },
+              { v: "ast_lt300", t: "少於300萬" },
+              { v: "ast_300_499", t: "300萬至499萬" },
+              { v: "ast_500_999", t: "500萬至999萬" },
+              { v: "ast_1000_1499", t: "1000萬至1499萬" },
+              { v: "ast_1500_2999", t: "1500萬至2999萬" },
+              { v: "ast_3000_4999", t: "3000萬至4999萬" },
+              { v: "ast_5000_9999", t: "5000萬至9999萬" },
+              { v: "ast_ge100m", t: "1億以上" },
             ],
-            default: "300",
+            default: "ast_lt300",
           },
           {
             name: "kycLiquid",
+            ui: "select",
             label: "可隨時變現資產",
             options: [
-              { v: "30", t: "30 萬以下" },
-              { v: "100", t: "30–100 萬" },
-              { v: "300", t: "100–300 萬" },
-              { v: "more", t: "300 萬以上" },
+              { v: "liq_lt300", t: "少於300萬" },
+              { v: "liq_300_499", t: "300萬至499萬" },
+              { v: "liq_500_999", t: "500萬至999萬" },
+              { v: "liq_1000_1499", t: "1000萬至1499萬" },
+              { v: "liq_1500_2999", t: "1500萬至2999萬" },
+              { v: "liq_3000_4999", t: "3000萬至4999萬" },
+              { v: "liq_5000_9999", t: "5000萬至9999萬" },
+              { v: "liq_ge100m", t: "1億以上" },
             ],
-            default: "100",
+            default: "liq_lt300",
           },
           {
             name: "kycFund",
+            ui: "select",
             label: "投資資金來源",
             options: [
-              { v: "salary", t: "薪資所得" },
-              { v: "biz", t: "事業所得" },
-              { v: "inherit", t: "繼承" },
-              { v: "other", t: "其他" },
+              { v: "fund_salary", t: "薪水/固定收入" },
+              { v: "fund_pension", t: "退休金" },
+              { v: "fund_idle", t: "閒置資金" },
+              { v: "fund_inv", t: "投資收益" },
+              { v: "fund_otherf", t: "其他基金" },
+              { v: "fund_cotx", t: "公司轉入" },
+              { v: "fund_loan", t: "部份借貸" },
+              { v: "fund_family", t: "親友聚資" },
+              { v: "fund_corp", t: "公司資金" },
+              { v: "fund_inherit", t: "繼承/贈與" },
             ],
-            default: "salary",
+            default: "fund_salary",
           },
           {
             name: "kycExp",
+            ui: "select",
             label: "投資經歷",
             options: [
-              { v: "none", t: "無經驗" },
-              { v: "some", t: "偶有" },
-              { v: "freq", t: "頻繁" },
-              { v: "very", t: "非常頻繁" },
+              { v: "exp_new", t: "新開戶" },
+              { v: "exp_lt1y", t: "1年以下" },
+              { v: "exp_1_2y", t: "1年至2年" },
+              { v: "exp_2_5y", t: "2年至5年" },
+              { v: "exp_ge5y", t: "5年以上" },
             ],
-            default: "some",
+            default: "exp_new",
           },
           {
             name: "kycHorizon",
+            ui: "select",
             label: "投資期限",
             options: [
-              { v: "short", t: "短期" },
-              { v: "mid", t: "中期" },
-              { v: "long", t: "長期" },
+              { v: "h_short", t: "短期" },
+              { v: "h_mid", t: "中期" },
+              { v: "h_long", t: "長期" },
+              { v: "h_irregular", t: "不定期" },
             ],
-            default: "mid",
+            default: "h_short",
           },
           {
             name: "kycTrade",
+            ui: "select",
             label: "交易頻率",
             options: [
-              { v: "rare", t: "很少" },
-              { v: "some", t: "偶爾" },
-              { v: "often", t: "頻繁" },
+              { v: "t_daily", t: "每日" },
+              { v: "t_weekly", t: "每週" },
+              { v: "t_monthly", t: "每月" },
+              { v: "t_quarterly", t: "每季" },
+              { v: "t_halfyear", t: "半年" },
+              { v: "t_gty1y", t: "1年以上" },
             ],
-            default: "some",
+            default: "t_daily",
           },
           {
             name: "kycLimit",
+            ui: "text",
             label: "希望買賣額度",
-            options: [
-              { v: "50", t: "每筆 50 萬以下" },
-              { v: "200", t: "每筆 50–200 萬" },
-              { v: "more", t: "每筆 200 萬以上" },
-            ],
-            default: "200",
+            suffix: "萬元",
+            placeholder: "請輸入",
+            inputmode: "numeric",
+            default: "",
           },
         ];
 
         var root = $("chipGroupsRoot");
         if (root) {
           chipDefs.forEach(function (def) {
-            var wrap = document.createElement("div");
-            wrap.className = "chip-group";
-            var lab = document.createElement("div");
-            lab.className = "chip-group__label";
-            lab.textContent = def.label;
-            var row = document.createElement("div");
-            row.className = "chip-row";
-            row.setAttribute("role", "radiogroup");
-            row.setAttribute("aria-label", def.label);
-            var hid = document.createElement("input");
-            hid.type = "hidden";
-            hid.name = def.name;
-            hid.id = "hid_" + def.name;
-            hid.value = def.default;
-            def.options.forEach(function (opt) {
-              var b = document.createElement("button");
-              b.type = "button";
-              b.className = "chip" + (opt.v === def.default ? " is-selected" : "");
-              b.textContent = opt.t;
-              b.setAttribute("data-value", opt.v);
-              b.addEventListener("click", function () {
-                row.querySelectorAll(".chip").forEach(function (c) {
-                  c.classList.remove("is-selected");
+            var ui = def.ui || "select";
+            if (ui === "chips") {
+              var wrap = document.createElement("div");
+              wrap.className = "chip-group";
+              var lab = document.createElement("div");
+              lab.className = "chip-group__label";
+              lab.textContent = def.label;
+              var row = document.createElement("div");
+              row.className = "chip-row";
+              row.setAttribute("role", "radiogroup");
+              row.setAttribute("aria-label", def.label);
+              var hid = document.createElement("input");
+              hid.type = "hidden";
+              hid.name = def.name;
+              hid.id = "hid_" + def.name;
+              hid.value = def.default;
+              def.options.forEach(function (opt) {
+                var b = document.createElement("button");
+                b.type = "button";
+                b.className = "chip" + (opt.v === def.default ? " is-selected" : "");
+                b.textContent = opt.t;
+                b.setAttribute("data-value", opt.v);
+                b.addEventListener("click", function () {
+                  row.querySelectorAll(".chip").forEach(function (c) {
+                    c.classList.remove("is-selected");
+                  });
+                  b.classList.add("is-selected");
+                  hid.value = opt.v;
+                  saveDraft();
                 });
-                b.classList.add("is-selected");
-                hid.value = opt.v;
-                saveDraft();
+                row.appendChild(b);
               });
-              row.appendChild(b);
-            });
-            wrap.appendChild(lab);
-            wrap.appendChild(row);
-            wrap.appendChild(hid);
-            root.appendChild(wrap);
+              wrap.appendChild(lab);
+              wrap.appendChild(row);
+              wrap.appendChild(hid);
+              root.appendChild(wrap);
+            } else if (ui === "text") {
+              var twrap = document.createElement("div");
+              twrap.className = "field";
+              var tlbl = document.createElement("label");
+              tlbl.setAttribute("for", "inp_" + def.name);
+              tlbl.appendChild(document.createTextNode(def.label + " "));
+              var treq = document.createElement("span");
+              treq.className = "req";
+              treq.textContent = "*";
+              tlbl.appendChild(treq);
+              var inp = document.createElement("input");
+              inp.type = "text";
+              inp.id = "inp_" + def.name;
+              inp.name = def.name;
+              inp.required = true;
+              inp.autocomplete = "off";
+              inp.placeholder = def.placeholder || "";
+              if (def.inputmode) inp.setAttribute("inputmode", def.inputmode);
+              if (def.default) inp.value = def.default;
+              inp.addEventListener("input", saveDraft);
+              twrap.appendChild(tlbl);
+              if (def.suffix) {
+                var shell = document.createElement("div");
+                shell.className = "field-input-suffix";
+                var unit = document.createElement("span");
+                unit.className = "field-input-suffix__unit";
+                /* 後綴不顯示外層括號，例如「（萬元）」僅呈現「萬元」 */
+                var suffRaw = String(def.suffix || "").trim();
+                while (
+                  suffRaw.length >= 2 &&
+                  ((suffRaw.charAt(0) === "（" && suffRaw.charAt(suffRaw.length - 1) === "）") ||
+                    (suffRaw.charAt(0) === "(" && suffRaw.charAt(suffRaw.length - 1) === ")"))
+                ) {
+                  suffRaw = suffRaw.slice(1, -1).trim();
+                }
+                suffRaw = suffRaw.replace(/^（+|^\(+/g, "").replace(/）+$|\)+$/g, "").trim();
+                unit.textContent = suffRaw;
+                shell.appendChild(inp);
+                shell.appendChild(unit);
+                twrap.appendChild(shell);
+              } else {
+                twrap.appendChild(inp);
+              }
+              root.appendChild(twrap);
+            } else {
+              var fwrap = document.createElement("div");
+              fwrap.className = "field";
+              var lbl = document.createElement("label");
+              lbl.setAttribute("for", "sel_" + def.name);
+              lbl.appendChild(document.createTextNode(def.label + " "));
+              var req = document.createElement("span");
+              req.className = "req";
+              req.textContent = "*";
+              lbl.appendChild(req);
+              var sel = document.createElement("select");
+              sel.id = "sel_" + def.name;
+              sel.name = def.name;
+              sel.required = true;
+              def.options.forEach(function (opt) {
+                var o = document.createElement("option");
+                o.value = opt.v;
+                o.textContent = opt.t;
+                if (opt.v === def.default) o.selected = true;
+                sel.appendChild(o);
+              });
+              sel.addEventListener("change", saveDraft);
+              fwrap.appendChild(lbl);
+              fwrap.appendChild(sel);
+              root.appendChild(fwrap);
+            }
           });
         }
 
@@ -2366,6 +4013,7 @@
         var canvas = $("sigCanvas");
         var ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
         var drawing = false;
+        var sigShell = canvas && canvas.closest ? canvas.closest(".sig-canvas-shell") : null;
 
         function syncCtxStyle() {
           if (!ctx) return;
@@ -2374,9 +4022,35 @@
           ctx.lineCap = "round";
           ctx.strokeStyle = "#3e3a39";
         }
-        if (ctx) {
+
+        function fitSigCanvas() {
+          if (!canvas || !ctx || !sigShell) return;
+          var w = sigShell.clientWidth;
+          var h = sigShell.clientHeight;
+          if (w < 32 || h < 32) return;
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var bw = Math.floor(w * dpr);
+          var bh = Math.floor(h * dpr);
+          if (canvas.width === bw && canvas.height === bh) return;
+          canvas.width = bw;
+          canvas.height = bh;
           syncCtxStyle();
-          window.addEventListener("resize", syncCtxStyle);
+        }
+
+        var sigCanvasFitTimer;
+        function scheduleFitSigCanvas() {
+          clearTimeout(sigCanvasFitTimer);
+          sigCanvasFitTimer = setTimeout(fitSigCanvas, 50);
+        }
+
+        if (ctx) {
+          fitSigCanvas();
+          requestAnimationFrame(fitSigCanvas);
+          window.addEventListener("resize", scheduleFitSigCanvas);
+          if (typeof ResizeObserver !== "undefined" && sigShell) {
+            var sigRo = new ResizeObserver(scheduleFitSigCanvas);
+            sigRo.observe(sigShell);
+          }
         }
 
         function rect() {
@@ -2469,6 +4143,8 @@
           var failInline = $("bankFailInline");
           if (failInline) failInline.style.display = "none";
           closeBankFailModal();
+          var bvReset = $("btnBankVerify");
+          if (bvReset) bvReset.disabled = false;
           refreshBankGate();
         }
 
@@ -2479,6 +4155,16 @@
             var obj = JSON.parse(raw);
             Object.keys(obj).forEach(function (key) {
               if (key === "bankModuleOk" || key === "handheldOk") return;
+              /* 文件簽署：條款同意不從草稿還原，每次載入預設為未勾選 */
+              if (
+                key === "agreeAllLegals" ||
+                key === "agreeSec" ||
+                key === "agreeUsStock" ||
+                key === "agreeW8" ||
+                key === "agreeCrs"
+              ) {
+                return;
+              }
               var el = form.elements.namedItem(key);
               if (!el) return;
               if (el.type === "checkbox") {
@@ -2488,9 +4174,26 @@
               }
             });
             chipDefs.forEach(function (def) {
+              var ui = def.ui || "select";
+              if (ui === "select") {
+                var sel = $("sel_" + def.name);
+                if (!sel || obj[def.name] == null || obj[def.name] === "") return;
+                var ok = def.options.some(function (o) {
+                  return o.v === obj[def.name];
+                });
+                sel.value = ok ? obj[def.name] : def.default;
+                return;
+              }
+              if (ui === "text") {
+                return;
+              }
               var hid = $("hid_" + def.name);
               if (!hid || !obj[def.name]) return;
-              hid.value = obj[def.name];
+              var val = obj[def.name];
+              var okChip = def.options.some(function (o) {
+                return o.v === val;
+              });
+              hid.value = okChip ? val : def.default;
               var g = hid.previousElementSibling;
               if (!g) return;
               g.querySelectorAll(".chip").forEach(function (c) {
@@ -2704,7 +4407,7 @@
             });
           });
         }
-        var logo = hdr && hdr.querySelector(".brand-logo__img");
+        var logo = hdr && hdr.querySelector(".site-header__logo-link .logo");
         if (logo) {
           if (logo.complete) syncAppHeaderStack();
           else logo.addEventListener("load", syncAppHeaderStack);
