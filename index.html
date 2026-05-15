@@ -713,6 +713,92 @@
         background: #eeeeef;
       }
 
+      .field--address {
+        grid-template-rows: auto auto;
+        row-gap: 8px;
+        align-items: center;
+        min-height: 0;
+      }
+
+      /* 標籤：左欄 190px */
+      .field--address > .label {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 提示／同戶籍：右欄起點，與縣市下拉左緣對齊 */
+      .field--address .field-address-hint,
+      .field--address .field-same-as-reg {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+        justify-self: start;
+        margin: 0;
+        max-width: 540px;
+      }
+
+      .field--address .field-address-hint {
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text-muted);
+        line-height: 1.25;
+      }
+
+      .field--address .field-same-as-reg {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 1.25;
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .field--address .field-same-as-reg input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        min-height: 18px;
+        margin: 0;
+        flex-shrink: 0;
+        accent-color: var(--brand-red);
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      .field--address .address-inputs {
+        grid-column: 2;
+        grid-row: 2;
+        display: grid;
+        grid-template-columns: minmax(108px, 140px) minmax(108px, 140px) minmax(0, 1fr);
+        gap: 12px;
+        width: 100%;
+        max-width: 540px;
+        align-items: center;
+      }
+
+      .field--address .address-inputs select,
+      .field--address .address-inputs input[type="text"] {
+        grid-column: auto;
+        max-width: none;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .field--address .address-inputs select:disabled,
+      .field--address .address-inputs input:disabled {
+        background: #f5f5f5;
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+
       @media (max-width: 768px) {
         .field {
           grid-template-columns: 1fr;
@@ -740,6 +826,21 @@
           grid-column: 1;
           max-width: none;
           width: 100%;
+        }
+
+        .field--address > .label,
+        .field--address .field-address-hint,
+        .field--address .field-same-as-reg {
+          grid-column: 1;
+          grid-row: auto;
+          max-width: none;
+        }
+
+        .field--address .address-inputs {
+          grid-column: 1;
+          grid-row: auto;
+          max-width: none;
+          grid-template-columns: 1fr;
         }
 
         .field-input-suffix {
@@ -2355,7 +2456,7 @@
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
-                        <img src="230727111958421efc.png" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
+                        <img src="230727111958421efc.png.jpg" alt="身分證正面預覽" width="400" height="252" loading="lazy" />
                       </div>
                       <figcaption>身分證正面</figcaption>
                     </figure>
@@ -2451,13 +2552,50 @@
                         <label class="label" for="idBirth">出生年月日</label>
                         <input type="text" id="idBirth" name="idBirth" value="1985-06-15" disabled aria-readonly="true" />
                       </div>
-                      <div class="field">
-                        <label for="regAddress">戶籍地址 <span class="req">*</span></label>
-                        <textarea id="regAddress" name="regAddress" rows="1" required>臺北市大安區敦化南路二段216號10樓</textarea>
+                      <div class="field field--address">
+                        <label class="label" for="regCity">戶籍地址 <span class="req">*</span></label>
+                        <span class="field-address-hint">*需與身分證背面資料完全一致(包含鄰里)</span>
+                        <div class="address-inputs" role="group" aria-labelledby="regCity">
+                          <select id="regCity" name="regCity" required aria-label="戶籍地址縣市">
+                            <option value="">請選擇</option>
+                          </select>
+                          <select id="regDistrict" name="regDistrict" required disabled aria-label="戶籍地址行政區">
+                            <option value="">請選擇</option>
+                          </select>
+                          <input
+                            type="text"
+                            id="regAddressDetail"
+                            name="regAddressDetail"
+                            placeholder="請輸入地址"
+                            required
+                            value="敦化南路二段216號10樓"
+                            aria-label="戶籍地址詳細地址"
+                          />
+                        </div>
                       </div>
-                      <div class="field">
-                        <label for="mailAddress">通訊地址 <span class="req">*</span></label>
-                        <textarea id="mailAddress" name="mailAddress" rows="1" required>臺北市大安區敦化南路二段216號10樓</textarea>
+                      <div class="field field--address">
+                        <label class="label" for="mailCity">通訊地址 <span class="req">*</span></label>
+                        <label class="field-same-as-reg" for="mailSameAsReg">
+                          <input type="checkbox" id="mailSameAsReg" name="mailSameAsReg" />
+                          <span>同戶籍地址</span>
+                        </label>
+                        <div class="address-inputs" role="group" aria-labelledby="mailCity">
+                          <select id="mailCity" name="mailCity" required aria-label="通訊地址縣市">
+                            <option value="">請選擇</option>
+                          </select>
+                          <select id="mailDistrict" name="mailDistrict" required disabled aria-label="通訊地址行政區">
+                            <option value="">請選擇</option>
+                          </select>
+                          <input
+                            type="text"
+                            id="mailAddressDetail"
+                            name="mailAddressDetail"
+                            placeholder="請輸入地址"
+                            required
+                            value="敦化南路二段216號10樓"
+                            aria-label="通訊地址詳細地址"
+                          />
+                        </div>
                       </div>
                       <div class="field">
                         <label for="mobile">行動電話 <span class="req">*</span></label>
@@ -2878,6 +3016,7 @@
         </div>
       </footer>
     </div>
+    <script src="assets/taiwan-cities-districts.js"></script>
     <script>
       (function () {
         var STORAGE_KEY = "pocket_onboard_draft_v2";
@@ -2904,6 +3043,199 @@
           other:
             "其他(包括：電子/第三方支付服務、虛擬資產業、線上遊戲事業及二手汽車買賣)",
         };
+
+        var TAIWAN_ADDR = window.TAIWAN_CITIES_DISTRICTS || {};
+        var syncMailFromRegFn = null;
+
+        function getTaiwanCityList() {
+          return Object.keys(TAIWAN_ADDR);
+        }
+
+        function fillCitySelect(citySel) {
+          if (!citySel) return;
+          var current = citySel.value;
+          citySel.innerHTML = "";
+          var opt0 = document.createElement("option");
+          opt0.value = "";
+          opt0.textContent = "請選擇";
+          citySel.appendChild(opt0);
+          getTaiwanCityList().forEach(function (city) {
+            var opt = document.createElement("option");
+            opt.value = city;
+            opt.textContent = city;
+            citySel.appendChild(opt);
+          });
+          if (current) citySel.value = current;
+        }
+
+        function fillDistrictSelect(citySel, districtSel, districtValue) {
+          if (!districtSel) return;
+          var city = citySel ? citySel.value : "";
+          var districts = city && TAIWAN_ADDR[city] ? TAIWAN_ADDR[city] : [];
+          districtSel.innerHTML = "";
+          var placeholder = document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = "請選擇";
+          districtSel.appendChild(placeholder);
+          districts.forEach(function (d) {
+            var opt = document.createElement("option");
+            opt.value = d;
+            opt.textContent = d;
+            districtSel.appendChild(opt);
+          });
+          if (districts.length) {
+            districtSel.disabled = false;
+            if (districtValue && districts.indexOf(districtValue) >= 0) {
+              districtSel.value = districtValue;
+            }
+          } else {
+            districtSel.disabled = true;
+            districtSel.value = "";
+          }
+        }
+
+        function normalizeTaiwanPlaceName(name) {
+          if (!name) return name;
+          return String(name)
+            .replace(/台北/g, "臺北")
+            .replace(/台中/g, "臺中")
+            .replace(/台南/g, "臺南")
+            .replace(/台東/g, "臺東");
+        }
+
+        function parseLegacyAddress(full) {
+          if (!full || typeof full !== "string") return null;
+          full = normalizeTaiwanPlaceName(full);
+          var cities = getTaiwanCityList().slice().sort(function (a, b) {
+            return b.length - a.length;
+          });
+          for (var i = 0; i < cities.length; i++) {
+            var city = cities[i];
+            if (full.indexOf(city) !== 0) continue;
+            var rest = full.slice(city.length);
+            var districts = (TAIWAN_ADDR[city] || []).slice().sort(function (a, b) {
+              return b.length - a.length;
+            });
+            for (var j = 0; j < districts.length; j++) {
+              var district = districts[j];
+              if (rest.indexOf(district) === 0) {
+                return {
+                  city: city,
+                  district: district,
+                  detail: rest.slice(district.length),
+                };
+              }
+            }
+            return { city: city, district: "", detail: rest };
+          }
+          return { city: "", district: "", detail: full };
+        }
+
+        function migrateDraftAddress(obj) {
+          if (obj.regAddress && !obj.regCity) {
+            var regParsed = parseLegacyAddress(obj.regAddress);
+            if (regParsed) {
+              obj.regCity = regParsed.city;
+              obj.regDistrict = regParsed.district;
+              obj.regAddressDetail = regParsed.detail;
+            }
+            delete obj.regAddress;
+          }
+          if (obj.mailAddress && !obj.mailCity) {
+            var mailParsed = parseLegacyAddress(obj.mailAddress);
+            if (mailParsed) {
+              obj.mailCity = mailParsed.city;
+              obj.mailDistrict = mailParsed.district;
+              obj.mailAddressDetail = mailParsed.detail;
+            }
+            delete obj.mailAddress;
+          }
+        }
+
+        function setMailAddressFieldsDisabled(disabled) {
+          var mailCity = $("mailCity");
+          var mailDistrict = $("mailDistrict");
+          var mailDetail = $("mailAddressDetail");
+          if (!mailCity || !mailDistrict || !mailDetail) return;
+          mailCity.disabled = disabled;
+          mailDistrict.disabled = disabled || !mailCity.value;
+          mailDetail.disabled = disabled;
+          if (disabled) {
+            mailCity.removeAttribute("required");
+            mailDistrict.removeAttribute("required");
+            mailDetail.removeAttribute("required");
+          } else {
+            mailCity.setAttribute("required", "");
+            mailDistrict.setAttribute("required", "");
+            mailDetail.setAttribute("required", "");
+            if (!mailCity.value) mailDistrict.disabled = true;
+          }
+        }
+
+        function initAddressFields() {
+          var regCity = $("regCity");
+          var regDistrict = $("regDistrict");
+          var regDetail = $("regAddressDetail");
+          var mailCity = $("mailCity");
+          var mailDistrict = $("mailDistrict");
+          var mailDetail = $("mailAddressDetail");
+          var mailSame = $("mailSameAsReg");
+          if (!regCity || !mailCity) return;
+
+          fillCitySelect(regCity);
+          fillCitySelect(mailCity);
+
+          if (!regCity.value) regCity.value = "臺北市";
+          fillDistrictSelect(regCity, regDistrict, regDistrict.value || "大安區");
+          if (!mailCity.value) mailCity.value = "臺北市";
+          fillDistrictSelect(mailCity, mailDistrict, mailDistrict.value || "大安區");
+
+          function syncMailFromReg() {
+            if (!mailSame || !mailSame.checked) return;
+            mailCity.value = regCity.value;
+            fillDistrictSelect(mailCity, mailDistrict, regDistrict.value);
+            mailDetail.value = regDetail.value;
+          }
+
+          syncMailFromRegFn = syncMailFromReg;
+
+          regCity.addEventListener("change", function () {
+            fillDistrictSelect(regCity, regDistrict);
+            syncMailFromReg();
+            saveDraft();
+          });
+          regDistrict.addEventListener("change", function () {
+            syncMailFromReg();
+            saveDraft();
+          });
+          if (regDetail) {
+            regDetail.addEventListener("input", function () {
+              syncMailFromReg();
+            });
+          }
+
+          mailCity.addEventListener("change", function () {
+            if (mailSame && mailSame.checked) return;
+            fillDistrictSelect(mailCity, mailDistrict);
+            saveDraft();
+          });
+          mailDistrict.addEventListener("change", saveDraft);
+          if (mailDetail) mailDetail.addEventListener("input", saveDraft);
+
+          if (mailSame) {
+            mailSame.addEventListener("change", function () {
+              if (mailSame.checked) {
+                syncMailFromReg();
+                setMailAddressFieldsDisabled(true);
+              } else {
+                setMailAddressFieldsDisabled(false);
+                fillDistrictSelect(mailCity, mailDistrict);
+              }
+              saveDraft();
+            });
+            setMailAddressFieldsDisabled(!!mailSame.checked);
+          }
+        }
 
         /* 03_收入來源：選項見 HTML #selfIncomeSource（value 為試算表英文句） */
 
@@ -4229,6 +4561,7 @@
             if (obj.industry && LEGACY_INDUSTRY_TO_IB02_CATEGORY[obj.industry]) {
               obj.industry = LEGACY_INDUSTRY_TO_IB02_CATEGORY[obj.industry];
             }
+            migrateDraftAddress(obj);
             Object.keys(obj).forEach(function (key) {
               if (key === "bankModuleOk" || key === "handheldOk") return;
               /* 文件簽署：條款同意不從草稿還原，每次載入預設為未勾選 */
@@ -4276,6 +4609,23 @@
                 c.classList.toggle("is-selected", c.getAttribute("data-value") === hid.value);
               });
             });
+            var regCityEl = $("regCity");
+            var regDistrictEl = $("regDistrict");
+            if (regCityEl && regDistrictEl) {
+              fillDistrictSelect(regCityEl, regDistrictEl, obj.regDistrict || regDistrictEl.value);
+            }
+            var mailCityEl = $("mailCity");
+            var mailDistrictEl = $("mailDistrict");
+            if (mailCityEl && mailDistrictEl) {
+              fillDistrictSelect(mailCityEl, mailDistrictEl, obj.mailDistrict || mailDistrictEl.value);
+            }
+            var mailSameEl = $("mailSameAsReg");
+            if (mailSameEl && mailSameEl.checked) {
+              setMailAddressFieldsDisabled(true);
+              if (syncMailFromRegFn) syncMailFromRegFn();
+            } else {
+              setMailAddressFieldsDisabled(false);
+            }
             resetBankVerificationAfterPageLoad();
             saveDraft();
             syncSelfEmployedExtraFields(draftSelfProduct);
@@ -4284,6 +4634,7 @@
 
         form.addEventListener("input", saveDraft);
         form.addEventListener("change", saveDraft);
+        initAddressFields();
         loadDraft();
         syncSelfEmployedExtraFields();
         var employmentSel = $("employment");
