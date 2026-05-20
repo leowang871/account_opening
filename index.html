@@ -1294,6 +1294,14 @@
         transform: rotate(180deg);
       }
 
+      .onboard-section--collapsible.is-collapsed .onboard-section__head {
+        border-bottom: none;
+      }
+
+      .onboard-section--collapsible .onboard-section__body[hidden] {
+        display: none;
+      }
+
       .thumb-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2446,13 +2454,33 @@
               onsubmit="event.preventDefault();"
             >
               <!-- 1 證件影像 -->
-              <section class="onboard-section" id="sec-id-images" aria-labelledby="h-id-img">
-                <div class="onboard-section__head" style="border-bottom: none; padding-bottom: 0">
-                  <h3 class="onboard-section__title" id="h-id-img" style="font-size: 17px">
-                    證件影像預覽
-                  </h3>
+              <section
+                class="onboard-section onboard-section--collapsible is-collapsed"
+                id="sec-id-images"
+                aria-labelledby="h-id-img"
+              >
+                <div class="onboard-section__head">
+                  <button
+                    type="button"
+                    class="collapsible-btn"
+                    id="btnIdPreviewToggle"
+                    aria-expanded="false"
+                    aria-controls="idPreviewPanel"
+                  >
+                    <h3 class="onboard-section__title" id="h-id-img">證件影像預覽</h3>
+                    <svg class="chevron" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 8l5 5 5-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
                 </div>
-                <div class="onboard-section__body" id="idPreviewPanel">
+                <div class="onboard-section__body" id="idPreviewPanel" hidden>
                   <div class="thumb-grid">
                     <figure class="thumb-card">
                       <div class="thumb-img">
@@ -3029,6 +3057,25 @@
         function $(id) {
           return document.getElementById(id);
         }
+
+        (function initIdPreviewCollapse() {
+          var btn = $("btnIdPreviewToggle");
+          var panel = $("idPreviewPanel");
+          var section = $("sec-id-images");
+          if (!btn || !panel || !section) return;
+
+          function setIdPreviewCollapsed(collapsed) {
+            section.classList.toggle("is-collapsed", collapsed);
+            btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+            if (collapsed) panel.setAttribute("hidden", "");
+            else panel.removeAttribute("hidden");
+          }
+
+          setIdPreviewCollapsed(true);
+          btn.addEventListener("click", function () {
+            setIdPreviewCollapsed(btn.getAttribute("aria-expanded") === "true");
+          });
+        })();
 
         /**
          * 02_產品與服務：`window.__IB02_PRODUCT_SERVICE_BY_INDUSTRY`（見上方內嵌；來源同 ib-02-product-service.csv）。
